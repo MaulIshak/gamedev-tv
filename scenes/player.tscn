@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://di8j8t6em21jy"]
+
+[ext_resource type="Script" uid="uid://c06wng8u5wsrd" path="res://scripts/player/player.gd" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://dgl3ipa3lrf6o" path="res://scripts/template/state_machine.gd" id="2_g2els"]
+[ext_resource type="Script" uid="uid://bfif7k7c36702" path="res://scripts/player/states/idle_state.gd" id="3_dqkch"]
+[ext_resource type="Script" uid="uid://b1q6wnsvb2dh2" path="res://scripts/player/states/walk_state.gd" id="4_qlg0r"]
+
+[sub_resource type="Gradient" id="Gradient_u8vuu"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3vyb7"]
+gradient = SubResource("Gradient_u8vuu")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
+
+[node name="Player" type="CharacterBody2D" unique_id=2047568749]
+script = ExtResource("1_3vyb7")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1783088964]
+position = Vector2(0, -4)
+scale = Vector2(0.33984378, 0.43134016)
+texture = SubResource("GradientTexture2D_3vyb7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1439401240]
+shape = SubResource("CircleShape2D_g2els")
+
+[node name="StateMachine" type="Node" parent="." unique_id=1601719910]
+script = ExtResource("2_g2els")
+metadata/_custom_type_script = "uid://dgl3ipa3lrf6o"
+
+[node name="IdleState" type="Node" parent="StateMachine" unique_id=91744226]
+script = ExtResource("3_dqkch")
+metadata/_custom_type_script = "uid://bfif7k7c36702"
+
+[node name="WalkState" type="Node" parent="StateMachine" unique_id=1651872225]
+script = ExtResource("4_qlg0r")
+metadata/_custom_type_script = "uid://b1q6wnsvb2dh2"
