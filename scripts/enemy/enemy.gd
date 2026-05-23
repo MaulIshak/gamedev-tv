@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+@export_group("Navigation Settings")
 ## The movement speed of the entity
 @export var movement_speed: float = 8000.0
 ## The target node to move to
@@ -14,6 +15,15 @@ extends CharacterBody2D
 
 var on_nav_link: bool = false
 var nav_link_end_position: Vector2
+
+@export_group("Enemy Stats")
+@export var health: int = 3
+@export var damage: int = 1
+@export var attack_cooldown: float = .5
+
+@onready var attack_timer: Timer = $AttackTimer
+var player_in_range: Player = null
+@onready var hitbox_area: Area2D = $Hitbox
 
 func _ready():
     # Connect signals
@@ -32,6 +42,10 @@ func _ready():
     # Wait for the NavigationServer synchronization by awaiting one frame in the script.
     # Make sure to not await during _ready.
     call_deferred("actor_setup")
+
+    # hitbox_area.body_entered.connect(_on_hitbox_body_entered)
+    # hitbox_area.body_exited.connect(_on_hitbox_body_exited)
+    attack_timer.timeout.connect(_on_attack_timer_timeout)
 
     
 func _physics_process(delta):
@@ -82,3 +96,22 @@ func _on_waypoint_reached(details: Dictionary) -> void:
 func _on_velocity_computed(safe_velocity: Vector2):
     velocity = safe_velocity
     move_and_slide()
+
+
+func _on_hitbox_body_entered(body: Node2D) -> void:
+    if body is Player:
+        player_in_range = body
+        _deal_damage()
+        attack_timer.start()
+
+func _on_hitbox_body_exited(body: Node2D) -> void:
+    if body == player_in_range:
+        player_in_range = null
+        attack_timer.stop()
+
+func _on_attack_timer_timeout() -> void:
+    _deal_damage()
+
+func _deal_damage() -> void:
+    if is_instance_valid(player_in_range):
+            player_in_range.take_damage(damage)

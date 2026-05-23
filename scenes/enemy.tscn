@@ -10,7 +10,12 @@ gradient = SubResource("Gradient_8tegq")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_md0e3"]
 
-[node name="Enemy" type="CharacterBody2D" unique_id=1789478902]
+[sub_resource type="CircleShape2D" id="CircleShape2D_7p1mj"]
+radius = 13.0
+
+[node name="Enemy" type="CharacterBody2D" unique_id=1677773022]
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_7p1mj")
 movement_speed = 4000.0
 
@@ -28,3 +33,14 @@ avoidance_enabled = true
 [node name="RecalcTimer" type="Timer" parent="." unique_id=1906494984]
 wait_time = 0.1
 autostart = true
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=691336757]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=674636700]
+shape = SubResource("CircleShape2D_7p1mj")
+debug_color = Color(0.9629765, 6.738305e-07, 0.50425076, 0.41960785)
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=1746562947]
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_exited" from="Hitbox" to="." method="_on_hitbox_body_exited"]

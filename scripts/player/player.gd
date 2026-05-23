@@ -20,6 +20,12 @@ var _dash_cooldown_left: float = 0.0
 
 var is_input_disabled: bool = false
 
+var immune_duration: float = 0.5
+var _immune_time_left: float = 0.0
+var is_immune: bool = false
+@export_group("Player Stats")
+var health: int = 5
+
 
 const IDLE = "IdleState"
 const WALK = "WalkState"
@@ -27,6 +33,12 @@ const WALK = "WalkState"
 
 func _ready() -> void:
     enable_input()
+
+func _process(_delta: float) -> void:
+    if is_immune:
+        _immune_time_left -= _delta
+        if _immune_time_left <= 0.0:
+            is_immune = false
 
 func _physics_process(_delta: float) -> void:
     if _dash_cooldown_left > 0.0:
@@ -87,3 +99,25 @@ func get_dash_cooldown_progress() -> float:
         return 1.0
 
     return clampf(1.0 - (_dash_cooldown_left / dash_cooldown), 0.0, 1.0)
+
+
+func take_damage(amount: int) -> void:
+    if is_immune:
+        print("Masih immune bang")
+        return
+
+    health -= amount
+    is_immune = true
+    _immune_time_left = immune_duration
+
+    print("Sakit woi! Remaining health: %d" % health)
+
+    if health <= 0:
+        health = 0
+        die()
+
+func heal(amount: int) -> void:
+    health += amount
+
+func die() -> void:
+    print("Mati woi")

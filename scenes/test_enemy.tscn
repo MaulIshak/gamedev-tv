@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://r0ctnxc1e4n1"]
+
+[ext_resource type="PackedScene" uid="uid://d3wolfpiilsy3" path="res://scenes/enemy.tscn" id="1_mkyue"]
+[ext_resource type="PackedScene" uid="uid://di8j8t6em21jy" path="res://scenes/player.tscn" id="2_fpxyv"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_mkyue"]
+vertices = PackedVector2Array(488.89844, -9.03125, 486.09375, 278.0703, -14.9609375, 281.92188, -14.03125, -10.9609375)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-24, -21, 499, -19, 496, 288, -25, 292)])
+
+[node name="TestEnemy" type="Node2D" unique_id=802629239]
+
+[node name="Enemy" parent="." unique_id=1789478902 node_paths=PackedStringArray("movement_target") instance=ExtResource("1_mkyue")]
+position = Vector2(60, 57)
+movement_target = NodePath("../Player")
+
+[node name="Enemy2" parent="." unique_id=615081074 node_paths=PackedStringArray("movement_target") instance=ExtResource("1_mkyue")]
+position = Vector2(48, 229)
+movement_target = NodePath("../Player")
+
+[node name="Enemy3" parent="." unique_id=773345463 node_paths=PackedStringArray("movement_target") instance=ExtResource("1_mkyue")]
+position = Vector2(409, 55)
+movement_target = NodePath("../Player")
+
+[node name="Enemy4" parent="." unique_id=493839598 node_paths=PackedStringArray("movement_target") instance=ExtResource("1_mkyue")]
+position = Vector2(414, 229)
+movement_target = NodePath("../Player")
+
+[node name="Player" parent="." unique_id=2047568749 instance=ExtResource("2_fpxyv")]
+position = Vector2(191, 130)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=1613491846]
+navigation_polygon = SubResource("NavigationPolygon_mkyue")
