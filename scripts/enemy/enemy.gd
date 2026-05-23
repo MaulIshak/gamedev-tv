@@ -56,6 +56,7 @@ func _ready():
     sprite.scale = enemy_stats.sprite_scale
     hitbox_area.shape.radius = enemy_stats.hitbox_radius
     attack_timer.wait_time = enemy_stats.attack_cooldown
+    movement_speed = movement_speed * enemy_stats.movement_speed_multiplier
 
 
 func _physics_process(delta):
