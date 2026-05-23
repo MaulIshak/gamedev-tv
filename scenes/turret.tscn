@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dlvi58ltj70ky"]
+
+[ext_resource type="Texture2D" uid="uid://d1s4wlu0nmrol" path="res://assets/sprites/turret_connect.png" id="1_x3mc5"]
+
+[node name="Node2D" type="Sprite2D" unique_id=1646187261]
+z_index = 2
+y_sort_enabled = true
+texture = ExtResource("1_x3mc5")
+offset = Vector2(0, -15)
+region_enabled = true
+region_rect = Rect2(48, 16, 16, 32)
