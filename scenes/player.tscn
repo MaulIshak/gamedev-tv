@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c06wng8u5wsrd" path="res://scripts/player/player.gd" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://dgl3ipa3lrf6o" path="res://scripts/template/state_machine.gd" id="2_g2els"]
 [ext_resource type="Texture2D" uid="uid://bdcqd5ld8q74v" path="res://assets/sprites/DRAFTBOTSIMPLIFIED.png" id="2_qlg0r"]
+[ext_resource type="Texture2D" uid="uid://brqlhsra2a0lg" path="res://assets/sprites/shadow.png" id="2_tuyoq"]
 [ext_resource type="Script" uid="uid://bfif7k7c36702" path="res://scripts/player/states/idle_state.gd" id="3_dqkch"]
 [ext_resource type="Script" uid="uid://b1q6wnsvb2dh2" path="res://scripts/player/states/walk_state.gd" id="4_qlg0r"]
 
@@ -26,9 +27,15 @@ walk_speed = 100.0
 dash_speed = 400.0
 dash_cooldown = 0.4
 
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1429083678]
+position = Vector2(0, -7)
+scale = Vector2(0.671875, 0.71875)
+texture = ExtResource("2_tuyoq")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1554100876]
 position = Vector2(0, -22)
 sprite_frames = SubResource("SpriteFrames_qlg0r")
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1439401240]
 position = Vector2(1, -9)
