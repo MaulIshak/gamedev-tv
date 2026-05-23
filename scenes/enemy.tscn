@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://d3wolfpiilsy3"]
+
+[ext_resource type="Script" uid="uid://cb6cltv3gikwh" path="res://scripts/enemy/enemy.gd" id="1_7p1mj"]
+
+[sub_resource type="Gradient" id="Gradient_8tegq"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7p1mj"]
+gradient = SubResource("Gradient_8tegq")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_md0e3"]
+
+[node name="Enemy" type="CharacterBody2D" unique_id=1789478902]
+script = ExtResource("1_7p1mj")
+movement_speed = 4000.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1409098986]
+position = Vector2(-9.536743e-07, -9.536743e-07)
+scale = Vector2(0.4296875, 0.4296875)
+texture = SubResource("GradientTexture2D_7p1mj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1431132142]
+shape = SubResource("CircleShape2D_md0e3")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1295823443]
+avoidance_enabled = true
+
+[node name="RecalcTimer" type="Timer" parent="." unique_id=1906494984]
+wait_time = 0.1
+autostart = true

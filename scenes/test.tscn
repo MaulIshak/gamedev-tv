@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://b3ys4uk5o00ik"]
+
+[ext_resource type="Shader" uid="uid://vmh6qnaiayxm" path="res://shaders/test.gdshader" id="1_errlg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bl13t"]
+shader = ExtResource("1_errlg")
+shader_parameter/background_color = Color(1, 1, 1, 1)
+shader_parameter/line_color = Color(0.9647059, 0, 0, 1)
+shader_parameter/line_freq = 9.56
+shader_parameter/height = 0.6
+shader_parameter/speed = 0.8
+shader_parameter/scale = Vector2(2, 16)
+
+[sub_resource type="Gradient" id="Gradient_iyx0m"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_74lek"]
+gradient = SubResource("Gradient_iyx0m")
+
+[node name="Test" type="Node2D" unique_id=2128953746]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2093326340]
+material = SubResource("ShaderMaterial_bl13t")
+position = Vector2(241, 130)
+scale = Vector2(7.015625, 4.265625)
+texture = SubResource("GradientTexture2D_74lek")

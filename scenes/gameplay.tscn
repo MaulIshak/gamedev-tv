@@ -1,8 +1,47 @@
 [gd_scene format=3 uid="uid://bs76p5qlls0lh"]
 
 [ext_resource type="PackedScene" uid="uid://di8j8t6em21jy" path="res://scenes/player.tscn" id="1_7biu0"]
+[ext_resource type="PackedScene" uid="uid://d3wolfpiilsy3" path="res://scenes/enemy.tscn" id="2_l1v76"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_00tan"]
+size = Vector2(131, 125.5)
+
+[sub_resource type="Gradient" id="Gradient_00tan"]
+colors = PackedColorArray(1.1551381e-06, 0.56635886, 0.85728544, 1, 0, 0.5647059, 0.85882354, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_l1v76"]
+gradient = SubResource("Gradient_00tan")
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_ocj2s"]
+vertices = PackedVector2Array(472.84375, 10.96875, 469.14063, 260.0625, 9.921875, 262.9297, 8.0703125, 10.0234375)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-2, 0, 0, 273, 479, 270, 483, 1)])
 
 [node name="Gameplay" type="Node2D" unique_id=2043017776]
 
 [node name="Player" parent="." unique_id=2047568749 instance=ExtResource("1_7biu0")]
-position = Vector2(213, 84)
+position = Vector2(-8, 6)
+
+[node name="Area2D" type="StaticBody2D" parent="." unique_id=1293566820]
+position = Vector2(-146, -53)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1927975465]
+scale = Vector2(0.315, 0.315)
+shape = SubResource("RectangleShape2D_00tan")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="Area2D" unique_id=2014986541]
+radius = 23.35
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D" unique_id=402533673]
+scale = Vector2(0.58, 0.58)
+texture = SubResource("GradientTexture2D_l1v76")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=542024802]
+position = Vector2(-240, -136)
+navigation_polygon = SubResource("NavigationPolygon_ocj2s")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1184959751]
+
+[node name="Enemy" parent="." unique_id=1789478902 node_paths=PackedStringArray("movement_target") instance=ExtResource("2_l1v76")]
+position = Vector2(-190, -84)
+movement_target = NodePath("../Player")
