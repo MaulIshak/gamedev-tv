@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://di8j8t6em21jy" path="res://scenes/player.tscn" id="1_7biu0"]
 [ext_resource type="PackedScene" uid="uid://d0edphkyi2pjx" path="res://scenes/wave_manager.tscn" id="2_o412h"]
 [ext_resource type="PackedScene" uid="uid://dlvi58ltj70ky" path="res://scenes/turret.tscn" id="3_l1v76"]
+[ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="5_ocj2s"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l1v76"]
 texture = ExtResource("1_00tan")
@@ -80,17 +81,36 @@ zoom = Vector2(0.8, 0.8)
 [node name="Player" parent="." unique_id=2047568749 instance=ExtResource("1_7biu0")]
 position = Vector2(-3, 5)
 
-[node name="turret_spawn" type="Node2D" parent="." unique_id=1156210711]
+[node name="wave_manager" parent="." unique_id=1893859270 node_paths=PackedStringArray("turret_spawn_area", "turret_parent", "enemy_spawn_area", "enemy_parent", "enemy_movement_target") instance=ExtResource("2_o412h")]
+turret_spawn_area = NodePath("../turrets/turret_spawn_area")
+turret_scene = ExtResource("3_l1v76")
+turret_parent = NodePath("../turrets/turret_spawn")
+enemy_spawn_area = NodePath("../enemies/enemies_spawn_area")
+enemy_scene = ExtResource("5_ocj2s")
+enemy_parent = NodePath("../enemies/enemies_spawn")
+enemy_movement_target = NodePath("../Player")
+
+[node name="turrets" type="Node2D" parent="." unique_id=1809935533]
+
+[node name="turret_spawn" type="Node2D" parent="turrets" unique_id=1156210711]
 y_sort_enabled = true
 
-[node name="wave_manager" parent="." unique_id=1893859270 node_paths=PackedStringArray("turret_spawn_area", "turret_parent") instance=ExtResource("2_o412h")]
-turret_spawn_area = NodePath("../turret_spawn_area")
-turret_scene = ExtResource("3_l1v76")
-turret_parent = NodePath("../turret_spawn")
+[node name="turret_spawn_area" type="ReferenceRect" parent="turrets" unique_id=1014047594]
+visible = false
+offset_left = -144.0
+offset_top = -24.0
+offset_right = 144.0
+offset_bottom = 160.0
+mouse_filter = 2
 
-[node name="turret_spawn_area" type="ReferenceRect" parent="." unique_id=1014047594]
-offset_left = -160.0
-offset_top = -40.0
-offset_right = 160.0
-offset_bottom = 176.0
+[node name="enemies" type="Node2D" parent="." unique_id=2009093955]
+
+[node name="enemies_spawn" type="Node2D" parent="enemies" unique_id=1506975193]
+
+[node name="enemies_spawn_area" type="ReferenceRect" parent="enemies" unique_id=1692144372]
+visible = false
+offset_left = -192.0
+offset_top = -64.0
+offset_right = 192.0
+offset_bottom = 192.0
 mouse_filter = 2
