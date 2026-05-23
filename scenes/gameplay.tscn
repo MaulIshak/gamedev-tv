@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://di8j8t6em21jy" path="res://scenes/player.tscn" id="1_7biu0"]
 [ext_resource type="PackedScene" uid="uid://d0edphkyi2pjx" path="res://scenes/wave_manager.tscn" id="2_o412h"]
 [ext_resource type="PackedScene" uid="uid://dlvi58ltj70ky" path="res://scenes/turret.tscn" id="3_l1v76"]
+[ext_resource type="Script" uid="uid://cgkocfnbshpqh" path="res://scripts/spawner.gd" id="4_din8e"]
 [ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="5_ocj2s"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l1v76"]
@@ -82,6 +83,7 @@ zoom = Vector2(0.8, 0.8)
 position = Vector2(-3, 5)
 
 [node name="wave_manager" parent="." unique_id=1893859270 node_paths=PackedStringArray("turret_spawn_area", "turret_parent", "enemy_spawn_area", "enemy_parent", "enemy_movement_target") instance=ExtResource("2_o412h")]
+script = ExtResource("4_din8e")
 turret_spawn_area = NodePath("../turrets/turret_spawn_area")
 turret_scene = ExtResource("3_l1v76")
 turret_parent = NodePath("../turrets/turret_spawn")
