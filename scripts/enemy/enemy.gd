@@ -17,13 +17,15 @@ var on_nav_link: bool = false
 var nav_link_end_position: Vector2
 
 @export_group("Enemy Stats")
-@export var health: int = 3
-@export var damage: int = 1
-@export var attack_cooldown: float = .5
-
+var health: int = 3
+var damage: int = 1
+var attack_cooldown: float = .5
+@export var enemy_stats: EnemyStats
 @onready var attack_timer: Timer = $AttackTimer
+
 var player_in_range: Player = null
-@onready var hitbox_area: Area2D = $Hitbox
+@onready var hitbox_area: CollisionShape2D = $Hitbox/CollisionShape2D
+@onready var sprite: Sprite2D = $Sprite2D
 
 func _ready():
     # Connect signals
@@ -47,7 +49,15 @@ func _ready():
     # hitbox_area.body_exited.connect(_on_hitbox_body_exited)
     attack_timer.timeout.connect(_on_attack_timer_timeout)
 
-    
+    # Setup stats
+    health = enemy_stats.health
+    damage = enemy_stats.damage
+    sprite.texture = enemy_stats.texture
+    sprite.scale = enemy_stats.sprite_scale
+    hitbox_area.shape.radius = enemy_stats.hitbox_radius
+    attack_timer.wait_time = enemy_stats.attack_cooldown
+
+
 func _physics_process(delta):
     # Returns if we've reached the end of the path.
     if navigation_agent.is_navigation_finished():
