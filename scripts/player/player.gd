@@ -30,6 +30,7 @@ var health: int = 5
 const IDLE = "IdleState"
 const WALK = "WalkState"
 
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
     enable_input()
@@ -39,6 +40,9 @@ func _process(_delta: float) -> void:
         _immune_time_left -= _delta
         if _immune_time_left <= 0.0:
             is_immune = false
+
+    if input_direction.x != 0:
+        sprite.flip_h = input_direction.x < 0
 
 func _physics_process(_delta: float) -> void:
     if _dash_cooldown_left > 0.0:

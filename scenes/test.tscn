@@ -50,6 +50,6 @@ texture = SubResource("GradientTexture2D_74lek")
 
 [node name="Sprite2D2" type="Sprite2D" parent="." unique_id=220324687]
 material = SubResource("ShaderMaterial_iyx0m")
-position = Vector2(315, 100.99999)
+position = Vector2(315, 100)
 scale = Vector2(2.165, 2.165)
 texture = SubResource("GradientTexture2D_74lek")
