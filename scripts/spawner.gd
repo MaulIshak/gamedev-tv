@@ -1,4 +1,4 @@
-extends Node
+class_name Spawner extends Node
 
 # -- Turret exports -------------------------------------------------
 
@@ -32,31 +32,20 @@ const NORMAL_ENEMY_STATS: EnemyStats = preload("res://scripts/enemy/resources/no
 
 func _ready() -> void:
 	if turret_spawn_area == null:
-		push_warning("wave_manager: turret_spawn_area is null")
+		push_warning("turret_spawn_area is null")
 	if turret_scene == null:
-		push_warning("wave_manager: turret_scene is null")
+		push_warning("turret_scene is null")
 	if turret_parent == null:
-		push_warning("wave_manager: turret_parent is null")
+		push_warning("turret_parent is null")
 	if enemy_spawn_area == null:
-		push_warning("wave_manager: enemy_spawn_area is null")
+		push_warning("enemy_spawn_area is null")
 	if enemy_scene == null:
-		push_warning("wave_manager: enemy_scene is null")
+		push_warning("enemy_scene is null")
 	if enemy_parent == null:
-		push_warning("wave_manager: enemy_parent is null")
+		push_warning("enemy_parent is null")
 	if enemy_movement_target == null:
-		push_warning("wave_manager: enemy_movement_target is null")
+		push_warning("enemy_movement_target is null")
 
-	get_tree().create_timer(3.0).timeout.connect(func () -> void:
-		for i in range(turret_max_count):
-			spawn_turret()
-			print("spawned turret", i)
-	)
-
-	get_tree().create_timer(3.0).timeout.connect(func () -> void:
-		for i in range(enemy_max_count):
-			spawn_enemy(NORMAL_ENEMY_STATS)
-			print("spawned enemy", i)
-	)
 
 # -- Turret spawning ------------------------------------------------
 

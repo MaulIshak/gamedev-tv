@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dlvi58ltj70ky" path="res://scenes/turret.tscn" id="3_l1v76"]
 [ext_resource type="Script" uid="uid://cgkocfnbshpqh" path="res://scripts/spawner.gd" id="4_din8e"]
 [ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="5_ocj2s"]
+[ext_resource type="Script" uid="uid://dmxor68ay1hfg" path="res://scripts/wave_manager.gd" id="7_4bh5q"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l1v76"]
 texture = ExtResource("1_00tan")
@@ -82,16 +83,6 @@ zoom = Vector2(0.8, 0.8)
 [node name="Player" parent="." unique_id=2047568749 instance=ExtResource("1_7biu0")]
 position = Vector2(-3, 5)
 
-[node name="wave_manager" parent="." unique_id=1893859270 node_paths=PackedStringArray("turret_spawn_area", "turret_parent", "enemy_spawn_area", "enemy_parent", "enemy_movement_target") instance=ExtResource("2_o412h")]
-script = ExtResource("4_din8e")
-turret_spawn_area = NodePath("../turrets/turret_spawn_area")
-turret_scene = ExtResource("3_l1v76")
-turret_parent = NodePath("../turrets/turret_spawn")
-enemy_spawn_area = NodePath("../enemies/enemies_spawn_area")
-enemy_scene = ExtResource("5_ocj2s")
-enemy_parent = NodePath("../enemies/enemies_spawn")
-enemy_movement_target = NodePath("../Player")
-
 [node name="turrets" type="Node2D" parent="." unique_id=1809935533]
 
 [node name="turret_spawn" type="Node2D" parent="turrets" unique_id=1156210711]
@@ -116,3 +107,25 @@ offset_top = -64.0
 offset_right = 192.0
 offset_bottom = 192.0
 mouse_filter = 2
+
+[node name="spawner" parent="." unique_id=1893859270 node_paths=PackedStringArray("turret_spawn_area", "turret_parent", "enemy_spawn_area", "enemy_parent", "enemy_movement_target") instance=ExtResource("2_o412h")]
+script = ExtResource("4_din8e")
+turret_spawn_area = NodePath("../turrets/turret_spawn_area")
+turret_scene = ExtResource("3_l1v76")
+turret_parent = NodePath("../turrets/turret_spawn")
+turret_max_count = 4
+center_exclusion_radius = 64.0
+min_turret_distance = 64.0
+max_spawn_attempts = 20
+enemy_spawn_area = NodePath("../enemies/enemies_spawn_area")
+enemy_scene = ExtResource("5_ocj2s")
+enemy_parent = NodePath("../enemies/enemies_spawn")
+enemy_movement_target = NodePath("../Player")
+enemy_max_count = 10
+enemy_edge_margin = 32.0
+min_enemy_distance = 32.0
+enemy_max_spawn_attempts = 20
+
+[node name="wave_manager" type="Node" parent="." unique_id=2000202662 node_paths=PackedStringArray("spawner")]
+script = ExtResource("7_4bh5q")
+spawner = NodePath("../spawner")
