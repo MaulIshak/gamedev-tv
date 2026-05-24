@@ -1,13 +1,23 @@
 [gd_scene format=3 uid="uid://brogfft4bj7ib"]
 
-[ext_resource type="Script" uid="uid://dgmpkm1jhao51" path="res://scripts/turret.gd" id="1_el7wl"]
 [ext_resource type="Texture2D" uid="uid://d1s4wlu0nmrol" path="res://assets/sprites/turret_connect.png" id="1_x3mc5"]
 [ext_resource type="Texture2D" uid="uid://cesfvyvrpu0ju" path="res://assets/sprites/Clip.png" id="2_485p4"]
 [ext_resource type="Script" uid="uid://cqh7c2wj1dfd3" path="res://scripts/turret.gd" id="2_turret"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_485p4"]
+size = Vector2(18, 25)
+
 [node name="Turret" type="Node2D" unique_id=269074348]
-script = ExtResource("2_turret")
 y_sort_enabled = true
+script = ExtResource("2_turret")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1991603879]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=402206931]
+position = Vector2(-1, -13.5)
+shape = SubResource("RectangleShape2D_485p4")
 
 [node name="Mask" type="Sprite2D" parent="." unique_id=1849229766]
 clip_children = 1

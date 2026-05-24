@@ -71,6 +71,11 @@ texture = ExtResource("1_00tan")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_l1v76")
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_e124b"]
+vertices = PackedVector2Array(446, 246, 58.320313, 246, 65.67969, 18, 446, 18)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(56, 8, 456, 8, 456, 256, 48, 256)])
+
 [node name="Gameplay" type="Node2D" unique_id=2043017776]
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=369524758]
@@ -112,8 +117,9 @@ offset_right = 192.0
 offset_bottom = 192.0
 mouse_filter = 2
 
-[node name="spawner" parent="." unique_id=1893859270 node_paths=PackedStringArray("turret_parent", "tile_map", "enemy_spawn_area", "enemy_parent", "enemy_movement_target") instance=ExtResource("2_o412h")]
+[node name="spawner" parent="." unique_id=1893859270 node_paths=PackedStringArray("turret_spawn_area", "turret_parent", "tile_map", "enemy_spawn_area", "enemy_parent", "enemy_movement_target") instance=ExtResource("2_o412h")]
 script = ExtResource("4_din8e")
+turret_spawn_area = NodePath("../turrets/turret_spawn_area")
 turret_scene = ExtResource("3_l1v76")
 turret_parent = NodePath("../turrets/turret_spawn")
 turret_max_count = 4
@@ -122,9 +128,9 @@ min_turret_distance = 64.0
 max_spawn_attempts = 20
 tile_map = NodePath("../TileMapLayer")
 enemy_spawn_area = NodePath("../enemies/enemies_spawn_area")
+enemy_scene = ExtResource("5_ocj2s")
 enemy_parent = NodePath("../enemies/enemies_spawn")
 enemy_movement_target = NodePath("../Player")
-enemy_scene = ExtResource("5_ocj2s")
 enemy_max_count = 10
 enemy_edge_margin = 32.0
 min_enemy_distance = 32.0
@@ -169,3 +175,7 @@ color = Color(0.19215687, 0.23921569, 0.27058825, 1)
 position = Vector2(3, 38.25)
 scale = Vector2(1.0714285, 0.86820656)
 texture = ExtResource("8_e124b")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=301168954]
+position = Vector2(-256, -88)
+navigation_polygon = SubResource("NavigationPolygon_e124b")
