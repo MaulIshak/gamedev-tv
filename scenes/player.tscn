@@ -22,19 +22,23 @@ animations = [{
 radius = 8.062258
 
 [node name="Player" type="CharacterBody2D" unique_id=2047568749]
+y_sort_enabled = true
+collision_layer = 2
 script = ExtResource("1_3vyb7")
 walk_speed = 100.0
 dash_speed = 400.0
 dash_cooldown = 0.4
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1429083678]
-position = Vector2(0, -7)
+y_sort_enabled = true
+position = Vector2(0, -1)
 scale = Vector2(0.671875, 0.71875)
 texture = ExtResource("2_tuyoq")
+offset = Vector2(0, -8)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1554100876]
-position = Vector2(0, -22)
 sprite_frames = SubResource("SpriteFrames_qlg0r")
+offset = Vector2(0, -22)
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1439401240]

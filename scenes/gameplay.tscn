@@ -70,6 +70,11 @@ texture = ExtResource("1_00tan")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_l1v76")
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_4bh5q"]
+vertices = PackedVector2Array(486, 278, 106, 278, 106, 26, 486, 26)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(96, 16, 496, 16, 496, 288, 96, 288)])
+
 [node name="Gameplay" type="Node2D" unique_id=2043017776]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1643582645]
@@ -80,47 +85,19 @@ tile_set = SubResource("TileSet_ct7aa")
 position = Vector2(-8, 40)
 zoom = Vector2(0.8, 0.8)
 
-[node name="Player" parent="." unique_id=2047568749 instance=ExtResource("1_7biu0")]
-position = Vector2(-3, 5)
-
-[node name="turrets" type="Node2D" parent="." unique_id=1809935533]
-
-[node name="turret_spawn" type="Node2D" parent="turrets" unique_id=1156210711]
-y_sort_enabled = true
-
-[node name="turret_spawn_area" type="ReferenceRect" parent="turrets" unique_id=1014047594]
-visible = false
-offset_left = -144.0
-offset_top = -24.0
-offset_right = 144.0
-offset_bottom = 160.0
-mouse_filter = 2
-
-[node name="enemies" type="Node2D" parent="." unique_id=2009093955]
-
-[node name="enemies_spawn" type="Node2D" parent="enemies" unique_id=1506975193]
-
-[node name="enemies_spawn_area" type="ReferenceRect" parent="enemies" unique_id=1692144372]
-visible = false
-offset_left = -192.0
-offset_top = -64.0
-offset_right = 192.0
-offset_bottom = 192.0
-mouse_filter = 2
-
 [node name="spawner" parent="." unique_id=1893859270 node_paths=PackedStringArray("turret_spawn_area", "turret_parent", "enemy_spawn_area", "enemy_parent", "enemy_movement_target") instance=ExtResource("2_o412h")]
 script = ExtResource("4_din8e")
-turret_spawn_area = NodePath("../turrets/turret_spawn_area")
+turret_spawn_area = NodePath("../entities/turrets/turret_spawn_area")
 turret_scene = ExtResource("3_l1v76")
-turret_parent = NodePath("../turrets/turret_spawn")
+turret_parent = NodePath("../entities/turrets/turret_spawn")
 turret_max_count = 4
 center_exclusion_radius = 64.0
 min_turret_distance = 64.0
 max_spawn_attempts = 20
-enemy_spawn_area = NodePath("../enemies/enemies_spawn_area")
+enemy_spawn_area = NodePath("../entities/enemies/enemies_spawn_area")
 enemy_scene = ExtResource("5_ocj2s")
-enemy_parent = NodePath("../enemies/enemies_spawn")
-enemy_movement_target = NodePath("../Player")
+enemy_parent = NodePath("../entities/enemies/enemies_spawn")
+enemy_movement_target = NodePath("../entities/Player")
 enemy_max_count = 10
 enemy_edge_margin = 32.0
 min_enemy_distance = 32.0
@@ -129,3 +106,40 @@ enemy_max_spawn_attempts = 20
 [node name="wave_manager" type="Node" parent="." unique_id=2000202662 node_paths=PackedStringArray("spawner")]
 script = ExtResource("7_4bh5q")
 spawner = NodePath("../spawner")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=285261372]
+position = Vector2(-296, -88)
+navigation_polygon = SubResource("NavigationPolygon_4bh5q")
+
+[node name="entities" type="Node2D" parent="." unique_id=17060022]
+y_sort_enabled = true
+
+[node name="Player" parent="entities" unique_id=2047568749 instance=ExtResource("1_7biu0")]
+position = Vector2(-3, 5)
+
+[node name="turrets" type="Node2D" parent="entities" unique_id=1809935533]
+y_sort_enabled = true
+
+[node name="turret_spawn" type="Node2D" parent="entities/turrets" unique_id=1156210711]
+y_sort_enabled = true
+
+[node name="turret_spawn_area" type="ReferenceRect" parent="entities/turrets" unique_id=1014047594]
+visible = false
+offset_left = -144.0
+offset_top = -24.0
+offset_right = 144.0
+offset_bottom = 160.0
+mouse_filter = 2
+
+[node name="enemies" type="Node2D" parent="entities" unique_id=2009093955]
+y_sort_enabled = true
+
+[node name="enemies_spawn" type="Node2D" parent="entities/enemies" unique_id=1506975193]
+
+[node name="enemies_spawn_area" type="ReferenceRect" parent="entities/enemies" unique_id=1692144372]
+visible = false
+offset_left = -192.0
+offset_top = -64.0
+offset_right = 192.0
+offset_bottom = 192.0
+mouse_filter = 2
