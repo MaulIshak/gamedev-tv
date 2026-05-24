@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://d1s4wlu0nmrol" path="res://assets/sprites/turret_connect.png" id="1_x3mc5"]
 [ext_resource type="Texture2D" uid="uid://cesfvyvrpu0ju" path="res://assets/sprites/Clip.png" id="2_485p4"]
+[ext_resource type="PackedScene" uid="uid://hjsag8qq4ath" path="res://scenes/explosion.tscn" id="2_pp6j5"]
 [ext_resource type="Script" uid="uid://cqh7c2wj1dfd3" path="res://scripts/turret.gd" id="2_turret"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_485p4"]
@@ -10,6 +11,7 @@ size = Vector2(18, 25)
 [node name="Turret" type="Node2D" unique_id=269074348]
 y_sort_enabled = true
 script = ExtResource("2_turret")
+explosion_scene = ExtResource("2_pp6j5")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1991603879]
 collision_layer = 8

@@ -13,7 +13,7 @@ height = 32
 [sub_resource type="CircleShape2D" id="CircleShape2D_md0e3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7p1mj"]
-radius = 13.0
+radius = 16.03122
 
 [node name="Enemy" type="CharacterBody2D" unique_id=1677773022]
 collision_layer = 0
@@ -35,6 +35,15 @@ avoidance_enabled = true
 wait_time = 0.1
 autostart = true
 
+[node name="HurtBox" type="Area2D" parent="." unique_id=166580788]
+position = Vector2(0, 1)
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=1849417104]
+shape = SubResource("CircleShape2D_7p1mj")
+debug_color = Color(0.36720514, 0.48093963, 1, 0.41960785)
+
 [node name="Hitbox" type="Area2D" parent="." unique_id=691336757]
 collision_layer = 4
 collision_mask = 2
@@ -45,5 +54,6 @@ debug_color = Color(0.9629765, 6.738305e-07, 0.50425076, 0.41960785)
 
 [node name="AttackTimer" type="Timer" parent="." unique_id=1746562947]
 
+[connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="body_exited" from="Hitbox" to="." method="_on_hitbox_body_exited"]

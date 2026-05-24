@@ -12,8 +12,8 @@ height = 48
 
 [resource]
 script = ExtResource("1_l81rb")
-health = 10
-damage = 5
+health = 100
+damage = 2
 texture = SubResource("GradientTexture2D_w40u2")
 hitbox_radius = 18.0
 metadata/_custom_type_script = "uid://bqor8j4mj21im"

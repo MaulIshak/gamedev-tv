@@ -76,3 +76,4 @@ debug_color = Color(0.98061246, 0, 0.3821759, 0.41960785)
 script = ExtResource("7_fjrip")
 cable_scene = ExtResource("8_ur7pv")
 lightning_scene = ExtResource("9_y4r1p")
+connection_duration = 5.0

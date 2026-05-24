@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://hjsag8qq4ath"]
+
+[ext_resource type="Script" uid="uid://dmjj2qp8fmmuk" path="res://scripts/explosion.gd" id="1_nfeox"]
+[ext_resource type="Script" uid="uid://cem74m8e5ghyg" path="res://scripts/projectile.gd" id="2_aw4cw"]
+
+[sub_resource type="Shader" id="Shader_3oo6d"]
+code = "shader_type canvas_item;
+
+// Menggunakan source_color agar mendukung HDR jika WorldEnvironment Glow diaktifkan
+uniform vec4 glow_color : source_color = vec4(0.2, 0.6, 2.0, 1.0); 
+
+// Kontrol utama untuk animasi dari kecil ke besar (0.0 ke 1.0)
+uniform float progress : hint_range(0.0, 1.0) = 0.5;
+
+// Ketebalan dasar dari petir
+uniform float ring_thickness : hint_range(0.001, 0.1) = 0.015;
+
+// Tekstur noise (Gunakan FastNoiseLite di inspector, pastikan Seamless diaktifkan)
+uniform sampler2D noise_texture : repeat_enable;
+uniform float distortion_strength : hint_range(0.0, 1.0) = 0.15;
+uniform float time_scale = 3.0;
+
+void fragment() {
+    // Geser titik tengah UV ke (0, 0)
+    vec2 centered_uv = UV - 0.5;
+    
+    // Hitung jarak dari pusat
+    float dist = length(centered_uv);
+    
+    // Kalkulasi koordinat polar (sudut) untuk memetakan noise melingkar
+    // atan() mengembalikan nilai dari -PI hingga PI
+    float angle = atan(centered_uv.y, centered_uv.x);
+    
+    // Mapping UV untuk noise: X berdasarkan sudut, Y bergerak seiring waktu
+    // Dibagi 6.28318 (2 * PI) untuk menormalkan dari -1.0 hingga 1.0
+    vec2 noise_uv = vec2(angle / 6.28318 + 0.5, dist - TIME * time_scale);
+    
+    // Ambil nilai noise (0.0 ke 1.0) dan ubah ke rentang (-1.0 ke 1.0)
+    float noise_val = texture(noise_texture, noise_uv).r * 2.0 - 1.0;
+    
+    // Ekspansi radius berdasarkan progress
+    // Dikalikan 0.5 karena rentang maksimum UV dari tengah ke ujung adalah 0.5
+    float current_radius = progress * 0.5;
+    
+    // Distorsi jarak matematis. Distorsi juga mengecil jika radius kecil.
+    float distorted_dist = dist + (noise_val * distortion_strength * progress);
+    
+    // Teknik Inverse Distance untuk efek neon/glow alami
+    // Menambahkan +0.001 untuk mencegah error pembagian dengan nol (division by zero)
+    float glow = ring_thickness / abs(distorted_dist - current_radius + 0.001);
+    
+    // Masking: hilangkan di bagian tengah, pudarkan saat progress mencapai 1.0
+    float alpha_mask = smoothstep(0.0, 0.1, progress) * smoothstep(1.0, 0.8, progress);
+    
+    // Masking tepi: pastikan efek tidak terpotong kasar di ujung quad/sprite
+    float edge_mask = smoothstep(0.5, 0.45, dist);
+    
+    glow *= alpha_mask * edge_mask;
+    
+    // Output akhir. Warna RGB bisa menembus >1.0 untuk efek bloom/Glow
+    vec3 final_color = glow_color.rgb * glow;
+    
+    // Alpha di-clamp di 1.0 agar blending transparansi tetap logis
+    COLOR = vec4(final_color, min(glow, 1.0) * glow_color.a);
+}"
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_17npe"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nfeox"]
+shader = SubResource("Shader_3oo6d")
+shader_parameter/glow_color = Color(0.2, 0.6, 2, 1)
+shader_parameter/progress = 0.0
+shader_parameter/ring_thickness = 0.0110000005225
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_17npe")
+shader_parameter/distortion_strength = 0.12800000608
+shader_parameter/time_scale = 3.0
+
+[sub_resource type="Gradient" id="Gradient_3oo6d"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_17npe"]
+gradient = SubResource("Gradient_3oo6d")
+width = 80
+height = 80
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3oo6d"]
+
+[node name="Explosion" type="Node2D" unique_id=784164085]
+script = ExtResource("1_nfeox")
+duration = 0.2
+hold_duration = 2.0
+fade_duration = 2.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=340993100]
+material = SubResource("ShaderMaterial_nfeox")
+texture = SubResource("GradientTexture2D_17npe")
+
+[node name="DamageArea" type="Area2D" parent="." unique_id=1316296052]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("2_aw4cw")
+damage = 40
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea" unique_id=1278509566]
+shape = SubResource("CircleShape2D_3oo6d")
+debug_color = Color(0.6701115, 0.50967705, 0, 0.41960785)

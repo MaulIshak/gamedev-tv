@@ -1,6 +1,6 @@
 class_name EnemyStats extends Resource
 
-@export var health: int = 3
+@export var health: int = 50
 @export var damage: int = 1
 @export var attack_cooldown: float = .5
 @export var movement_speed_multiplier: float = 1.0
