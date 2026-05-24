@@ -1,0 +1,111 @@
+class_name PlayerConnectionManager extends Node
+
+enum State { NO_CABLE, HAS_PLAYER_CABLE }
+
+@export var cable_scene: PackedScene
+@export var lightning_scene: PackedScene
+@export var cable_count: int = 2
+@export var cable_spacing: float = 4.0
+@export var connection_parent: Node2D
+@export var connection_duration: float = 10.0
+
+var _state := State.NO_CABLE
+var _cable_tower: Node2D = null
+var _player_cables: Array[Connection] = []
+var _lightning_connections: Array[Connection] = []
+
+func _ready() -> void:
+	var player := get_parent() as Player
+
+	await player.ready
+
+	if player.tower_detector:
+		player.tower_detector.area_entered.connect(_on_tower_entered)
+
+func _get_parent_node() -> Node2D:
+	if connection_parent:
+		return connection_parent
+	return get_parent().get_parent()
+
+func _on_tower_entered(tower_area: Area2D) -> void:
+	var tower := tower_area.get_parent() as Node2D
+	print(tower)
+	match _state:
+		State.NO_CABLE:
+			if not tower.is_connected_tower:
+				_create_player_cables(tower)
+		State.HAS_PLAYER_CABLE:
+			if tower != _cable_tower:
+				_create_lightning_between(_cable_tower, tower)
+
+func _create_player_cables(tower: Node2D) -> void:
+	_state = State.HAS_PLAYER_CABLE
+	_cable_tower = tower
+
+	var parent := _get_parent_node()
+	for i in range(cable_count):
+		var cable: Connection = cable_scene.instantiate()
+		cable.start_pos = tower
+		cable.end_pos = get_parent()
+		var half := float(cable_count - 1) / 2.0
+		cable.offset = Vector2((float(i) - half) * cable_spacing, 0.0)
+		parent.add_child(cable)
+		_player_cables.append(cable)
+
+func _create_lightning_between(from_tower: Node2D, to_tower: Node2D) -> void:
+	_state = State.NO_CABLE
+	_cable_tower = null
+
+	_destroy_player_cables()
+
+	var existing_conns: Array[Connection] = []
+	var max_time_left: float = 0.0
+	for conn in _lightning_connections:
+		if conn.start_pos == from_tower or conn.end_pos == from_tower or \
+		   conn.start_pos == to_tower or conn.end_pos == to_tower:
+			existing_conns.append(conn)
+			max_time_left = max(max_time_left, conn.get_time_left())
+
+	var synced_duration := max_time_left + connection_duration
+
+	for conn in existing_conns:
+		conn.set_timer(synced_duration)
+
+	from_tower.is_connected_tower = true
+	to_tower.is_connected_tower = true
+
+	var lightning: Connection = lightning_scene.instantiate()
+	lightning.start_pos = from_tower
+	lightning.end_pos = to_tower
+	lightning.start_timer(synced_duration)
+	lightning.expired.connect(_on_connection_expired)
+	_get_parent_node().add_child(lightning)
+	_lightning_connections.append(lightning)
+
+func _on_connection_expired(from_tower: Node2D, to_tower: Node2D) -> void:
+	for i in range(_lightning_connections.size() - 1, -1, -1):
+		var conn := _lightning_connections[i]
+		if conn.start_pos == from_tower and conn.end_pos == to_tower:
+			_lightning_connections.remove_at(i)
+			break
+
+	if is_instance_valid(from_tower):
+		from_tower.on_connection_expired()
+	if is_instance_valid(to_tower):
+		to_tower.on_connection_expired()
+
+	if not _tower_has_active_connection(from_tower):
+		from_tower.is_connected_tower = false
+	if not _tower_has_active_connection(to_tower):
+		to_tower.is_connected_tower = false
+
+func _tower_has_active_connection(tower: Node2D) -> bool:
+	for conn in _lightning_connections:
+		if conn.start_pos == tower or conn.end_pos == tower:
+			return true
+	return false
+
+func _destroy_player_cables() -> void:
+	for cable in _player_cables:
+		cable.queue_free()
+	_player_cables.clear()

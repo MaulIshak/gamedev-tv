@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://2sk7v1wa56ul"]
+
+[ext_resource type="Script" uid="uid://dsoidc3tr07mw" path="res://scripts/connection.gd" id="1_rj3a4"]
+
+[node name="cable" type="Line2D" unique_id=883335492]
+points = PackedVector2Array(100, 94, 0, 0)
+width = 2.0
+default_color = Color(0.27058825, 1, 0.4745098, 1)
+script = ExtResource("1_rj3a4")

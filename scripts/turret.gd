@@ -8,6 +8,7 @@ extends Node2D
 @onready var floor_sprite: Sprite2D = $Mask/TurretBody/Floor
 @onready var node_sprite: Sprite2D = $Mask/TurretBody/Node
 @onready var base_sprite: Sprite2D = $Mask/Base
+@onready var area: Area2D = $Area2D
 
 var clip_size: Vector2 = Vector2(16.0, 28.0)
 var hidden_floor_depth: float = 10.0
@@ -17,6 +18,8 @@ var _tween: Tween
 var _body_sprites: Array[Sprite2D] = []
 var _source_regions: Dictionary = {}
 var _source_positions: Dictionary = {}
+
+var is_connected_tower: bool = false
 
 
 func _ready() -> void:
@@ -51,6 +54,10 @@ func snap_hidden() -> void:
 	_set_body_position(_get_hidden_body_position())
 
 
+func on_connection_expired() -> void:
+	pass
+
+
 func _store_source_sprite_state() -> void:
 	for sprite in _body_sprites:
 		_source_regions[sprite] = sprite.region_rect
@@ -68,14 +75,15 @@ func _animate_body_to(target_position: Vector2) -> void:
 func _set_body_position(body_position: Vector2) -> void:
 	turret_body.position = body_position
 
+
 func _get_hidden_body_position() -> Vector2:
 	var floor_region := _source_regions.get(floor_sprite, floor_sprite.region_rect) as Rect2
 	var floor_position := _source_positions.get(floor_sprite, floor_sprite.position) as Vector2
 	var floor_bottom_at_zero := floor_position.y + floor_region.size.y
-	
+
 	var base_bottom := _get_sprite_bottom(base_sprite)
 	var hidden_y := base_bottom + hidden_floor_depth - floor_bottom_at_zero
-	
+
 	return Vector2(_shown_body_position.x, hidden_y)
 
 

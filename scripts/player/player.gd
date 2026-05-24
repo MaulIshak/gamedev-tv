@@ -39,6 +39,7 @@ var health: int = 5
 const IDLE = "IdleState"
 const WALK = "WalkState"
 
+@onready var tower_detector: Area2D = $TowerDetector
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 var _damage_flash_tween: Tween
 
