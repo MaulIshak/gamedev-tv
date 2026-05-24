@@ -111,6 +111,7 @@ func _on_velocity_computed(safe_velocity: Vector2):
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
     if body is Player:
+        print("Player entered hitbox")
         player_in_range = body
         _deal_damage()
         attack_timer.start()
