@@ -10,6 +10,7 @@ class_name Spawner extends Node
 @export var center_exclusion_radius: float = 64.0
 @export var min_turret_distance: float = 64.0
 @export var max_spawn_attempts: int = 20
+@export var tile_map: TileMapLayer
 
 var _spawned_turrets: Array[Node2D] = []
 
@@ -52,8 +53,18 @@ func _ready() -> void:
 func spawn_turret() -> void:
 	if _spawned_turrets.size() >= turret_max_count:
 		return
-	if turret_spawn_area == null or turret_scene == null or turret_parent == null:
+	if turret_spawn_area == null or turret_scene == null or turret_parent == null or tile_map == null:
 		return
+	
+	for cell: Vector2i in tile_map.get_used_cells():
+		var source_id := tile_map.get_cell_source_id(cell)
+		var atlas_coords := tile_map.get_cell_atlas_coords(cell)
+		var alternative := tile_map.get_cell_alternative_tile(cell)
+
+		print("cell:", cell)
+		print("source:", source_id)
+		print("atlas:", atlas_coords)
+		print("alternative:", alternative)
 
 	var rect := _get_world_rect(turret_spawn_area)
 	var center := _get_rect_center(turret_spawn_area)

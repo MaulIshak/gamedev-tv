@@ -112,7 +112,7 @@ offset_right = 192.0
 offset_bottom = 192.0
 mouse_filter = 2
 
-[node name="spawner" parent="." unique_id=1893859270 node_paths=PackedStringArray("turret_spawn_area", "turret_parent", "enemy_spawn_area", "enemy_parent", "enemy_movement_target") instance=ExtResource("2_o412h")]
+[node name="spawner" parent="." unique_id=1893859270 node_paths=PackedStringArray("turret_spawn_area", "turret_parent", "tile_map", "enemy_spawn_area", "enemy_parent", "enemy_movement_target") instance=ExtResource("2_o412h")]
 script = ExtResource("4_din8e")
 turret_spawn_area = NodePath("../turrets/turret_spawn_area")
 turret_scene = ExtResource("3_l1v76")
@@ -121,6 +121,7 @@ turret_max_count = 4
 center_exclusion_radius = 64.0
 min_turret_distance = 64.0
 max_spawn_attempts = 20
+tile_map = NodePath("../TileMapLayer")
 enemy_spawn_area = NodePath("../enemies/enemies_spawn_area")
 enemy_scene = ExtResource("5_ocj2s")
 enemy_parent = NodePath("../enemies/enemies_spawn")

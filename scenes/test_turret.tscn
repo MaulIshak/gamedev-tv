@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://i7noc260e28y"]
+
+[ext_resource type="Texture2D" uid="uid://c3w8rlwswmw1a" path="res://assets/sprites/tilemap_connect.png" id="1_00tan"]
+
+[sub_resource type="GDScript" id="GDScript_2axqp"]
+script/source = "extends Node2D
+
+@export var turret_scene: PackedScene = preload(\"res://scenes/turret.tscn\")
+@export var popup_delay: float = 0.6
+@export var popup_height: float = 24.0
+@export var tile_size: float = 16.0
+
+@onready var floor_layer: TileMapLayer = $Floor
+@onready var turret_parent: Node2D = $turrets/turret_spawn
+@onready var spawn_area: ReferenceRect = $turrets/turret_spawn_area
+
+const FLOOR_SOURCE_ID := 0
+const FLOOR_VARIANTS: Array[Vector2i] = [
+	Vector2i(1, 7),
+	Vector2i(2, 7),
+	Vector2i(4, 7),
+	Vector2i(6, 7),
+	Vector2i(8, 7),
+	Vector2i(9, 7),
+	Vector2i(11, 7),
+	Vector2i(13, 7),
+	Vector2i(15, 7),
+	Vector2i(1, 8),
+	Vector2i(2, 8),
+	Vector2i(8, 8),
+	Vector2i(15, 8)
+]
+
+
+func _ready() -> void:
+	randomize()
+	_build_test_floor()
+	await get_tree().create_timer(popup_delay).timeout
+	_spawn_popup_turret()
+
+
+func _build_test_floor() -> void:
+	floor_layer.clear()
+
+	for x in range(-14, 15):
+		for y in range(3, 11):
+			var atlas_coords := FLOOR_VARIANTS[(x + y) % FLOOR_VARIANTS.size()]
+			floor_layer.set_cell(Vector2i(x, y), FLOOR_SOURCE_ID, atlas_coords, 0)
+
+
+func _spawn_popup_turret() -> void:
+	if turret_scene == null:
+		return
+
+	var spawn_cell := _get_random_spawn_cell()
+	var final_position := Vector2(spawn_cell) * tile_size + Vector2(tile_size * 0.5, tile_size * 0.5)
+
+	var turret := turret_scene.instantiate() as Node2D
+	turret_parent.add_child(turret)
+	turret.position = final_position + Vector2(0.0, popup_height)
+	turret.z_index = 1
+
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(turret, \"position\", final_position, 0.35)
+
+
+func _get_random_spawn_cell() -> Vector2i:
+	var rect := Rect2(spawn_area.position, spawn_area.size)
+	var min_x := int(ceil(rect.position.x / tile_size))
+	var max_x := int(floor((rect.end.x - 1.0) / tile_size))
+	var min_y := int(ceil(rect.position.y / tile_size))
+	var max_y := int(floor((rect.end.y - 1.0) / tile_size))
+
+	var x := randi_range(min_x, max_x)
+	var y := randi_range(min_y, max_y)
+	return Vector2i(x, y)
+"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_test"]
+texture = ExtResource("1_00tan")
+1:7/0 = 0
+2:7/0 = 0
+4:7/0 = 0
+6:7/0 = 0
+8:7/0 = 0
+9:7/0 = 0
+11:7/0 = 0
+13:7/0 = 0
+15:7/0 = 0
+1:8/0 = 0
+2:8/0 = 0
+8:8/0 = 0
+15:8/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_test"]
+sources/0 = SubResource("TileSetAtlasSource_test")
+
+[node name="TestTurret" type="Node2D" unique_id=1136149560]
+script = SubResource("GDScript_2axqp")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1689108951]
+position = Vector2(0, 88)
+zoom = Vector2(0.8, 0.8)
+
+[node name="Floor" type="TileMapLayer" parent="." unique_id=806497082]
+z_index = -1
+tile_set = SubResource("TileSet_test")
+
+[node name="turrets" type="Node2D" parent="." unique_id=1108358791]
+
+[node name="turret_spawn" type="Node2D" parent="turrets" unique_id=1002053095]
+y_sort_enabled = true
+position = Vector2(-2, 0)
+
+[node name="turret_spawn_area" type="ReferenceRect" parent="turrets" unique_id=1076496797]
+visible = false
+offset_left = -144.0
+offset_top = -24.0
+offset_right = 144.0
+offset_bottom = 160.0
+mouse_filter = 2
