@@ -18,6 +18,11 @@ shader_parameter/ring_thickness = 0.0150000007125
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_bl13t")
 shader_parameter/distortion_strength = 0.15
 shader_parameter/time_scale = 3.0
+shader_parameter/cycle_duration = 1.6
+shader_parameter/grow_duration = 0.45
+shader_parameter/hold_duration = 0.65
+shader_parameter/shrink_duration = 0.35
+shader_parameter/min_progress = 0.06
 
 [sub_resource type="Gradient" id="Gradient_iyx0m"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
@@ -33,7 +38,7 @@ noise = SubResource("FastNoiseLite_bl13t")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iyx0m"]
 shader = ExtResource("2_bl13t")
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_iyx0m")
-shader_parameter/lightning_color = Color(0.5, 0.1, 1, 1)
+shader_parameter/lightning_color = Color(0, 0.101960786, 1, 1)
 shader_parameter/speed = 1.145
 shader_parameter/amplitude = 0.15
 shader_parameter/core_thickness = 0.002

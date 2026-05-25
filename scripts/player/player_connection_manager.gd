@@ -1,6 +1,9 @@
 class_name PlayerConnectionManager extends Node
 
-enum State { NO_CABLE, HAS_PLAYER_CABLE }
+const ELECTRIC_SHOCK_SFX: AudioStream = preload("res://assets/audio/sfx/electric_shock.mp3")
+const METALLIC_CLING_SFX: AudioStream = preload("res://assets/audio/sfx/cling.mp3")
+
+enum State {NO_CABLE, HAS_PLAYER_CABLE}
 
 @export var cable_scene: PackedScene
 @export var lightning_scene: PackedScene
@@ -13,6 +16,7 @@ var _state := State.NO_CABLE
 var _cable_tower: Node2D = null
 var _player_cables: Array[Connection] = []
 var _lightning_connections: Array[Connection] = []
+var _electric_shock_player: AudioStreamPlayer = null
 
 func _ready() -> void:
 	var player := get_parent() as Player
@@ -61,12 +65,15 @@ func _on_tower_entered(tower_area: Area2D) -> void:
 func _create_player_cables(tower: Node2D) -> void:
 	_state = State.HAS_PLAYER_CABLE
 	_cable_tower = tower
+	if SfxManager != null:
+		SfxManager.play_sfx_once(METALLIC_CLING_SFX, &"SFX", 0.0, false, true)
 
 	var parent := _get_parent_node()
 	for i in range(cable_count):
 		var cable: Connection = cable_scene.instantiate()
 		cable.start_pos = tower
 		cable.end_pos = get_parent()
+		cable.end_offset = Vector2(0.0, -16.0)
 		var half := float(cable_count - 1) / 2.0
 		cable.offset = Vector2((float(i) - half) * cable_spacing, 0.0)
 		parent.add_child(cable)
@@ -97,6 +104,9 @@ func _create_lightning_between(from_tower: Node2D, to_tower: Node2D) -> void:
 
 	from_tower.is_connected_tower = true
 	to_tower.is_connected_tower = true
+	if SfxManager != null:
+		_play_electric_shock_sfx()
+		SfxManager.play_sfx_once(METALLIC_CLING_SFX, &"SFX", 0.0, false, true)
 
 	var lightning: Connection = lightning_scene.instantiate()
 	lightning.start_pos = from_tower
@@ -131,6 +141,9 @@ func _on_connection_expired(from_tower: Node2D, to_tower: Node2D) -> void:
 	if not _tower_has_active_connection(to_tower):
 		to_tower.is_connected_tower = false
 
+	if _lightning_connections.is_empty():
+		_stop_electric_shock_sfx()
+
 func _tower_has_active_connection(tower: Node2D) -> bool:
 	for i in range(_lightning_connections.size() - 1, -1, -1):
 		var conn := _lightning_connections[i]
@@ -162,5 +175,30 @@ func clear_all_connections() -> void:
 		conn.queue_free()
 		_lightning_connections.remove_at(i)
 
+	_stop_electric_shock_sfx()
+
 	_state = State.NO_CABLE
 	_cable_tower = null
+
+
+func _play_electric_shock_sfx() -> void:
+	if SfxManager == null:
+		return
+
+	if is_instance_valid(_electric_shock_player) and _electric_shock_player.playing:
+		return
+
+	_electric_shock_player = SfxManager.play_sfx(ELECTRIC_SHOCK_SFX, &"SFX", 0.0, false, true)
+
+
+func _stop_electric_shock_sfx() -> void:
+	if not is_instance_valid(_electric_shock_player):
+		_electric_shock_player = null
+		return
+
+	if SfxManager != null:
+		SfxManager.stop_sfx(_electric_shock_player)
+	else:
+		_electric_shock_player.stop()
+
+	_electric_shock_player = null

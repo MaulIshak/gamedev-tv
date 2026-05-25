@@ -1,6 +1,9 @@
 class_name Turret
 extends Node2D
 
+const LASER_SFX: AudioStream = preload("res://assets/audio/sfx/laser1.ogg")
+const METALLIC_CLING_SFX: AudioStream = preload("res://assets/audio/sfx/cling.mp3")
+
 @export var popup_time: float = 0.32
 @export var start_hidden: bool = true
 @export var explosion_scene: PackedScene
@@ -35,11 +38,15 @@ func _ready() -> void:
 
 func show_turret() -> void:
 	visible = true
+	if SfxManager != null:
+		SfxManager.play_sfx_once(METALLIC_CLING_SFX, &"SFX", 0.0, false, true)
 	_animate_body_to(_shown_body_position)
 
 
 func hide_turret() -> void:
 	visible = true
+	if SfxManager != null:
+		SfxManager.play_sfx_once(METALLIC_CLING_SFX, &"SFX", 0.0, false, true)
 	_animate_body_to(_get_hidden_body_position())
 
 
@@ -58,6 +65,9 @@ func snap_hidden() -> void:
 func on_connection_expired() -> void:
 	if explosion_scene == null:
 		return
+
+	if SfxManager != null:
+		SfxManager.play_sfx_once(LASER_SFX, &"SFX", 0.0, false, true)
 
 	var explosion := explosion_scene.instantiate() as Node2D
 	explosion.global_position = global_position

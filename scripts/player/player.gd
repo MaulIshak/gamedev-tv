@@ -1,6 +1,9 @@
 class_name Player
 extends CharacterBody2D
 
+const WHOOSH_SFX: AudioStream = preload("res://assets/audio/sfx/whoosh.wav")
+const HIT_DAMAGE_SFX: AudioStream = preload("res://assets/audio/sfx/hit_damage.wav")
+
 @export_group("Movement Settings")
 @export var walk_speed: float = 200.0
 @export var acceleration: float = 2500.0
@@ -18,6 +21,11 @@ extends CharacterBody2D
 @export var immune_blink_interval: float = 0.08
 @export var trail_modulate: Color = Color(1.0, 1.0, 1.0, 0.45)
 
+@export_group("Footstep SFX")
+@export var footstep_interval: float = 0.28
+@export var footstep_min_speed: float = 10.0
+@export var footstep_pitch_variation: float = 0.04
+
 var input_direction: Vector2 = Vector2.ZERO
 var last_move_direction: Vector2 = Vector2.DOWN
 var dash_direction: Vector2 = Vector2.ZERO
@@ -25,6 +33,7 @@ var is_dashing: bool = false
 var _dash_time_left: float = 0.0
 var _dash_cooldown_left: float = 0.0
 var _dash_trail_time_left: float = 0.0
+var _footstep_time_left: float = 0.0
 
 var is_input_disabled: bool = false
 
@@ -46,6 +55,7 @@ var _base_immune_duration: float = 0.0
 
 @onready var tower_detector: Area2D = $TowerDetector
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var footstep_sfx: AudioStreamPlayer2D = $FootstepSFX
 var _damage_flash_tween: Tween
 
 func _ready() -> void:
@@ -109,12 +119,15 @@ func _physics_process(_delta: float) -> void:
 		else:
 			velocity = velocity.move_toward(target_velocity, acceleration * _delta)
 
+	_update_footstep_sfx(_delta)
+
 	move_and_slide()
 
 func disable_input():
 	is_input_disabled = true
 	is_dashing = false
 	_dash_time_left = 0.0
+	_footstep_time_left = 0.0
 	velocity = Vector2.ZERO
 	sprite.visible = true
 
@@ -135,6 +148,8 @@ func _start_dash() -> void:
 	_dash_time_left = dash_duration
 	_dash_cooldown_left = dash_cooldown
 	_dash_trail_time_left = 0.0
+	if SfxManager != null:
+		SfxManager.play_sfx_once(WHOOSH_SFX, &"SFX", 0.0, false, true)
 	_spawn_dash_trail()
 
 
@@ -154,7 +169,7 @@ func _spawn_dash_trail() -> void:
 	trail.flip_v = sprite.flip_v
 	trail.global_transform = sprite.global_transform
 	trail.modulate = trail_modulate
-	trail.z_index = sprite.z_index - 1
+	trail.z_index = sprite.z_index
 
 	var scene_parent := get_tree().current_scene if get_tree().current_scene != null else get_parent()
 	if scene_parent == null:
@@ -174,6 +189,30 @@ func _play_damage_flash() -> void:
 	sprite.modulate = Color(2.0, 2.0, 2.0, 1.0)
 	_damage_flash_tween = create_tween()
 	_damage_flash_tween.tween_property(sprite, "modulate", Color.WHITE, damage_flash_duration)
+	if SfxManager != null:
+		SfxManager.play_sfx_once(HIT_DAMAGE_SFX, &"SFX", 0.0, false, true)
+
+	var camera := get_viewport().get_camera_2d()
+	if camera != null and camera.has_method("shake"):
+		camera.call("shake", 1.0, damage_flash_duration)
+
+
+func _update_footstep_sfx(delta: float) -> void:
+	if is_input_disabled or is_dashing or footstep_sfx == null or footstep_interval <= 0.0:
+		_footstep_time_left = 0.0
+		return
+
+	if input_direction == Vector2.ZERO or velocity.length() < footstep_min_speed:
+		_footstep_time_left = 0.0
+		return
+
+	_footstep_time_left -= delta
+	if _footstep_time_left > 0.0:
+		return
+
+	footstep_sfx.pitch_scale = 1.0 + randf_range(-footstep_pitch_variation, footstep_pitch_variation)
+	footstep_sfx.play()
+	_footstep_time_left = footstep_interval
 
 
 func get_dash_cooldown_progress() -> float:
