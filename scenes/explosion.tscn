@@ -71,7 +71,7 @@ noise = SubResource("FastNoiseLite_nfeox")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nfeox"]
 shader = SubResource("Shader_3oo6d")
-shader_parameter/glow_color = Color(0, 0.41121212, 2.0002677, 1)
+shader_parameter/glow_color = Color(0, 0.84667444, 2.0002677, 1)
 shader_parameter/progress = 0.0
 shader_parameter/ring_thickness = 0.0110000005225
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_17npe")

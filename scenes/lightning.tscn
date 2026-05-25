@@ -3,6 +3,8 @@
 [ext_resource type="Shader" uid="uid://d3uu24ue8xkaa" path="res://shaders/lightning.gdshader" id="1_k2dum"]
 [ext_resource type="Script" uid="uid://dsoidc3tr07mw" path="res://scripts/connection.gd" id="2_n7g4i"]
 [ext_resource type="Script" path="res://scripts/projectile.gd" id="3_gpx16"]
+[ext_resource type="Texture2D" uid="uid://cesfvyvrpu0ju" path="res://assets/sprites/Clip.png" id="4_spottex"]
+[ext_resource type="Shader" uid="uid://tvryyg81plnv" path="res://shaders/lightning_spot.gdshader" id="5_spotshd"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_gpx16"]
 
@@ -12,11 +14,19 @@ noise = SubResource("FastNoiseLite_gpx16")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n7g4i"]
 shader = ExtResource("1_k2dum")
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_k2dum")
-shader_parameter/lightning_color = Color(0, 0, 1, 1)
+shader_parameter/lightning_color = Color(0, 0.23529412, 1, 1)
 shader_parameter/speed = 1.145
 shader_parameter/amplitude = 0.15
 shader_parameter/core_thickness = 0.002
 shader_parameter/glow_strength = 0.015
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_spot"]
+shader = ExtResource("5_spotshd")
+shader_parameter/lightning_color = Color(0.15, 0.72, 1, 1)
+shader_parameter/core_size = 0.045
+shader_parameter/glow_intensity = 2.6
+shader_parameter/speed = 12.0
+shader_parameter/arc_thickness = 0.01
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_n7g4i"]
 
@@ -26,6 +36,22 @@ points = PackedVector2Array(-22, -37, -2, 107)
 width = 40.0
 texture_mode = 1
 script = ExtResource("2_n7g4i")
+
+[node name="StartSpot" type="Sprite2D" parent="." unique_id=1237609231]
+z_index = 20
+z_as_relative = false
+material = SubResource("ShaderMaterial_spot")
+position = Vector2(-22, -37)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_spottex")
+
+[node name="EndSpot" type="Sprite2D" parent="." unique_id=1237609232]
+z_index = 20
+z_as_relative = false
+material = SubResource("ShaderMaterial_spot")
+position = Vector2(-2, 107)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_spottex")
 
 [node name="DamageZone" type="Area2D" parent="." unique_id=484680523]
 collision_layer = 16

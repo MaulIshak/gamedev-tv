@@ -15,6 +15,8 @@ var _visual_finished_emitted: bool = false
 
 @onready var damage_zone := get_node_or_null("DamageZone") as Area2D
 @onready var collision_shape := get_node_or_null("DamageZone/CollisionShape2D") as CollisionShape2D
+@onready var start_spot := get_node_or_null("StartSpot") as Sprite2D
+@onready var end_spot := get_node_or_null("EndSpot") as Sprite2D
 
 func _ready() -> void:
 	if collision_shape != null:
@@ -25,6 +27,13 @@ func _process(delta: float) -> void:
 	if start_pos != null and end_pos != null:
 		points[0] = start_pos.position + offset + start_offset
 		points[1] = end_pos.position + offset + end_offset
+
+		if start_spot != null:
+			start_spot.position = points[0]
+			start_spot.z_index = max(start_spot.z_index, 20)
+		if end_spot != null:
+			end_spot.position = points[1]
+			end_spot.z_index = max(end_spot.z_index, 20)
 
 		if damage_zone and collision_shape and collision_shape.shape is SegmentShape2D:
 			var seg := collision_shape.shape as SegmentShape2D
