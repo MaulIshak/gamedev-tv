@@ -61,10 +61,10 @@ func spawn_turret() -> void:
 		var atlas_coords := tile_map.get_cell_atlas_coords(cell)
 		var alternative := tile_map.get_cell_alternative_tile(cell)
 
-		print("cell:", cell)
-		print("source:", source_id)
-		print("atlas:", atlas_coords)
-		print("alternative:", alternative)
+		# print("cell:", cell)
+		# print("source:", source_id)
+		# print("atlas:", atlas_coords)
+		# print("alternative:", alternative)
 
 	var rect := _get_world_rect(turret_spawn_area)
 	var center := _get_rect_center(turret_spawn_area)
