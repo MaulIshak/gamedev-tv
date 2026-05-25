@@ -75,6 +75,25 @@ radius = 9.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_7p1mj"]
 radius = 9.0
 
+[sub_resource type="Curve" id="Curve_5uy6h"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5035842, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_c4w8v"]
+curve = SubResource("Curve_5uy6h")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5uy6h"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 30.0
+initial_velocity_max = 80.0
+gravity = Vector3(0, 0, 0)
+damping_min = 10.0
+damping_max = 50.000004
+scale_min = 2.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_c4w8v")
+
 [node name="Enemy" type="CharacterBody2D" unique_id=1677773022]
 collision_layer = 0
 collision_mask = 8
@@ -120,6 +139,16 @@ shape = SubResource("CircleShape2D_7p1mj")
 debug_color = Color(0.9629765, 6.738305e-07, 0.50425076, 0.41960785)
 
 [node name="AttackTimer" type="Timer" parent="." unique_id=1746562947]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=2087517028]
+visible = false
+position = Vector2(0, -4)
+emitting = false
+amount = 50
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_5uy6h")
 
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

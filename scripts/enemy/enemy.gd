@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 const HIT_DAMAGE_SFX: AudioStream = preload("res://assets/audio/sfx/hit_damage.wav")
+const ENEMY_EXPLOSION_PARTICLES_SCENE: PackedScene = preload("res://scenes/enemy_explosion_particles.tscn")
 
 @export_group("Navigation Settings")
 ## The movement speed of the entity
@@ -36,6 +37,7 @@ var _active_slow_amount: float = 1.0
 var _damage_immunity_timer: float = 0.0
 var _damage_immunity_duration: float = 0.5
 var _damage_flash_tween: Tween
+var _spawn_tween: Tween
 
 func _ready():
     # Connect signals
@@ -59,20 +61,35 @@ func _ready():
     # hitbox_area.body_exited.connect(_on_hitbox_body_exited)
     attack_timer.timeout.connect(_on_attack_timer_timeout)
 
-    # Setup stats
-    health = enemy_stats.health
-    damage = enemy_stats.damage
-    sprite.sprite_frames = enemy_stats.sprite_frames
-    sprite.scale = enemy_stats.sprite_scale
-    hitbox_area.shape.radius = enemy_stats.hitbox_radius
-    attack_timer.wait_time = enemy_stats.attack_cooldown
-    movement_speed = movement_speed * enemy_stats.movement_speed_multiplier
-    _base_movement_speed = movement_speed
+    _apply_enemy_stats()
 
     _damage_immunity_duration = 0.5 + UpgradeManager.get_stat_add("enemy_immunity")
 
     sprite.flip_h = false
     sprite.play("default")
+    _play_spawn_animation()
+
+func _apply_enemy_stats() -> void:
+    var stats: EnemyStats = enemy_stats
+    if stats == null:
+        stats = EnemyStats.new()
+
+    # Setup stats from the assigned resource, falling back to the resource defaults.
+    health = stats.health
+    damage = stats.damage
+
+    if stats.sprite_frames != null:
+        sprite.sprite_frames = stats.sprite_frames
+
+    sprite.scale = Vector2.ZERO
+
+    if hitbox_area.shape is CircleShape2D:
+        (hitbox_area.shape as CircleShape2D).radius = stats.hitbox_radius
+
+    attack_timer.wait_time = stats.attack_cooldown
+
+    _base_movement_speed = movement_speed
+    movement_speed = _base_movement_speed * stats.movement_speed_multiplier
 
 func _process(delta: float) -> void:
     if _damage_immunity_timer > 0.0:
@@ -179,6 +196,7 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
     movement_speed = _base_movement_speed * _active_slow_amount
 
     if health <= 0:
+        _spawn_death_particles()
         queue_free()
 
 
@@ -198,3 +216,34 @@ func _play_damage_feedback() -> void:
     var camera := get_viewport().get_camera_2d()
     if camera != null and camera.has_method("shake"):
         camera.call("shake", 0.65, 0.08)
+
+
+func _play_spawn_animation() -> void:
+    if _spawn_tween != null:
+        _spawn_tween.kill()
+
+    sprite.scale = Vector2.ZERO
+    _spawn_tween = create_tween()
+    _spawn_tween.set_trans(Tween.TRANS_BACK)
+    _spawn_tween.set_ease(Tween.EASE_OUT)
+    var stats: EnemyStats = enemy_stats
+    if stats == null:
+        stats = EnemyStats.new()
+    _spawn_tween.tween_property(sprite, "scale", stats.sprite_scale, 0.18)
+
+
+func _spawn_death_particles() -> void:
+    if ENEMY_EXPLOSION_PARTICLES_SCENE == null:
+        return
+
+    var explosion_particles := ENEMY_EXPLOSION_PARTICLES_SCENE.instantiate() as Node2D
+    if explosion_particles == null:
+        return
+
+    explosion_particles.global_position = global_position
+
+    var scene_root := get_tree().current_scene
+    if scene_root == null:
+        scene_root = get_tree().root
+
+    scene_root.add_child(explosion_particles)
