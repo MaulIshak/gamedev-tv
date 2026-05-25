@@ -2,7 +2,7 @@ class_name WalkState
 extends PlayerState
 
 func enter() -> void:
-	pass
+	player.sprite.play("walk")
 
 func process(_delta: float) -> void:
 	if player.is_input_disabled:

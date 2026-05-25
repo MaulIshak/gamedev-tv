@@ -1,16 +1,47 @@
 [gd_resource type="Resource" script_class="EnemyStats" format=3 uid="uid://cduh4ye2x118y"]
 
 [ext_resource type="Script" uid="uid://bqor8j4mj21im" path="res://scripts/enemy/enemt_stats.gd" id="1_kl67j"]
+[ext_resource type="Texture2D" uid="uid://cbllgqy63delh" path="res://assets/sprites/enemy/enemy1Normal.png" id="2_7x1wj"]
 
-[sub_resource type="Gradient" id="Gradient_kl67j"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_83kwp"]
+atlas = ExtResource("2_7x1wj")
+region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_7x1wj"]
-gradient = SubResource("Gradient_kl67j")
-width = 32
-height = 32
+[sub_resource type="AtlasTexture" id="AtlasTexture_vjnlw"]
+atlas = ExtResource("2_7x1wj")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1hq4m"]
+atlas = ExtResource("2_7x1wj")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rvlxo"]
+atlas = ExtResource("2_7x1wj")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yulr7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_83kwp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vjnlw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1hq4m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rvlxo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
 
 [resource]
 script = ExtResource("1_kl67j")
-texture = SubResource("GradientTexture2D_7x1wj")
+movement_speed_multiplier = 0.6
+sprite_frames = SubResource("SpriteFrames_yulr7")
+sprite_scale = Vector2(0.6, 0.6)
 metadata/_custom_type_script = "uid://bqor8j4mj21im"

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dn7p8x1pjtap2"
-path="res://.godot/imported/IdleBot.png-25dbdbce2ffb045d22c58da03cd13aed.ctex"
+uid="uid://d3skgsptght4v"
+path="res://.godot/imported/enemy3Normal.png-37efda46875a20a69bd358800ff3eca0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/IdleBot.png"
-dest_files=["res://.godot/imported/IdleBot.png-25dbdbce2ffb045d22c58da03cd13aed.ctex"]
+source_file="res://assets/sprites/enemy/enemy3Normal.png"
+dest_files=["res://.godot/imported/enemy3Normal.png-37efda46875a20a69bd358800ff3eca0.ctex"]
 
 [params]
 

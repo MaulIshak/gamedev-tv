@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ie7wp2kvs0jr"
-path="res://.godot/imported/WalkBot.png-0507c8160eab38e8010d54b6427b11a4.ctex"
+path="res://.godot/imported/WalkBot.png-957c009b6a25635db6ae48cb47352fa8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/WalkBot.png"
-dest_files=["res://.godot/imported/WalkBot.png-0507c8160eab38e8010d54b6427b11a4.ctex"]
+source_file="res://assets/sprites/player/WalkBot.png"
+dest_files=["res://.godot/imported/WalkBot.png-957c009b6a25635db6ae48cb47352fa8.ctex"]
 
 [params]
 
