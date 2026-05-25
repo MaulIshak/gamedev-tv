@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://dmxor68ay1hfg" path="res://scripts/wave_manager.gd" id="7_4bh5q"]
 [ext_resource type="Texture2D" uid="uid://dyc10670w15xw" path="res://assets/sprites/border_connect.png" id="8_e124b"]
 [ext_resource type="PackedScene" uid="uid://bab2rrhdeori6" path="res://scenes/upgrade_ui.tscn" id="9_101mb"]
-[ext_resource type="Shader" uid="uid://cj8gylg30aid7" path="res://shaders/CRTShaders.gdshader" id="10_lcd4o"]
+[ext_resource type="Shader" path="res://shaders/CRTShaders.gdshader" id="10_lcd4o"]
 [ext_resource type="PackedScene" uid="uid://bg6kc4dg4b881" path="res://scenes/ui/main_menu.tscn" id="11_menu"]
 [ext_resource type="Script" uid="uid://drdev25bjj637" path="res://scripts/ui/gameplay_menu_controller.gd" id="12_controller"]
 [ext_resource type="PackedScene" uid="uid://cfhd1hkmh7rp3" path="res://scenes/ui/settings_screen.tscn" id="13_settings"]
@@ -124,7 +124,7 @@ shader_parameter/rolling_bar_speed = 0.12
 shader_parameter/vignette_strength = 0.16
 shader_parameter/vignette_size = 0.52
 shader_parameter/vignette_softness = 1.15
-shader_parameter/edge_glow_strength = 0.06
+shader_parameter/edge_glow_strength = 0.0930000044175
 shader_parameter/edge_glow_width = 0.065
 shader_parameter/edge_glow_color = Color(0.22, 0.95, 0.62, 1)
 shader_parameter/brightness = 0.0
