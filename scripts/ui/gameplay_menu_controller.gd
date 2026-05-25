@@ -32,7 +32,6 @@ func _connect_menus() -> void:
 
 	pause_menu.resume_requested.connect(_resume_game)
 	pause_menu.restart_requested.connect(_restart_level)
-	pause_menu.quit_requested.connect(_quit_game)
 	pause_menu.settings_requested.connect(_open_settings.bind(pause_menu))
 	pause_menu.main_menu_requested.connect(_return_to_main_menu)
 

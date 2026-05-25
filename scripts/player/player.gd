@@ -49,171 +49,171 @@ var _base_immune_duration: float = 0.0
 var _damage_flash_tween: Tween
 
 func _ready() -> void:
-    enable_input()
-    sprite.visible = true
-    sprite.modulate = Color.WHITE
+	enable_input()
+	sprite.visible = true
+	sprite.modulate = Color.WHITE
 
-    _base_walk_speed = walk_speed
-    _base_dash_cooldown = dash_cooldown
-    _base_immune_duration = immune_duration
+	_base_walk_speed = walk_speed
+	_base_dash_cooldown = dash_cooldown
+	_base_immune_duration = immune_duration
 
-    _apply_upgrade_stats()
-    UpgradeManager.upgraded.connect(_on_upgrade_applied)
-    UpgradeManager.instant_effect_applied.connect(_on_instant_effect)
+	_apply_upgrade_stats()
+	UpgradeManager.upgraded.connect(_on_upgrade_applied)
+	UpgradeManager.instant_effect_applied.connect(_on_instant_effect)
 
 func _process(_delta: float) -> void:
-    if is_immune:
-        _immune_time_left -= _delta
-        _immune_blink_time_left -= _delta
-        if _immune_blink_time_left <= 0.0:
-            sprite.visible = not sprite.visible
-            _immune_blink_time_left = immune_blink_interval
-        if _immune_time_left <= 0.0:
-            is_immune = false
-            sprite.visible = true
+	if is_immune:
+		_immune_time_left -= _delta
+		_immune_blink_time_left -= _delta
+		if _immune_blink_time_left <= 0.0:
+			sprite.visible = not sprite.visible
+			_immune_blink_time_left = immune_blink_interval
+		if _immune_time_left <= 0.0:
+			is_immune = false
+			sprite.visible = true
 
-    if input_direction.x != 0:
-        sprite.flip_h = input_direction.x < 0
+	if input_direction.x != 0:
+		sprite.flip_h = input_direction.x < 0
 
 func _physics_process(_delta: float) -> void:
-    if _dash_cooldown_left > 0.0:
-        _dash_cooldown_left = max(_dash_cooldown_left - _delta, 0.0)
+	if _dash_cooldown_left > 0.0:
+		_dash_cooldown_left = max(_dash_cooldown_left - _delta, 0.0)
 
-    if is_input_disabled:
-        velocity = Vector2.ZERO
-        move_and_slide()
-        return
+	if is_input_disabled:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
 
-    input_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
-    if input_direction != Vector2.ZERO:
-        last_move_direction = input_direction
+	input_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
+	if input_direction != Vector2.ZERO:
+		last_move_direction = input_direction
 
-    if Input.is_action_just_pressed("dash"):
-        _start_dash()
+	if Input.is_action_just_pressed("dash"):
+		_start_dash()
 
-    if is_dashing:
-        _dash_time_left -= _delta
-        _dash_trail_time_left -= _delta
-        if _dash_trail_time_left <= 0.0:
-            _spawn_dash_trail()
-            _dash_trail_time_left = dash_trail_interval
-        velocity = dash_direction * dash_speed
-        if _dash_time_left <= 0.0:
-            is_dashing = false
-    else:
-        var target_velocity := input_direction * walk_speed
-        if target_velocity == Vector2.ZERO:
-            velocity = velocity.move_toward(Vector2.ZERO, friction * _delta)
-        else:
-            velocity = velocity.move_toward(target_velocity, acceleration * _delta)
+	if is_dashing:
+		_dash_time_left -= _delta
+		_dash_trail_time_left -= _delta
+		if _dash_trail_time_left <= 0.0:
+			_spawn_dash_trail()
+			_dash_trail_time_left = dash_trail_interval
+		velocity = dash_direction * dash_speed
+		if _dash_time_left <= 0.0:
+			is_dashing = false
+	else:
+		var target_velocity := input_direction * walk_speed
+		if target_velocity == Vector2.ZERO:
+			velocity = velocity.move_toward(Vector2.ZERO, friction * _delta)
+		else:
+			velocity = velocity.move_toward(target_velocity, acceleration * _delta)
 
-    move_and_slide()
+	move_and_slide()
 
 func disable_input():
-    is_input_disabled = true
-    is_dashing = false
-    _dash_time_left = 0.0
-    velocity = Vector2.ZERO
-    sprite.visible = true
+	is_input_disabled = true
+	is_dashing = false
+	_dash_time_left = 0.0
+	velocity = Vector2.ZERO
+	sprite.visible = true
 
 func enable_input():
-    is_input_disabled = false
+	is_input_disabled = false
 
 
 func _start_dash() -> void:
-    if is_dashing or _dash_cooldown_left > 0.0:
-        return
+	if is_dashing or _dash_cooldown_left > 0.0:
+		return
 
-    var direction := input_direction if input_direction != Vector2.ZERO else last_move_direction
-    if direction == Vector2.ZERO:
-        return
+	var direction := input_direction if input_direction != Vector2.ZERO else last_move_direction
+	if direction == Vector2.ZERO:
+		return
 
-    dash_direction = direction.normalized()
-    is_dashing = true
-    _dash_time_left = dash_duration
-    _dash_cooldown_left = dash_cooldown
-    _dash_trail_time_left = 0.0
-    _spawn_dash_trail()
+	dash_direction = direction.normalized()
+	is_dashing = true
+	_dash_time_left = dash_duration
+	_dash_cooldown_left = dash_cooldown
+	_dash_trail_time_left = 0.0
+	_spawn_dash_trail()
 
 
 func _spawn_dash_trail() -> void:
-    if sprite.sprite_frames == null:
-        return
+	if sprite.sprite_frames == null:
+		return
 
-    var frame_texture := sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
-    if frame_texture == null:
-        return
+	var frame_texture := sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+	if frame_texture == null:
+		return
 
-    var trail := Sprite2D.new()
-    trail.texture = frame_texture
-    trail.centered = sprite.centered
-    trail.offset = sprite.offset
-    trail.flip_h = sprite.flip_h
-    trail.flip_v = sprite.flip_v
-    trail.global_transform = sprite.global_transform
-    trail.modulate = trail_modulate
-    trail.z_index = sprite.z_index - 1
+	var trail := Sprite2D.new()
+	trail.texture = frame_texture
+	trail.centered = sprite.centered
+	trail.offset = sprite.offset
+	trail.flip_h = sprite.flip_h
+	trail.flip_v = sprite.flip_v
+	trail.global_transform = sprite.global_transform
+	trail.modulate = trail_modulate
+	trail.z_index = sprite.z_index - 1
 
-    var scene_parent := get_tree().current_scene if get_tree().current_scene != null else get_parent()
-    if scene_parent == null:
-        return
+	var scene_parent := get_tree().current_scene if get_tree().current_scene != null else get_parent()
+	if scene_parent == null:
+		return
 
-    scene_parent.add_child(trail)
+	scene_parent.add_child(trail)
 
-    var trail_tween := create_tween()
-    trail_tween.tween_property(trail, "modulate:a", 0.0, dash_trail_lifetime)
-    trail_tween.finished.connect(trail.queue_free)
+	var trail_tween := create_tween()
+	trail_tween.tween_property(trail, "modulate:a", 0.0, dash_trail_lifetime)
+	trail_tween.finished.connect(trail.queue_free)
 
 
 func _play_damage_flash() -> void:
-    if _damage_flash_tween != null:
-        _damage_flash_tween.kill()
+	if _damage_flash_tween != null:
+		_damage_flash_tween.kill()
 
-    sprite.modulate = Color(2.0, 2.0, 2.0, 1.0)
-    _damage_flash_tween = create_tween()
-    _damage_flash_tween.tween_property(sprite, "modulate", Color.WHITE, damage_flash_duration)
+	sprite.modulate = Color(2.0, 2.0, 2.0, 1.0)
+	_damage_flash_tween = create_tween()
+	_damage_flash_tween.tween_property(sprite, "modulate", Color.WHITE, damage_flash_duration)
 
 
 func get_dash_cooldown_progress() -> float:
-    if dash_cooldown <= 0.0:
-        return 1.0
+	if dash_cooldown <= 0.0:
+		return 1.0
 
-    return clampf(1.0 - (_dash_cooldown_left / dash_cooldown), 0.0, 1.0)
+	return clampf(1.0 - (_dash_cooldown_left / dash_cooldown), 0.0, 1.0)
 
 
 func take_damage(amount: int) -> void:
-    if is_immune:
-        print("Masih immune bang")
-        return
+	if is_immune:
+		print("Masih immune bang")
+		return
 
-    health -= amount
-    is_immune = true
-    _immune_time_left = immune_duration
-    _immune_blink_time_left = immune_blink_interval
-    sprite.visible = true
-    _play_damage_flash()
+	health -= amount
+	is_immune = true
+	_immune_time_left = immune_duration
+	_immune_blink_time_left = immune_blink_interval
+	sprite.visible = true
+	_play_damage_flash()
 
-    print("Sakit woi! Remaining health: %d" % health)
+	print("Sakit woi! Remaining health: %d" % health)
 
-    if health <= 0:
-        health = 0
-        die()
+	if health <= 0:
+		health = 0
+		die()
 
 func heal(amount: int) -> void:
-    health = min(health + amount, max_health)
+	health = min(health + amount, max_health)
 
 func _apply_upgrade_stats() -> void:
-    walk_speed = _base_walk_speed + UpgradeManager.get_stat_add("walk_speed")
-    dash_cooldown = _base_dash_cooldown + UpgradeManager.get_stat_add("dash_cooldown")
-    immune_duration = _base_immune_duration
-    max_health = int(5.0 + UpgradeManager.get_stat_add("max_hp"))
+	walk_speed = _base_walk_speed + UpgradeManager.get_stat_add("walk_speed")
+	dash_cooldown = _base_dash_cooldown + UpgradeManager.get_stat_add("dash_cooldown")
+	immune_duration = _base_immune_duration
+	max_health = int(5.0 + UpgradeManager.get_stat_add("max_hp"))
 
 func _on_upgrade_applied(_id: String, _new_level: int) -> void:
-    _apply_upgrade_stats()
+	_apply_upgrade_stats()
 
 func _on_instant_effect(id: String, value: float) -> void:
-    if id == "heal":
-        heal(int(value))
+	if id == "heal":
+		heal(int(value))
 
 func die() -> void:
-    print("Mati woi")
+	print("Mati woi")

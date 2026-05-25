@@ -7,14 +7,12 @@ signal resume_requested
 signal settings_requested
 signal main_menu_requested
 signal restart_requested
-signal quit_requested
 
 @onready var _buttons: Array[Control] = [
 	$VBoxContainer/Resume,
 	$VBoxContainer/Restart,
 	$VBoxContainer/Settings,
 	$VBoxContainer/MainMenu,
-	$VBoxContainer/Quit,
 ]
 
 
@@ -23,8 +21,6 @@ func _ready() -> void:
 	$VBoxContainer/Restart.pressed.connect(func() -> void: restart_requested.emit())
 	$VBoxContainer/Settings.pressed.connect(func() -> void: settings_requested.emit())
 	$VBoxContainer/MainMenu.pressed.connect(func() -> void: main_menu_requested.emit())
-	$VBoxContainer/Quit.pressed.connect(func() -> void: quit_requested.emit())
-
 
 func play_intro() -> void:
 	SequentialMenuAnimation.play(self, _buttons)
