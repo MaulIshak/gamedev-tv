@@ -67,7 +67,7 @@ func _create_player_cables(tower: Node2D) -> void:
 	_state = State.HAS_PLAYER_CABLE
 	_cable_tower = tower
 	if SfxManager != null:
-		SfxManager.play_sfx_once(METALLIC_CLING_SFX, &"SFX", 0.0, false, true)
+		SfxManager.play_sfx(METALLIC_CLING_SFX, &"SFX", 0.0, false, true)
 
 	var parent := _get_parent_node()
 	for i in range(cable_count):
@@ -109,7 +109,7 @@ func _create_lightning_between(from_tower: Node2D, to_tower: Node2D) -> void:
 	to_tower.is_connected_tower = true
 	if SfxManager != null:
 		_play_electric_shock_sfx()
-		SfxManager.play_sfx_once(METALLIC_CLING_SFX, &"SFX", 0.0, false, true)
+		SfxManager.play_sfx(METALLIC_CLING_SFX, &"SFX", 0.0, false, true)
 
 	var lightning: Connection = lightning_scene.instantiate()
 	lightning.start_pos = from_tower
