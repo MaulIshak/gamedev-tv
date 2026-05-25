@@ -1,24 +1,42 @@
 extends Node2D
 
+const CAMERA_TRANSITION_DURATION := 0.28
+const GAMEPLAY_ZOOM_MULTIPLIER := 1.08
+enum GameState { MAIN_MENU, PLAYING, PAUSED }
+
 @onready var crt_screen: ColorRect = $CRTScreen
 @onready var main_menu = $MainMenu
 @onready var settings_screen = $SettingsScreen
 @onready var credits_screen = $CreditsScreen
 @onready var pause_menu = $PauseMenu
+@onready var wave_manager = $"../wave_manager"
+
+var gameplay_camera: Camera2D
 
 var _return_screen: Control
-var _game_started := false
+var _state := GameState.MAIN_MENU
+var _menu_camera_zoom: Vector2 = Vector2.ONE
+var _gameplay_camera_zoom: Vector2 = Vector2.ONE
+var _camera_tween: Tween
+var _is_transitioning := false
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	gameplay_camera = get_parent().get_node_or_null("Camera2D") as Camera2D
+	if gameplay_camera == null:
+		push_warning("gameplay_menu_controller: Camera2D not found")
+	else:
+		_menu_camera_zoom = gameplay_camera.zoom
+		_gameplay_camera_zoom = _menu_camera_zoom * GAMEPLAY_ZOOM_MULTIPLIER
 	_connect_menus()
+	_enter_main_menu(false)
 	_show_only(main_menu)
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause_menu") and _game_started:
-		if pause_menu.visible:
+	if event.is_action_pressed("pause_menu") and _state != GameState.MAIN_MENU:
+		if _state == GameState.PAUSED:
 			_resume_game()
 		else:
 			_open_pause_menu()
@@ -31,7 +49,6 @@ func _connect_menus() -> void:
 	main_menu.quit_requested.connect(_quit_game)
 
 	pause_menu.resume_requested.connect(_resume_game)
-	pause_menu.restart_requested.connect(_restart_level)
 	pause_menu.settings_requested.connect(_open_settings.bind(pause_menu))
 	pause_menu.main_menu_requested.connect(_return_to_main_menu)
 
@@ -42,27 +59,39 @@ func _connect_menus() -> void:
 
 
 func _start_game() -> void:
-	_game_started = true
-	get_tree().paused = false
+	if _is_transitioning:
+		return
+	_is_transitioning = true
+	var exit_tween: Tween = main_menu.play_exit()
+	_tween_camera_zoom(_gameplay_camera_zoom)
+	if exit_tween != null:
+		await exit_tween.finished
+	_enter_playing()
 	_show_only(null)
+	_is_transitioning = false
 
 
 func _open_pause_menu() -> void:
-	get_tree().paused = true
+	_enter_paused()
 	_show_only(pause_menu)
-	GlobalEventBus.emit_pause()
 
 
 func _resume_game() -> void:
-	get_tree().paused = false
+	_enter_playing(false)
 	_show_only(null)
-	GlobalEventBus.emit_resume()
 
 
 func _return_to_main_menu() -> void:
-	_game_started = false
-	get_tree().paused = false
+	if _is_transitioning:
+		return
+	_is_transitioning = true
+	var exit_tween: Tween = pause_menu.play_exit()
+	_tween_camera_zoom(_menu_camera_zoom)
+	if exit_tween != null:
+		await exit_tween.finished
+	_enter_main_menu()
 	_show_only(main_menu)
+	_is_transitioning = false
 
 
 func _open_settings(return_screen: Control) -> void:
@@ -83,12 +112,6 @@ func _quit_game() -> void:
 	get_tree().quit()
 
 
-func _restart_level() -> void:
-	get_tree().paused = false
-	GlobalEventBus.emit_restart()
-	get_tree().reload_current_scene()
-
-
 func _show_only(screen: Control) -> void:
 	for node in [main_menu, settings_screen, credits_screen, pause_menu]:
 		node.visible = node == screen
@@ -107,3 +130,38 @@ func _set_grid_brightness(value: float) -> void:
 func _set_hud_scale(value: float) -> void:
 	var scaled := clampf(value / 100.0, 0.75, 1.5)
 	scale = Vector2.ONE * scaled
+
+
+func _tween_camera_zoom(target_zoom: Vector2) -> void:
+	if gameplay_camera == null:
+		return
+	if _camera_tween != null and _camera_tween.is_valid():
+		_camera_tween.kill()
+
+	_camera_tween = create_tween()
+	_camera_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_camera_tween.set_trans(Tween.TRANS_QUAD)
+	_camera_tween.set_ease(Tween.EASE_OUT)
+	_camera_tween.tween_property(gameplay_camera, "zoom", target_zoom, CAMERA_TRANSITION_DURATION)
+
+
+func _enter_main_menu(stop_wave: bool = true) -> void:
+	_state = GameState.MAIN_MENU
+	if stop_wave and wave_manager != null and wave_manager.has_method("stop_game"):
+		wave_manager.stop_game()
+	get_tree().paused = true
+	GlobalEventBus.emit_main_menu()
+
+
+func _enter_playing(start_wave: bool = true) -> void:
+	_state = GameState.PLAYING
+	get_tree().paused = false
+	if start_wave and wave_manager != null and wave_manager.has_method("start_game"):
+		wave_manager.start_game()
+	GlobalEventBus.emit_play()
+
+
+func _enter_paused() -> void:
+	_state = GameState.PAUSED
+	get_tree().paused = true
+	GlobalEventBus.emit_pause()

@@ -7,6 +7,7 @@ signal restart_requested
 signal main_menu_requested
 signal settings_requested
 signal settings_applied
+signal quit_requested
 signal hearts_changed(current: int, max: int)
 
 func emit_play() -> void:
@@ -29,6 +30,9 @@ func emit_settings() -> void:
 
 func emit_settings_applied() -> void:
 	emit_signal("settings_applied")
+
+func emit_quit() -> void:
+	emit_signal("quit_requested")
 
 func set_hearts(current: int, max: int) -> void:
 	emit_signal("hearts_changed", current, max)

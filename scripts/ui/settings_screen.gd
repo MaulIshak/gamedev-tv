@@ -13,7 +13,6 @@ const INTRO_DURATION := 0.22
 @onready var gameplay_tab = $Panel/Tabs/GameplayTab
 @onready var display_tab = $Panel/Tabs/DisplayTab
 @onready var audio_tab = $Panel/Tabs/AudioTab
-@onready var access_tab = $Panel/Tabs/AccessTab
 @onready var gameplay_panel: Control = $Panel/GameplayPanel
 @onready var display_panel: Control = $Panel/DisplayPanel
 @onready var audio_panel: Control = $Panel/AudioPanel

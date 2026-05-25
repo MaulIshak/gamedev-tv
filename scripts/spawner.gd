@@ -55,16 +55,6 @@ func spawn_turret() -> void:
 		return
 	if turret_spawn_area == null or turret_scene == null or turret_parent == null or tile_map == null:
 		return
-	
-	for cell: Vector2i in tile_map.get_used_cells():
-		var source_id := tile_map.get_cell_source_id(cell)
-		var atlas_coords := tile_map.get_cell_atlas_coords(cell)
-		var alternative := tile_map.get_cell_alternative_tile(cell)
-
-		print("cell:", cell)
-		print("source:", source_id)
-		print("atlas:", atlas_coords)
-		print("alternative:", alternative)
 
 	var rect := _get_world_rect(turret_spawn_area)
 	var center := _get_rect_center(turret_spawn_area)

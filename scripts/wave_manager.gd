@@ -17,6 +17,8 @@ extends Node
 var _current_wave: int = 0
 var _is_spawning: bool = false
 var _waiting_for_clear: bool = false
+var _is_active: bool = false
+var _run_id: int = 0
 
 var enemy_data: Array = [{
 	"weight": 1.0,
@@ -40,20 +42,36 @@ func _ready() -> void:
 	if spawner == null:
 		push_warning("wave_manager: spawner is null")
 
-	get_tree().create_timer(5).timeout.connect(func () -> void:
-		next_wave()
-	)
-
 	if upgrade_ui != null:
 		upgrade_ui.upgrade_selected.connect(func(_id: String) -> void:
 			next_wave()
 		)
 
 
+func start_game() -> void:
+	_run_id += 1
+	_current_wave = 0
+	_is_spawning = false
+	_waiting_for_clear = false
+	_is_active = true
+	_clear_runtime_nodes()
+	next_wave()
+
+
+func stop_game() -> void:
+	_run_id += 1
+	_is_active = false
+	_is_spawning = false
+	_waiting_for_clear = false
+	_current_wave = 0
+	_clear_runtime_nodes()
+
+
 func next_wave() -> void:
-	if _is_spawning:
+	if not _is_active or _is_spawning:
 		return
 
+	var run_id := _run_id
 	_is_spawning = true
 	_current_wave += 1
 
@@ -70,11 +88,18 @@ func next_wave() -> void:
 	var min_cost := _get_min_cost(available)
 
 	while budget >= min_cost:
+		if not _is_active or run_id != _run_id:
+			_is_spawning = false
+			return
+
 		var chosen := _pick_weighted_enemy(available)
 		if chosen.cost > budget:
 			continue
 
 		await get_tree().create_timer(randf_range(min_spawn_delay, max_spawn_delay)).timeout
+		if not _is_active or run_id != _run_id:
+			_is_spawning = false
+			return
 		spawner.spawn_enemy(chosen.res)
 		budget -= chosen.cost
 		spawned += 1
@@ -82,12 +107,16 @@ func next_wave() -> void:
 		if spawned % batch_size == 0 and budget >= min_cost:
 			await get_tree().create_timer(batch_delay).timeout
 
+	if not _is_active or run_id != _run_id:
+		_is_spawning = false
+		return
+
 	_is_spawning = false
 	_waiting_for_clear = true
 
 
 func _process(_delta: float) -> void:
-	if not _waiting_for_clear:
+	if not _is_active or not _waiting_for_clear:
 		return
 	if _are_all_enemies_dead():
 		_waiting_for_clear = false
@@ -99,6 +128,19 @@ func _process(_delta: float) -> void:
 		_clear_explosions()
 		if upgrade_ui != null:
 			upgrade_ui.show_upgrades()
+
+
+func _clear_runtime_nodes() -> void:
+	if connection_manager != null:
+		connection_manager.clear_all_connections()
+	if spawner != null:
+		spawner.clear_turrets()
+		spawner.clear_enemies()
+	if upgrade_ui != null:
+		upgrade_ui.hide()
+		if upgrade_ui.player != null:
+			upgrade_ui.player.enable_input()
+	_clear_explosions()
 
 
 func _are_all_enemies_dead() -> bool:

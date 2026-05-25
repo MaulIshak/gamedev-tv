@@ -196,10 +196,11 @@ enemy_edge_margin = 32.0
 min_enemy_distance = 32.0
 enemy_max_spawn_attempts = 20
 
-[node name="wave_manager" type="Node" parent="." unique_id=2000202662 node_paths=PackedStringArray("spawner", "upgrade_ui")]
+[node name="wave_manager" type="Node" parent="." unique_id=2000202662 node_paths=PackedStringArray("spawner", "upgrade_ui", "connection_manager")]
 script = ExtResource("7_4bh5q")
 spawner = NodePath("../spawner")
 upgrade_ui = NodePath("../UpgradeUI")
+connection_manager = NodePath("../Player/PlayerConnectionManager")
 
 [node name="GUI" type="Node2D" parent="." unique_id=449920651]
 position = Vector2(-3, 2)

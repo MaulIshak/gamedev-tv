@@ -205,12 +205,6 @@ selected = true
 default_material = SubResource("ShaderMaterial_8uki6")
 selected_material = SubResource("ShaderMaterial_0bnpd")
 
-[node name="Restart" parent="VBoxContainer" unique_id=2108325950 instance=ExtResource("1_button")]
-layout_mode = 2
-button_text = "Restart"
-default_material = SubResource("ShaderMaterial_4inpj")
-selected_material = SubResource("ShaderMaterial_8fwbo")
-
 [node name="Settings" parent="VBoxContainer" unique_id=759081558 instance=ExtResource("1_button")]
 layout_mode = 2
 button_text = "Settings"
