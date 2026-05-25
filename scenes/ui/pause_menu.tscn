@@ -1,0 +1,224 @@
+[gd_scene format=3 uid="uid://bcnwuo1m4cp4h"]
+
+[ext_resource type="PackedScene" uid="uid://bnyv6wjivlgbo" path="res://scenes/ui/menu_button.tscn" id="1_button"]
+[ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="2_font"]
+[ext_resource type="Shader" uid="uid://gg1csxl8vust" path="res://shaders/FontMenuShaders.gdshader" id="3_shader"]
+[ext_resource type="Script" uid="uid://djm7onst65crw" path="res://scripts/ui/pause_menu.gd" id="4_script"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pause_title"]
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(0.86, 1, 0.18, 1)
+shader_parameter/fill_strength = 1.12
+shader_parameter/alpha_cutoff = 0.45
+shader_parameter/outline_color = Color(0.006, 0.022, 0.026, 1)
+shader_parameter/outline_size = 2.6
+shader_parameter/shadow_color = Color(0, 0.075, 0.065, 0.96)
+shader_parameter/shadow_offset = Vector2(0.7, 0.9)
+shader_parameter/shadow_depth = 5.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.45)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 0.8
+shader_parameter/shadow_alpha_decay = 0.9
+shader_parameter/top_highlight = Color(0.78, 1, 0.86, 0.18)
+shader_parameter/highlight_cutoff = 0.42
+
+[sub_resource type="FontVariation" id="FontVariation_pause"]
+base_font = ExtResource("2_font")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8uki6"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(0.9, 0.92, 0.94, 1)
+shader_parameter/fill_strength = 1.0
+shader_parameter/alpha_cutoff = 0.48
+shader_parameter/outline_color = Color(0.0156863, 0.0196078, 0.0235294, 1)
+shader_parameter/outline_size = 3.170000150575
+shader_parameter/shadow_color = Color(0, 0, 0, 0.94)
+shader_parameter/shadow_offset = Vector2(0.6, 0.8)
+shader_parameter/shadow_depth = 8.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 0.7970000259825
+shader_parameter/shadow_spread = 1.0
+shader_parameter/shadow_alpha_decay = 0.92
+shader_parameter/top_highlight = Color(1, 1, 1, 0.1)
+shader_parameter/highlight_cutoff = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0bnpd"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(1, 0.86, 0.08, 1)
+shader_parameter/fill_strength = 1.08
+shader_parameter/alpha_cutoff = 0.48
+shader_parameter/outline_color = Color(0.0156863, 0.0196078, 0.0235294, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/shadow_color = Color(0, 0, 0, 0.96)
+shader_parameter/shadow_offset = Vector2(0.6, 0.8)
+shader_parameter/shadow_depth = 4.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 0.75
+shader_parameter/shadow_alpha_decay = 0.9
+shader_parameter/top_highlight = Color(1, 1, 1, 0.14)
+shader_parameter/highlight_cutoff = 0.46
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4inpj"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(0.9, 0.92, 0.94, 1)
+shader_parameter/fill_strength = 1.0
+shader_parameter/alpha_cutoff = 0.48
+shader_parameter/outline_color = Color(0.0156863, 0.0196078, 0.0235294, 1)
+shader_parameter/outline_size = 3.170000150575
+shader_parameter/shadow_color = Color(0, 0, 0, 0.94)
+shader_parameter/shadow_offset = Vector2(0.6, 0.8)
+shader_parameter/shadow_depth = 8.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 0.7970000259825
+shader_parameter/shadow_spread = 1.0
+shader_parameter/shadow_alpha_decay = 0.92
+shader_parameter/top_highlight = Color(1, 1, 1, 0.1)
+shader_parameter/highlight_cutoff = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8fwbo"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(1, 0.86, 0.08, 1)
+shader_parameter/fill_strength = 1.08
+shader_parameter/alpha_cutoff = 0.48
+shader_parameter/outline_color = Color(0.0156863, 0.0196078, 0.0235294, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/shadow_color = Color(0, 0, 0, 0.96)
+shader_parameter/shadow_offset = Vector2(0.6, 0.8)
+shader_parameter/shadow_depth = 4.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 0.75
+shader_parameter/shadow_alpha_decay = 0.9
+shader_parameter/top_highlight = Color(1, 1, 1, 0.14)
+shader_parameter/highlight_cutoff = 0.46
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2rlsb"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(0.9, 0.92, 0.94, 1)
+shader_parameter/fill_strength = 1.0
+shader_parameter/alpha_cutoff = 0.48
+shader_parameter/outline_color = Color(0.0156863, 0.0196078, 0.0235294, 1)
+shader_parameter/outline_size = 3.170000150575
+shader_parameter/shadow_color = Color(0, 0, 0, 0.94)
+shader_parameter/shadow_offset = Vector2(0.6, 0.8)
+shader_parameter/shadow_depth = 8.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 0.7970000259825
+shader_parameter/shadow_spread = 1.0
+shader_parameter/shadow_alpha_decay = 0.92
+shader_parameter/top_highlight = Color(1, 1, 1, 0.1)
+shader_parameter/highlight_cutoff = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_coo1x"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(1, 0.86, 0.08, 1)
+shader_parameter/fill_strength = 1.08
+shader_parameter/alpha_cutoff = 0.48
+shader_parameter/outline_color = Color(0.0156863, 0.0196078, 0.0235294, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/shadow_color = Color(0, 0, 0, 0.96)
+shader_parameter/shadow_offset = Vector2(0.6, 0.8)
+shader_parameter/shadow_depth = 4.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 0.75
+shader_parameter/shadow_alpha_decay = 0.9
+shader_parameter/top_highlight = Color(1, 1, 1, 0.14)
+shader_parameter/highlight_cutoff = 0.46
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2jkta"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(0.9, 0.92, 0.94, 1)
+shader_parameter/fill_strength = 1.0
+shader_parameter/alpha_cutoff = 0.48
+shader_parameter/outline_color = Color(0.0156863, 0.0196078, 0.0235294, 1)
+shader_parameter/outline_size = 3.170000150575
+shader_parameter/shadow_color = Color(0, 0, 0, 0.94)
+shader_parameter/shadow_offset = Vector2(0.6, 0.8)
+shader_parameter/shadow_depth = 8.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 0.7970000259825
+shader_parameter/shadow_spread = 1.0
+shader_parameter/shadow_alpha_decay = 0.92
+shader_parameter/top_highlight = Color(1, 1, 1, 0.1)
+shader_parameter/highlight_cutoff = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ht4ye"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(1, 0.86, 0.08, 1)
+shader_parameter/fill_strength = 1.08
+shader_parameter/alpha_cutoff = 0.48
+shader_parameter/outline_color = Color(0.0156863, 0.0196078, 0.0235294, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/shadow_color = Color(0, 0, 0, 0.96)
+shader_parameter/shadow_offset = Vector2(0.6, 0.8)
+shader_parameter/shadow_depth = 4.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 0.75
+shader_parameter/shadow_alpha_decay = 0.9
+shader_parameter/top_highlight = Color(1, 1, 1, 0.14)
+shader_parameter/highlight_cutoff = 0.46
+
+[node name="PauseMenu" type="Control" unique_id=650440081]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 264.0
+offset_bottom = 146.0
+mouse_filter = 2
+script = ExtResource("4_script")
+
+[node name="Title" type="Label" parent="." unique_id=1920979629]
+material = SubResource("ShaderMaterial_pause_title")
+layout_mode = 0
+offset_left = 32.0
+offset_top = 8.0
+offset_right = 252.0
+offset_bottom = 84.5625
+theme_override_fonts/font = SubResource("FontVariation_pause")
+theme_override_font_sizes/font_size = 70
+text = "PAUSE"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1974338356]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 84.0
+offset_right = 298.0
+offset_bottom = 230.0
+mouse_filter = 2
+theme_override_constants/separation = -13
+alignment = 1
+
+[node name="Resume" parent="VBoxContainer" unique_id=2108325949 instance=ExtResource("1_button")]
+layout_mode = 2
+button_text = "Resume"
+selected = true
+default_material = SubResource("ShaderMaterial_8uki6")
+selected_material = SubResource("ShaderMaterial_0bnpd")
+
+[node name="Restart" parent="VBoxContainer" unique_id=2108325950 instance=ExtResource("1_button")]
+layout_mode = 2
+button_text = "Restart"
+default_material = SubResource("ShaderMaterial_4inpj")
+selected_material = SubResource("ShaderMaterial_8fwbo")
+
+[node name="Settings" parent="VBoxContainer" unique_id=759081558 instance=ExtResource("1_button")]
+layout_mode = 2
+button_text = "Settings"
+default_material = SubResource("ShaderMaterial_2rlsb")
+selected_material = SubResource("ShaderMaterial_coo1x")
+
+[node name="MainMenu" parent="VBoxContainer" unique_id=686699890 instance=ExtResource("1_button")]
+layout_mode = 2
+button_text = "Main Menu"
+default_material = SubResource("ShaderMaterial_2jkta")
+selected_material = SubResource("ShaderMaterial_ht4ye")

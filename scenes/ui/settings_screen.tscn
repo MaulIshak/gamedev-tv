@@ -1,0 +1,358 @@
+[gd_scene format=3 uid="uid://cfhd1hkmh7rp3"]
+
+[ext_resource type="Script" uid="uid://ewgks7gifacf" path="res://scripts/ui/settings_screen.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://do853xmulo7ea" path="res://scenes/ui/bordered_button.tscn" id="2_button"]
+[ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="3_font"]
+[ext_resource type="Shader" uid="uid://gg1csxl8vust" path="res://shaders/FontMenuShaders.gdshader" id="4_font_shader"]
+[ext_resource type="Shader" uid="uid://dw1yqh1ix62pk" path="res://shaders/UIBoxShaders.gdshader" id="5_box_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_settings_title"]
+shader = ExtResource("4_font_shader")
+shader_parameter/fill_color = Color(0.88, 1, 0.96, 1)
+shader_parameter/fill_strength = 1.08
+shader_parameter/alpha_cutoff = 0.46
+shader_parameter/outline_color = Color(0.006, 0.022, 0.026, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/shadow_color = Color(0, 0.055, 0.07, 0.94)
+shader_parameter/shadow_offset = Vector2(0.55, 0.75)
+shader_parameter/shadow_depth = 3.0
+shader_parameter/shadow_depth_offset = Vector2(0.9, 1.15)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 0.55
+shader_parameter/shadow_alpha_decay = 0.86
+shader_parameter/top_highlight = Color(0.28, 0.92, 1, 0.22)
+shader_parameter/highlight_cutoff = 0.42
+
+[sub_resource type="FontVariation" id="FontVariation_settings"]
+base_font = ExtResource("3_font")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_panel"]
+shader = ExtResource("5_box_shader")
+shader_parameter/fill_color = Color(0.77, 0.84, 0.64, 0.9)
+shader_parameter/outline_color = Color(0.015, 0.065, 0.095, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/rect_size = Vector2(340, 146)
+shader_parameter/shadow_color = Color(0, 0.025, 0.035, 0.82)
+shader_parameter/shadow_offset = Vector2(4, 5)
+shader_parameter/shadow_depth = 3.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1)
+shader_parameter/shadow_alpha_decay = 0.76
+shader_parameter/top_highlight = Color(1, 1, 1, 0.11)
+shader_parameter/highlight_height = 0.24
+
+[node name="SettingsScreen" type="Control" unique_id=831789309]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -170.0
+offset_top = -54.0
+offset_right = 170.0
+offset_bottom = 157.0
+script = ExtResource("1_script")
+
+[node name="Title" type="Label" parent="." unique_id=1213908382]
+material = SubResource("ShaderMaterial_settings_title")
+layout_mode = 0
+offset_left = 10.0
+offset_top = -5.0
+offset_right = 204.0
+offset_bottom = 40.0
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 38
+text = "SETTINGS"
+
+[node name="Panel" type="ColorRect" parent="." unique_id=1084768541]
+material = SubResource("ShaderMaterial_panel")
+layout_mode = 0
+offset_top = 34.0
+offset_right = 340.0
+offset_bottom = 186.0
+mouse_filter = 2
+
+[node name="Tabs" type="HBoxContainer" parent="Panel" unique_id=1310036887]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 328.0
+offset_bottom = 32.0
+theme_override_constants/separation = 5
+
+[node name="GameplayTab" parent="Panel/Tabs" unique_id=1879998398 instance=ExtResource("2_button")]
+layout_mode = 2
+text = "GAMEPLAY"
+active = true
+
+[node name="DisplayTab" parent="Panel/Tabs" unique_id=2067072496 instance=ExtResource("2_button")]
+layout_mode = 2
+text = "DISPLAY"
+
+[node name="AudioTab" parent="Panel/Tabs" unique_id=1171345745 instance=ExtResource("2_button")]
+layout_mode = 2
+text = "AUDIO"
+
+[node name="AccessTab" parent="Panel/Tabs" unique_id=1352615168 instance=ExtResource("2_button")]
+layout_mode = 2
+text = "ACCESS"
+
+[node name="GameplayPanel" type="Control" parent="Panel" unique_id=257417411]
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 46.0
+offset_right = 324.0
+offset_bottom = 112.0
+
+[node name="GridBrightnessLabel" type="Label" parent="Panel/GameplayPanel" unique_id=1249226418]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 142.0
+offset_bottom = 21.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "GRID BRIGHTNESS"
+
+[node name="GridBrightnessSlider" type="HSlider" parent="Panel/GameplayPanel" unique_id=1366398235]
+layout_mode = 0
+offset_left = 154.0
+offset_right = 308.0
+offset_bottom = 20.0
+min_value = 10.0
+max_value = 150.0
+value = 72.0
+
+[node name="ScreenShakeLabel" type="Label" parent="Panel/GameplayPanel" unique_id=2051822072]
+layout_mode = 0
+offset_top = 27.0
+offset_right = 142.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "SCREEN SHAKE"
+
+[node name="ScreenShakeOption" type="OptionButton" parent="Panel/GameplayPanel" unique_id=498556138]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 24.0
+offset_right = 308.0
+offset_bottom = 46.0
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+
+[node name="HudScaleLabel" type="Label" parent="Panel/GameplayPanel" unique_id=173759107]
+layout_mode = 0
+offset_top = 52.0
+offset_right = 142.0
+offset_bottom = 71.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "HUD SCALE"
+
+[node name="HudScaleSlider" type="HSlider" parent="Panel/GameplayPanel" unique_id=533526603]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 50.0
+offset_right = 308.0
+offset_bottom = 70.0
+min_value = 75.0
+max_value = 150.0
+value = 100.0
+
+[node name="DisplayPanel" type="Control" parent="Panel" unique_id=446720849]
+visible = false
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 46.0
+offset_right = 324.0
+offset_bottom = 112.0
+
+[node name="ResolutionLabel" type="Label" parent="Panel/DisplayPanel" unique_id=387518991]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 142.0
+offset_bottom = 21.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "RESOLUTION"
+
+[node name="ResolutionOption" type="OptionButton" parent="Panel/DisplayPanel" unique_id=500299860]
+layout_mode = 0
+offset_left = 154.0
+offset_right = 308.0
+offset_bottom = 22.0
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+
+[node name="FullscreenLabel" type="Label" parent="Panel/DisplayPanel" unique_id=1697769197]
+layout_mode = 0
+offset_top = 27.0
+offset_right = 142.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "FULLSCREEN"
+
+[node name="FullscreenCheck" type="CheckButton" parent="Panel/DisplayPanel" unique_id=1464544151]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 22.0
+offset_right = 308.0
+offset_bottom = 50.0
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+
+[node name="PixelFilterLabel" type="Label" parent="Panel/DisplayPanel" unique_id=1974633479]
+layout_mode = 0
+offset_top = 52.0
+offset_right = 142.0
+offset_bottom = 71.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "PIXEL FILTER"
+
+[node name="PixelFilterOption" type="OptionButton" parent="Panel/DisplayPanel" unique_id=1332419861]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 48.0
+offset_right = 308.0
+offset_bottom = 70.0
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+
+[node name="AudioPanel" type="Control" parent="Panel" unique_id=1618867707]
+visible = false
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 46.0
+offset_right = 324.0
+offset_bottom = 112.0
+
+[node name="MasterLabel" type="Label" parent="Panel/AudioPanel" unique_id=1662064006]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 142.0
+offset_bottom = 21.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "MASTER"
+
+[node name="MasterSlider" type="HSlider" parent="Panel/AudioPanel" unique_id=883918650]
+layout_mode = 0
+offset_left = 154.0
+offset_right = 308.0
+offset_bottom = 20.0
+value = 100.0
+
+[node name="BgmLabel" type="Label" parent="Panel/AudioPanel" unique_id=661586665]
+layout_mode = 0
+offset_top = 27.0
+offset_right = 142.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "BGM"
+
+[node name="BgmSlider" type="HSlider" parent="Panel/AudioPanel" unique_id=651081434]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 25.0
+offset_right = 308.0
+offset_bottom = 45.0
+value = 80.0
+
+[node name="SfxLabel" type="Label" parent="Panel/AudioPanel" unique_id=689620848]
+layout_mode = 0
+offset_top = 52.0
+offset_right = 142.0
+offset_bottom = 71.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "SFX"
+
+[node name="SfxSlider" type="HSlider" parent="Panel/AudioPanel" unique_id=925412751]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 50.0
+offset_right = 308.0
+offset_bottom = 70.0
+value = 90.0
+
+[node name="AccessPanel" type="Control" parent="Panel" unique_id=1162558697]
+visible = false
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 46.0
+offset_right = 324.0
+offset_bottom = 112.0
+
+[node name="ReduceMotionLabel" type="Label" parent="Panel/AccessPanel" unique_id=1637221250]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 142.0
+offset_bottom = 21.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "REDUCE MOTION"
+
+[node name="ReduceMotionCheck" type="CheckButton" parent="Panel/AccessPanel" unique_id=628226810]
+layout_mode = 0
+offset_left = 154.0
+offset_top = -5.0
+offset_right = 308.0
+offset_bottom = 25.0
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+
+[node name="HighContrastLabel" type="Label" parent="Panel/AccessPanel" unique_id=1851927564]
+layout_mode = 0
+offset_top = 29.0
+offset_right = 142.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "HIGH CONTRAST"
+
+[node name="HighContrastCheck" type="CheckButton" parent="Panel/AccessPanel" unique_id=915738644]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 22.0
+offset_right = 308.0
+offset_bottom = 52.0
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+
+[node name="StatusLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 146.0
+offset_right = 184.0
+offset_bottom = 170.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 13
+text = "MODULE CONFIG"
+
+[node name="BackButton" parent="Panel" unique_id=1501585731 instance=ExtResource("2_button")]
+layout_mode = 0
+offset_left = 188.0
+offset_top = 145.0
+offset_right = 262.0
+offset_bottom = 170.0
+text = "BACK"
+
+[node name="ApplyButton" parent="Panel" unique_id=1663683526 instance=ExtResource("2_button")]
+layout_mode = 0
+offset_left = 263.0
+offset_top = 145.0
+offset_right = 337.0
+offset_bottom = 170.0
+text = "APPLY"
+active = true

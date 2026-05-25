@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://do853xmulo7ea"]
+
+[ext_resource type="Script" uid="uid://cxevi7dvwvbm6" path="res://scripts/ui/bordered_button.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="2_font"]
+[ext_resource type="Shader" uid="uid://dw1yqh1ix62pk" path="res://shaders/UIBoxShaders.gdshader" id="3_box_shader"]
+[ext_resource type="Shader" uid="uid://gg1csxl8vust" path="res://shaders/FontMenuShaders.gdshader" id="4_font_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_icf5l"]
+shader = ExtResource("3_box_shader")
+shader_parameter/fill_color = Color(0.73, 0.78, 0.74, 0.96)
+shader_parameter/outline_color = Color(0.015, 0.035, 0.045, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/rect_size = Vector2(74, 22)
+shader_parameter/shadow_color = Color(0, 0.025, 0.03, 0.82)
+shader_parameter/shadow_offset = Vector2(2, 2)
+shader_parameter/shadow_depth = 2.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1)
+shader_parameter/shadow_alpha_decay = 0.76
+shader_parameter/top_highlight = Color(1, 1, 1, 0.14)
+shader_parameter/highlight_height = 0.32
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t0fvu"]
+shader = ExtResource("4_font_shader")
+shader_parameter/fill_color = Color(0.05, 0.08, 0.09, 1)
+shader_parameter/fill_strength = 1.0
+shader_parameter/alpha_cutoff = 0.48
+shader_parameter/outline_color = Color(0.86, 0.92, 0.86, 0.38)
+shader_parameter/outline_size = 1.0
+shader_parameter/shadow_color = Color(0, 0, 0, 0.55)
+shader_parameter/shadow_offset = Vector2(0.25, 0.35)
+shader_parameter/shadow_depth = 1.0
+shader_parameter/shadow_depth_offset = Vector2(0.65, 0.75)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 0.25
+shader_parameter/shadow_alpha_decay = 0.75
+shader_parameter/top_highlight = Color(1, 1, 1, 0.04)
+shader_parameter/highlight_cutoff = 0.42
+
+[sub_resource type="FontVariation" id="FontVariation_border_button"]
+base_font = ExtResource("2_font")
+
+[node name="BorderedButton" type="Control" unique_id=1541850798]
+custom_minimum_size = Vector2(74, 22)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 74.0
+offset_bottom = 22.0
+mouse_default_cursor_shape = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1906931767]
+material = SubResource("ShaderMaterial_icf5l")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="." unique_id=1506449863]
+material = SubResource("ShaderMaterial_t0fvu")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("FontVariation_border_button")
+theme_override_font_sizes/font_size = 16
+text = "BUTTON"
+horizontal_alignment = 1
+vertical_alignment = 1

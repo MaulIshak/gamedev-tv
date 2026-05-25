@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://8did25w6ijki"]
+
+[ext_resource type="Script" uid="uid://cwxls0d6qsdbl" path="res://scripts/ui/credits_screen.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://do853xmulo7ea" path="res://scenes/ui/bordered_button.tscn" id="2_button"]
+[ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="3_font"]
+[ext_resource type="Shader" uid="uid://gg1csxl8vust" path="res://shaders/FontMenuShaders.gdshader" id="4_font_shader"]
+[ext_resource type="Shader" uid="uid://dw1yqh1ix62pk" path="res://shaders/UIBoxShaders.gdshader" id="5_box_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_credits_title"]
+shader = ExtResource("4_font_shader")
+shader_parameter/fill_color = Color(0.88, 1, 0.96, 1)
+shader_parameter/fill_strength = 1.08
+shader_parameter/alpha_cutoff = 0.46
+shader_parameter/outline_color = Color(0.006, 0.022, 0.026, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/shadow_color = Color(0, 0.055, 0.07, 0.94)
+shader_parameter/shadow_offset = Vector2(0.55, 0.75)
+shader_parameter/shadow_depth = 3.0
+shader_parameter/shadow_depth_offset = Vector2(0.9, 1.15)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 0.55
+shader_parameter/shadow_alpha_decay = 0.86
+shader_parameter/top_highlight = Color(0.28, 0.92, 1, 0.22)
+shader_parameter/highlight_cutoff = 0.42
+
+[sub_resource type="FontVariation" id="FontVariation_credits"]
+base_font = ExtResource("3_font")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_panel"]
+shader = ExtResource("5_box_shader")
+shader_parameter/fill_color = Color(0.77, 0.84, 0.64, 0.9)
+shader_parameter/outline_color = Color(0.015, 0.065, 0.095, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/rect_size = Vector2(340, 128)
+shader_parameter/shadow_color = Color(0, 0.025, 0.035, 0.82)
+shader_parameter/shadow_offset = Vector2(4, 5)
+shader_parameter/shadow_depth = 3.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1)
+shader_parameter/shadow_alpha_decay = 0.76
+shader_parameter/top_highlight = Color(1, 1, 1, 0.11)
+shader_parameter/highlight_height = 0.24
+
+[node name="CreditsScreen" type="Control" unique_id=718646741]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -170.0
+offset_top = -54.0
+offset_right = 170.0
+offset_bottom = 114.0
+script = ExtResource("1_script")
+
+[node name="Title" type="Label" parent="." unique_id=482295260]
+material = SubResource("ShaderMaterial_credits_title")
+layout_mode = 0
+offset_left = 10.0
+offset_top = -5.0
+offset_right = 204.0
+offset_bottom = 40.0
+theme_override_fonts/font = SubResource("FontVariation_credits")
+theme_override_font_sizes/font_size = 38
+text = "CREDITS"
+
+[node name="Panel" type="ColorRect" parent="." unique_id=1066995140]
+material = SubResource("ShaderMaterial_panel")
+layout_mode = 0
+offset_top = 34.0
+offset_right = 340.0
+offset_bottom = 162.0
+mouse_filter = 2
+
+[node name="CreditText" type="RichTextLabel" parent="Panel" unique_id=1225979048]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 12.0
+offset_right = 322.0
+offset_bottom = 92.0
+theme_override_colors/default_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_credits")
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "[center][b]MANY TO MANY[/b][/center]
+
+Game Design  : Farra & Codex
+Programming  : Farra & Codex
+Pixel UI     : Jersey10 + Custom Shaders
+Special      : GameDev TV Energy Grid"
+fit_content = true
+scroll_active = false
+
+[node name="BackButton" parent="Panel" unique_id=1665465219 instance=ExtResource("2_button")]
+layout_mode = 0
+offset_left = 132.0
+offset_top = 127.0
+offset_right = 206.0
+offset_bottom = 154.0
+text = "BACK"
+active = true

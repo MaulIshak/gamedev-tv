@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://bnyv6wjivlgbo"]
+
+[ext_resource type="Script" uid="uid://c5270x8ej706e" path="res://scripts/ui/menu_button.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="2_font"]
+[ext_resource type="Shader" uid="uid://gg1csxl8vust" path="res://shaders/FontMenuShaders.gdshader" id="3_shader"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_button"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_button_default"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(0.9, 0.92, 0.94, 1)
+shader_parameter/fill_strength = 1.0
+shader_parameter/alpha_cutoff = 0.48
+shader_parameter/outline_color = Color(0.0156863, 0.0196078, 0.0235294, 1)
+shader_parameter/outline_size = 3.170000150575
+shader_parameter/shadow_color = Color(0, 0, 0, 0.94)
+shader_parameter/shadow_offset = Vector2(0.6, 0.8)
+shader_parameter/shadow_depth = 8.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 0.7970000259825
+shader_parameter/shadow_spread = 1.0
+shader_parameter/shadow_alpha_decay = 0.92
+shader_parameter/top_highlight = Color(1, 1, 1, 0.1)
+shader_parameter/highlight_cutoff = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_button_selected"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(1, 0.86, 0.08, 1)
+shader_parameter/fill_strength = 1.08
+shader_parameter/alpha_cutoff = 0.48
+shader_parameter/outline_color = Color(0.0156863, 0.0196078, 0.0235294, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/shadow_color = Color(0, 0, 0, 0.96)
+shader_parameter/shadow_offset = Vector2(0.6, 0.8)
+shader_parameter/shadow_depth = 4.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 0.75
+shader_parameter/shadow_alpha_decay = 0.9
+shader_parameter/top_highlight = Color(1, 1, 1, 0.14)
+shader_parameter/highlight_cutoff = 0.46
+
+[sub_resource type="FontVariation" id="FontVariation_button"]
+base_font = ExtResource("2_font")
+
+[node name="MenuButton" type="Button" unique_id=612585470]
+custom_minimum_size = Vector2(220, 40)
+offset_right = 220.0
+offset_bottom = 40.0
+pivot_offset = Vector2(110, 20)
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_button")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_button")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_button")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_button")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_button")
+flat = true
+script = ExtResource("1_script")
+default_material = SubResource("ShaderMaterial_button_default")
+selected_material = SubResource("ShaderMaterial_button_selected")
+
+[node name="Label" type="Label" parent="." unique_id=1727767352]
+modulate = Color(0.92, 0.92, 0.92, 1)
+material = SubResource("ShaderMaterial_button_default")
+layout_mode = 0
+offset_top = -1.0
+offset_right = 260.0
+offset_bottom = 46.0
+theme_override_fonts/font = SubResource("FontVariation_button")
+theme_override_font_sizes/font_size = 30
+text = "Button"
+vertical_alignment = 1
