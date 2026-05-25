@@ -1,19 +1,49 @@
 [gd_resource type="Resource" script_class="EnemyStats" format=3 uid="uid://ex4ebo8ntf64"]
 
 [ext_resource type="Script" uid="uid://bqor8j4mj21im" path="res://scripts/enemy/enemt_stats.gd" id="1_l81rb"]
+[ext_resource type="Texture2D" uid="uid://bnsswiwlxhxhs" path="res://assets/sprites/enemy/enemy2Normall.png" id="2_w40u2"]
 
-[sub_resource type="Gradient" id="Gradient_l81rb"]
-colors = PackedColorArray(1, 0, 0, 1, 1, 0, 0, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_10ao1"]
+atlas = ExtResource("2_w40u2")
+region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_w40u2"]
-gradient = SubResource("Gradient_l81rb")
-width = 48
-height = 48
+[sub_resource type="AtlasTexture" id="AtlasTexture_n7l4l"]
+atlas = ExtResource("2_w40u2")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2quip"]
+atlas = ExtResource("2_w40u2")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qvvcu"]
+atlas = ExtResource("2_w40u2")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2acvk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_10ao1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n7l4l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2quip")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qvvcu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
 
 [resource]
 script = ExtResource("1_l81rb")
 health = 100
 damage = 2
-texture = SubResource("GradientTexture2D_w40u2")
-hitbox_radius = 18.0
+attack_cooldown = 0.4
+sprite_frames = SubResource("SpriteFrames_2acvk")
+sprite_scale = Vector2(0.8, 0.8)
 metadata/_custom_type_script = "uid://bqor8j4mj21im"

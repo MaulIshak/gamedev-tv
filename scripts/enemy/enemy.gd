@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+const HIT_DAMAGE_SFX: AudioStream = preload("res://assets/audio/sfx/hit_damage.wav")
+
 @export_group("Navigation Settings")
 ## The movement speed of the entity
 @export var movement_speed: float = 8000.0
@@ -33,6 +35,7 @@ var _slow_timer: float = 0.0
 var _active_slow_amount: float = 1.0
 var _damage_immunity_timer: float = 0.0
 var _damage_immunity_duration: float = 0.5
+var _damage_flash_tween: Tween
 
 func _ready():
     # Connect signals
@@ -68,6 +71,8 @@ func _ready():
 
     _damage_immunity_duration = 0.5 + UpgradeManager.get_stat_add("enemy_immunity")
 
+    sprite.flip_h = false
+    sprite.play("default")
 
 func _process(delta: float) -> void:
     if _damage_immunity_timer > 0.0:
@@ -127,6 +132,10 @@ func _on_waypoint_reached(details: Dictionary) -> void:
 ## Called when the navigation agent reports a new velocity.
 func _on_velocity_computed(safe_velocity: Vector2):
     velocity = safe_velocity
+
+    if absf(safe_velocity.x) > 0.01:
+        sprite.flip_h = safe_velocity.x < 0.0
+
     move_and_slide()
 
 
@@ -162,6 +171,7 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
         return
 
     health -= projectile.damage
+    _play_damage_feedback()
     _damage_immunity_timer = _damage_immunity_duration
     _is_slowed = true
     _slow_timer = projectile.slow_duration
@@ -170,3 +180,21 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 
     if health <= 0:
         queue_free()
+
+
+func _play_damage_feedback() -> void:
+    if _damage_flash_tween != null:
+        _damage_flash_tween.kill()
+
+    sprite.modulate = Color(2.0, 2.0, 2.0, 1.0)
+    _damage_flash_tween = create_tween()
+    _damage_flash_tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
+
+    if SfxManager != null:
+        var sfx_player := SfxManager.play_sfx(HIT_DAMAGE_SFX, &"SFX", 0.0, false, false)
+        if is_instance_valid(sfx_player):
+            sfx_player.pitch_scale = 0.88
+
+    var camera := get_viewport().get_camera_2d()
+    if camera != null and camera.has_method("shake"):
+        camera.call("shake", 0.65, 0.08)

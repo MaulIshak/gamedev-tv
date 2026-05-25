@@ -2,7 +2,7 @@ class_name IdleState
 extends PlayerState
 
 func enter() -> void:
-    pass
+    player.sprite.play("idle")
 
 func process(_delta: float) -> void:
     if player.is_input_disabled:
