@@ -13,7 +13,7 @@ var _transition_tween: Tween
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	gameplay_bgm = preload("res://assets/audio/bgm/sparkle.mp3")
+	gameplay_bgm = preload("res://assets/audio/bgm/Calibration_Room_Seven.mp3")
     
 	bgm_player = AudioStreamPlayer.new()
 	add_child(bgm_player)
