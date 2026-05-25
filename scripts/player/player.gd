@@ -1,6 +1,8 @@
 class_name Player
 extends CharacterBody2D
 
+signal died
+
 const WHOOSH_SFX: AudioStream = preload("res://assets/audio/sfx/whoosh.wav")
 const HIT_DAMAGE_SFX: AudioStream = preload("res://assets/audio/sfx/hit_damage.wav")
 
@@ -223,6 +225,9 @@ func get_dash_cooldown_progress() -> float:
 
 
 func take_damage(amount: int) -> void:
+	if health <= 0:
+		return
+
 	if is_immune:
 		print("Masih immune bang")
 		return
@@ -262,3 +267,22 @@ func _on_instant_effect(id: String, value: float) -> void:
 
 func die() -> void:
 	print("Mati woi")
+	disable_input()
+	died.emit()
+
+
+func reset_for_restart() -> void:
+	_apply_upgrade_stats()
+	health = max_health
+	is_immune = false
+	_immune_time_left = 0.0
+	_immune_blink_time_left = 0.0
+	is_dashing = false
+	_dash_time_left = 0.0
+	_dash_cooldown_left = 0.0
+	_dash_trail_time_left = 0.0
+	dash_direction = Vector2.ZERO
+	velocity = Vector2.ZERO
+	sprite.visible = true
+	sprite.modulate = Color.WHITE
+	enable_input()

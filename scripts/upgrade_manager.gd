@@ -5,6 +5,10 @@ signal instant_effect_applied(id: String, value: float)
 
 var _levels: Dictionary = {}
 
+
+func reset() -> void:
+	_levels.clear()
+
 func get_level(id: String) -> int:
 	return _levels.get(id, 0)
 

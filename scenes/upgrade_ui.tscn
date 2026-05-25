@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://bab2rrhdeori6"]
 
 [ext_resource type="Script" uid="uid://matp30rqpjk2" path="res://scripts/upgrade_ui.gd" id="1_k1o73"]
-[ext_resource type="Texture2D" uid="uid://ewng4cgdu3v8" path="res://assets/sprites/kartu.png" id="2_card"]
 [ext_resource type="Shader" uid="uid://cf7fdprexc7s0" path="res://shaders/UpgradeCardShaders.gdshader" id="3_card_shader"]
 [ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="4_font"]
 [ext_resource type="Shader" uid="uid://gg1csxl8vust" path="res://shaders/FontMenuShaders.gdshader" id="5_font_shader"]
+[ext_resource type="Texture2D" uid="uid://b0sjmsx7w0voi" path="res://assets/sprites/kartu_fix.png" id="5_onvvk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_title"]
 shader = ExtResource("5_font_shader")
@@ -101,10 +101,15 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -25.0
+offset_right = -22.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.5, 1.5)
 mouse_filter = 2
-texture = ExtResource("2_card")
+texture = ExtResource("5_onvvk")
 expand_mode = 1
 stretch_mode = 5
 
@@ -165,10 +170,15 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -25.0
+offset_right = -22.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.5, 1.5)
 mouse_filter = 2
-texture = ExtResource("2_card")
+texture = ExtResource("5_onvvk")
 expand_mode = 1
 stretch_mode = 5
 
@@ -229,10 +239,15 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -25.0
+offset_right = -22.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.5, 1.5)
 mouse_filter = 2
-texture = ExtResource("2_card")
+texture = ExtResource("5_onvvk")
 expand_mode = 1
 stretch_mode = 5
 
