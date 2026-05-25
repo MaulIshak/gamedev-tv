@@ -2,6 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://d3uu24ue8xkaa" path="res://shaders/lightning.gdshader" id="1_k2dum"]
 [ext_resource type="Script" uid="uid://dsoidc3tr07mw" path="res://scripts/connection.gd" id="2_n7g4i"]
+[ext_resource type="Script" uid="uid://cem74m8e5ghyg" path="res://scripts/projectile.gd" id="3_gpx16"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_k2dum"]
 
@@ -14,9 +15,20 @@ shader_parameter/amplitude = 0.1
 shader_parameter/core_thickness = 0.004
 shader_parameter/glow_strength = 0.015
 
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_n7g4i"]
+
 [node name="Lightning" type="Line2D" unique_id=386218423]
 material = SubResource("ShaderMaterial_n7g4i")
 points = PackedVector2Array(-22, -37, -2, 107)
 width = 40.0
 texture_mode = 1
 script = ExtResource("2_n7g4i")
+
+[node name="DamageZone" type="Area2D" parent="." unique_id=484680523]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("3_gpx16")
+damage = 25
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageZone" unique_id=905426567]
+shape = SubResource("SegmentShape2D_n7g4i")

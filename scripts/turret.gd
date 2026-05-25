@@ -3,6 +3,7 @@ extends Node2D
 
 @export var popup_time: float = 0.32
 @export var start_hidden: bool = true
+@export var explosion_scene: PackedScene
 
 @onready var turret_body: Node2D = $Mask/TurretBody
 @onready var floor_sprite: Sprite2D = $Mask/TurretBody/Floor
@@ -55,7 +56,18 @@ func snap_hidden() -> void:
 
 
 func on_connection_expired() -> void:
-	pass
+	if explosion_scene == null:
+		return
+
+	var explosion := explosion_scene.instantiate() as Node2D
+	explosion.global_position = global_position
+
+	var damage_area := explosion.get_node_or_null("DamageArea") as Projectile
+	if damage_area != null:
+		damage_area.damage += int(UpgradeManager.get_stat_add("shockwave_damage"))
+		damage_area.slow_amount += UpgradeManager.get_stat_add("slow_power")
+
+	get_tree().current_scene.add_child(explosion)
 
 
 func _store_source_sprite_state() -> void:

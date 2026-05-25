@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://bab2rrhdeori6"]
+
+[ext_resource type="Script" uid="uid://d4fb60uh1eux6" path="res://scripts/upgrade_ui.gd" id="1_k1o73"]
+
+[node name="UpgradeUI" type="Control" unique_id=1970553632]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k1o73")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="." unique_id=602935593]
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 101.0
+alignment = 1
+
+[node name="Left" type="Button" parent="HBoxContainer" unique_id=2080607172]
+layout_mode = 2
+text = "UP 1"
+
+[node name="Mid" type="Button" parent="HBoxContainer" unique_id=1830236907]
+layout_mode = 2
+text = "UP 2"
+
+[node name="Right" type="Button" parent="HBoxContainer" unique_id=128809898]
+layout_mode = 2
+text = "UP 3"
