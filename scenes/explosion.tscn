@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://hjsag8qq4ath"]
 
-[ext_resource type="Script" uid="uid://dmjj2qp8fmmuk" path="res://scripts/explosion.gd" id="1_nfeox"]
-[ext_resource type="Script" uid="uid://cem74m8e5ghyg" path="res://scripts/projectile.gd" id="2_aw4cw"]
+[ext_resource type="Script" path="res://scripts/explosion.gd" id="1_nfeox"]
+[ext_resource type="Script" path="res://scripts/projectile.gd" id="2_aw4cw"]
 
 [sub_resource type="Shader" id="Shader_3oo6d"]
 code = "shader_type canvas_item;
@@ -64,11 +64,14 @@ void fragment() {
     COLOR = vec4(final_color, min(glow, 1.0) * glow_color.a);
 }"
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nfeox"]
+
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_17npe"]
+noise = SubResource("FastNoiseLite_nfeox")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nfeox"]
 shader = SubResource("Shader_3oo6d")
-shader_parameter/glow_color = Color(0.2, 0.6, 2, 1)
+shader_parameter/glow_color = Color(0, 0.41121212, 2.0002677, 1)
 shader_parameter/progress = 0.0
 shader_parameter/ring_thickness = 0.0110000005225
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_17npe")

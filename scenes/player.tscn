@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://bedtsfywkahp" path="res://scripts/player/player_connection_manager.gd" id="7_fjrip"]
 [ext_resource type="PackedScene" uid="uid://2sk7v1wa56ul" path="res://scenes/cable.tscn" id="8_ur7pv"]
 [ext_resource type="PackedScene" uid="uid://dwjc1ew1i3vl0" path="res://scenes/lightning.tscn" id="9_y4r1p"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/footstep_concrete_001.ogg" id="10_footstep"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_qlg0r"]
 animations = [{
@@ -77,3 +78,6 @@ script = ExtResource("7_fjrip")
 cable_scene = ExtResource("8_ur7pv")
 lightning_scene = ExtResource("9_y4r1p")
 connection_duration = 5.0
+
+[node name="FootstepSFX" type="AudioStreamPlayer2D" parent="." unique_id=2144037591]
+stream = ExtResource("10_footstep")

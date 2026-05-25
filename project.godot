@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 UpgradeManager="*res://scripts/upgrade_manager.gd"
 BgmManager="*uid://dqfmqg3p7dxg"
 GlobalEventBus="*res://scripts/singleton/global_event_bus.gd"
+SfxManager="*uid://c8jbh1p1p4jnx"
 
 [display]
 

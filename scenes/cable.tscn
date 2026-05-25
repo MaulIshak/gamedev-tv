@@ -1,9 +1,20 @@
 [gd_scene format=3 uid="uid://2sk7v1wa56ul"]
 
 [ext_resource type="Script" uid="uid://dsoidc3tr07mw" path="res://scripts/connection.gd" id="1_rj3a4"]
+[ext_resource type="Shader" uid="uid://bsvukr4su2slp" path="res://shaders/connection_dash.gdshader" id="2_dashshd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dash"]
+shader = ExtResource("2_dashshd")
+shader_parameter/line_color = Color(1, 0.9, 0.15, 1)
+shader_parameter/dash_count = 14.0
+shader_parameter/dash_fill = 0.56
+shader_parameter/core_thickness = 0.18
+shader_parameter/glow_strength = 1.05
+shader_parameter/gap_alpha = 0.18
 
 [node name="cable" type="Line2D" unique_id=883335492]
+material = SubResource("ShaderMaterial_dash")
 points = PackedVector2Array(100, 94, 0, 0)
-width = 2.0
-default_color = Color(0.27058825, 1, 0.4745098, 1)
+width = 3.865
+default_color = Color(1, 0.8980392, 0.14901961, 1)
 script = ExtResource("1_rj3a4")

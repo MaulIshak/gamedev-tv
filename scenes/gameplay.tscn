@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://cfhd1hkmh7rp3" path="res://scenes/ui/settings_screen.tscn" id="13_settings"]
 [ext_resource type="PackedScene" uid="uid://8did25w6ijki" path="res://scenes/ui/credits_screen.tscn" id="14_credits"]
 [ext_resource type="PackedScene" uid="uid://bcnwuo1m4cp4h" path="res://scenes/ui/pause_menu.tscn" id="15_pause"]
+[ext_resource type="Script" uid="uid://c8e5q6qv1xk4l" path="res://scripts/camera_2d.gd" id="16_camera"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l1v76"]
 texture = ExtResource("1_00tan")
@@ -149,6 +150,7 @@ tile_set = SubResource("TileSet_ct7aa")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=646085366]
 position = Vector2(-8, 40)
 zoom = Vector2(0.8, 0.8)
+script = ExtResource("16_camera")
 
 [node name="Player" parent="." unique_id=2047568749 instance=ExtResource("1_7biu0")]
 position = Vector2(-3, 5)

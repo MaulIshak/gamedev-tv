@@ -5,6 +5,8 @@ signal expired(from_tower: Node2D, to_tower: Node2D)
 var start_pos: Node2D
 var end_pos: Node2D
 var offset: Vector2 = Vector2.ZERO
+var start_offset: Vector2 = Vector2.ZERO
+var end_offset: Vector2 = Vector2.ZERO
 
 var _timer: float = -1.0
 
@@ -19,8 +21,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if start_pos != null and end_pos != null:
-		points[0] = start_pos.position + offset
-		points[1] = end_pos.position + offset
+		points[0] = start_pos.position + offset + start_offset
+		points[1] = end_pos.position + offset + end_offset
 
 		if damage_zone and collision_shape and collision_shape.shape is SegmentShape2D:
 			var seg := collision_shape.shape as SegmentShape2D
