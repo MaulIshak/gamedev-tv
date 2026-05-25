@@ -319,10 +319,10 @@ navigation_polygon = SubResource("NavigationPolygon_e124b")
 
 [node name="Label2" type="Label" parent="." unique_id=2142846621]
 material = SubResource("ShaderMaterial_525vb")
-offset_left = -298.0
-offset_top = 159.0
-offset_right = -105.0
-offset_bottom = 200.3125
+offset_left = -273.0
+offset_top = 151.0
+offset_right = -80.0
+offset_bottom = 192.3125
 theme_override_constants/line_spacing = -8
 theme_override_constants/paragraph_spacing = -1
 theme_override_fonts/font = SubResource("FontVariation_25e7j")
