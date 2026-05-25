@@ -20,7 +20,7 @@ static func play(owner: Node, buttons: Array[Control]) -> void:
 		if not is_instance_valid(button):
 			continue
 
-		var visual := button.get_node_or_null("Label") as Control
+		var visual := _get_visual_node(button)
 		if visual != null and not visual.has_meta("intro_base_position"):
 			visual.set_meta("intro_base_position", visual.position)
 
@@ -59,7 +59,7 @@ static func play_exit(owner: Node, buttons: Array[Control]) -> Tween:
 		if not is_instance_valid(button):
 			continue
 
-		var visual := button.get_node_or_null("Label") as Control
+		var visual := _get_visual_node(button)
 		if visual != null and not visual.has_meta("intro_base_position"):
 			visual.set_meta("intro_base_position", visual.position)
 
@@ -78,3 +78,8 @@ static func play_exit(owner: Node, buttons: Array[Control]) -> Tween:
 		tween.tween_property(button, "scale", START_SCALE, SLIDE_DURATION).set_delay(i * ITEM_DELAY).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 
 	return tween
+
+
+static func _get_visual_node(item: Control) -> Control:
+	var label := item.get_node_or_null("Label") as Control
+	return label if label != null else item

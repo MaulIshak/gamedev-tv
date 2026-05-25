@@ -8,6 +8,7 @@ signal settings_requested
 signal main_menu_requested
 
 @onready var _buttons: Array[Control] = [
+	$Title,
 	$VBoxContainer/Resume,
 	$VBoxContainer/Settings,
 	$VBoxContainer/MainMenu,

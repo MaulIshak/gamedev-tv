@@ -1,12 +1,16 @@
-[gd_resource type="Resource" script_class="UpgradeDef" format=3]
+[gd_resource type="Resource" script_class="UpgradeDef" format=3 uid="uid://bi8o86ban4p52"]
 
-[ext_resource type="Script" path="res://scripts/upgrade_def.gd" id="1_updef"]
+[ext_resource type="Texture2D" uid="uid://bx6fje331blhy" path="res://assets/sprites/icons.png" id="1_63br3"]
+[ext_resource type="Script" uid="uid://c2ehnje3gx33y" path="res://scripts/upgrade_def.gd" id="1_updef"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a1jtd"]
+atlas = ExtResource("1_63br3")
+region = Rect2(64, 32, 32, 32)
 
 [resource]
 script = ExtResource("1_updef")
 id = "slow_power"
 display_name = "Slow Power"
 description = "Enemies are slower when damaged"
-max_level = 3
-base_value = 0.0
 value_per_level = -0.05
+icon_texture = SubResource("AtlasTexture_a1jtd")

@@ -1,12 +1,16 @@
-[gd_resource type="Resource" script_class="UpgradeDef" format=3]
+[gd_resource type="Resource" script_class="UpgradeDef" format=3 uid="uid://cfck170vd6gcs"]
 
-[ext_resource type="Script" path="res://scripts/upgrade_def.gd" id="1_updef"]
+[ext_resource type="Texture2D" uid="uid://bx6fje331blhy" path="res://assets/sprites/icons.png" id="1_td7ie"]
+[ext_resource type="Script" uid="uid://c2ehnje3gx33y" path="res://scripts/upgrade_def.gd" id="1_updef"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_busfx"]
+atlas = ExtResource("1_td7ie")
+region = Rect2(32, 0, 32, 32)
 
 [resource]
 script = ExtResource("1_updef")
 id = "enemy_immunity"
 display_name = "Weaken Enemies"
 description = "Reduce enemy damage immunity"
-max_level = 3
-base_value = 0.0
 value_per_level = -0.1
+icon_texture = SubResource("AtlasTexture_busfx")

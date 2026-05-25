@@ -1,30 +1,273 @@
 [gd_scene format=3 uid="uid://bab2rrhdeori6"]
 
-[ext_resource type="Script" uid="uid://d4fb60uh1eux6" path="res://scripts/upgrade_ui.gd" id="1_k1o73"]
+[ext_resource type="Script" uid="uid://matp30rqpjk2" path="res://scripts/upgrade_ui.gd" id="1_k1o73"]
+[ext_resource type="Texture2D" uid="uid://ewng4cgdu3v8" path="res://assets/sprites/kartu.png" id="2_card"]
+[ext_resource type="Shader" uid="uid://cf7fdprexc7s0" path="res://shaders/UpgradeCardShaders.gdshader" id="3_card_shader"]
+[ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="4_font"]
+[ext_resource type="Shader" uid="uid://gg1csxl8vust" path="res://shaders/FontMenuShaders.gdshader" id="5_font_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_title"]
+shader = ExtResource("5_font_shader")
+shader_parameter/fill_color = Color(0.92, 0.97, 0.96, 1)
+shader_parameter/fill_strength = 1.0
+shader_parameter/alpha_cutoff = 0.45
+shader_parameter/outline_color = Color(0.015, 0.018, 0.022, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/shadow_color = Color(0, 0, 0, 0.96)
+shader_parameter/shadow_offset = Vector2(1.5, 2.25)
+shader_parameter/shadow_depth = 3.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 1.0
+shader_parameter/shadow_alpha_decay = 0.92
+shader_parameter/top_highlight = Color(0.55, 0.95, 1, 0.2)
+shader_parameter/highlight_cutoff = 0.46
+
+[sub_resource type="FontVariation" id="FontVariation_upgrade"]
+base_font = ExtResource("4_font")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_button"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_card"]
+resource_local_to_scene = true
+shader = ExtResource("3_card_shader")
+shader_parameter/hover_outline_color = Color(0.35, 0.95, 1, 1)
+shader_parameter/select_outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 2.0
+shader_parameter/hover_strength = 0.0
+shader_parameter/select_strength = 0.0
+shader_parameter/blink_speed = 12.0
+shader_parameter/alpha_cutoff = 0.1
 
 [node name="UpgradeUI" type="Control" unique_id=1970553632]
 layout_mode = 3
+anchors_preset = 0
+offset_left = -240.0
+offset_top = -112.0
+offset_right = 240.0
+offset_bottom = 178.0
+mouse_filter = 2
+script = ExtResource("1_k1o73")
+
+[node name="Backdrop" type="ColorRect" parent="." unique_id=1211448147]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_k1o73")
+mouse_filter = 2
+color = Color(0, 0, 0, 0.56)
 
-[node name="HBoxContainer" type="VBoxContainer" parent="." unique_id=602935593]
+[node name="Cards" type="Control" parent="." unique_id=1934272241]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Cards" unique_id=1047720684]
+material = SubResource("ShaderMaterial_title")
 layout_mode = 0
-offset_right = 80.0
-offset_bottom = 101.0
-alignment = 1
+offset_left = 57.0
+offset_top = 30.0
+offset_right = 423.0
+offset_bottom = 68.0
+theme_override_fonts/font = SubResource("FontVariation_upgrade")
+theme_override_font_sizes/font_size = 32
+text = "Upgrade Module"
+horizontal_alignment = 1
 
-[node name="Left" type="Button" parent="HBoxContainer" unique_id=2080607172]
-layout_mode = 2
-text = "UP 1"
+[node name="Left" type="Button" parent="Cards" unique_id=2080607172]
+custom_minimum_size = Vector2(88, 112)
+layout_mode = 0
+offset_left = 92.0
+offset_top = 90.0
+offset_right = 180.0
+offset_bottom = 202.0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_button")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_button")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_button")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_button")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_button")
+flat = true
 
-[node name="Mid" type="Button" parent="HBoxContainer" unique_id=1830236907]
-layout_mode = 2
-text = "UP 2"
+[node name="CardBack" type="TextureRect" parent="Cards/Left" unique_id=103829179]
+material = SubResource("ShaderMaterial_card")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_card")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Right" type="Button" parent="HBoxContainer" unique_id=128809898]
-layout_mode = 2
-text = "UP 3"
+[node name="Icon" type="TextureRect" parent="Cards/Left" unique_id=1029313777]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 16.0
+offset_right = 54.0
+offset_bottom = 48.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Cards/Left" unique_id=549693137]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 45.0
+offset_right = 62.0
+offset_bottom = 71.0
+theme_override_colors/font_color = Color(0.06, 0.09, 0.1, 1)
+theme_override_constants/line_spacing = -4
+theme_override_fonts/font = SubResource("FontVariation_upgrade")
+theme_override_font_sizes/font_size = 12
+text = "UPGRADE"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Level" type="Label" parent="Cards/Left" unique_id=1850999122]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 68.0
+offset_right = 65.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06, 0.09, 0.1, 1)
+theme_override_fonts/font = SubResource("FontVariation_upgrade")
+theme_override_font_sizes/font_size = 13
+text = "LV.1"
+horizontal_alignment = 1
+
+[node name="Mid" type="Button" parent="Cards" unique_id=1830236907]
+custom_minimum_size = Vector2(88, 112)
+layout_mode = 0
+offset_left = 196.0
+offset_top = 90.0
+offset_right = 284.0
+offset_bottom = 202.0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_button")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_button")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_button")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_button")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_button")
+flat = true
+
+[node name="CardBack" type="TextureRect" parent="Cards/Mid" unique_id=1272812642]
+material = SubResource("ShaderMaterial_card")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_card")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Icon" type="TextureRect" parent="Cards/Mid" unique_id=1175375192]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 16.0
+offset_right = 54.0
+offset_bottom = 48.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Cards/Mid" unique_id=1633160138]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 45.0
+offset_right = 61.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0.06, 0.09, 0.1, 1)
+theme_override_constants/line_spacing = -4
+theme_override_fonts/font = SubResource("FontVariation_upgrade")
+theme_override_font_sizes/font_size = 12
+text = "UPGRADE"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Level" type="Label" parent="Cards/Mid" unique_id=386067696]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 68.0
+offset_right = 65.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06, 0.09, 0.1, 1)
+theme_override_fonts/font = SubResource("FontVariation_upgrade")
+theme_override_font_sizes/font_size = 13
+text = "LV.1"
+horizontal_alignment = 1
+
+[node name="Right" type="Button" parent="Cards" unique_id=128809898]
+custom_minimum_size = Vector2(88, 112)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 90.0
+offset_right = 388.0
+offset_bottom = 202.0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_button")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_button")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_button")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_button")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_button")
+flat = true
+
+[node name="CardBack" type="TextureRect" parent="Cards/Right" unique_id=1342289031]
+material = SubResource("ShaderMaterial_card")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_card")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Icon" type="TextureRect" parent="Cards/Right" unique_id=247337950]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 16.0
+offset_right = 54.0
+offset_bottom = 48.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Cards/Right" unique_id=84680410]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 45.0
+offset_right = 62.0
+offset_bottom = 71.0
+theme_override_colors/font_color = Color(0.06, 0.09, 0.1, 1)
+theme_override_constants/line_spacing = -4
+theme_override_fonts/font = SubResource("FontVariation_upgrade")
+theme_override_font_sizes/font_size = 12
+text = "UPGRADE"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Level" type="Label" parent="Cards/Right" unique_id=1592234604]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 68.0
+offset_right = 65.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06, 0.09, 0.1, 1)
+theme_override_fonts/font = SubResource("FontVariation_upgrade")
+theme_override_font_sizes/font_size = 13
+text = "LV.1"
+horizontal_alignment = 1

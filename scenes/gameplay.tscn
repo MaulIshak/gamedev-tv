@@ -9,13 +9,13 @@
 [ext_resource type="Script" uid="uid://dmxor68ay1hfg" path="res://scripts/wave_manager.gd" id="7_4bh5q"]
 [ext_resource type="Texture2D" uid="uid://dyc10670w15xw" path="res://assets/sprites/border_connect.png" id="8_e124b"]
 [ext_resource type="PackedScene" uid="uid://bab2rrhdeori6" path="res://scenes/upgrade_ui.tscn" id="9_101mb"]
-[ext_resource type="Shader" path="res://shaders/CRTShaders.gdshader" id="10_lcd4o"]
+[ext_resource type="Shader" uid="uid://cj8gylg30aid7" path="res://shaders/CRTShaders.gdshader" id="10_lcd4o"]
 [ext_resource type="PackedScene" uid="uid://bg6kc4dg4b881" path="res://scenes/ui/main_menu.tscn" id="11_menu"]
 [ext_resource type="Script" uid="uid://drdev25bjj637" path="res://scripts/ui/gameplay_menu_controller.gd" id="12_controller"]
 [ext_resource type="PackedScene" uid="uid://cfhd1hkmh7rp3" path="res://scenes/ui/settings_screen.tscn" id="13_settings"]
 [ext_resource type="PackedScene" uid="uid://8did25w6ijki" path="res://scenes/ui/credits_screen.tscn" id="14_credits"]
 [ext_resource type="PackedScene" uid="uid://bcnwuo1m4cp4h" path="res://scenes/ui/pause_menu.tscn" id="15_pause"]
-[ext_resource type="Script" uid="uid://c8e5q6qv1xk4l" path="res://scripts/camera_2d.gd" id="16_camera"]
+[ext_resource type="Script" path="res://scripts/camera_2d.gd" id="16_camera"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l1v76"]
 texture = ExtResource("1_00tan")
@@ -201,12 +201,42 @@ enemy_max_spawn_attempts = 20
 [node name="wave_manager" type="Node" parent="." unique_id=2000202662 node_paths=PackedStringArray("spawner", "upgrade_ui", "connection_manager")]
 script = ExtResource("7_4bh5q")
 spawner = NodePath("../spawner")
-upgrade_ui = NodePath("../UpgradeUI")
+upgrade_ui = NodePath("../GUI/UpgradeUI")
 connection_manager = NodePath("../Player/PlayerConnectionManager")
 
 [node name="GUI" type="Node2D" parent="." unique_id=449920651]
 position = Vector2(-3, 2)
 script = ExtResource("12_controller")
+
+[node name="MainMenu" parent="GUI" unique_id=1759698855 instance=ExtResource("11_menu")]
+offset_left = -163.0
+offset_top = -92.0
+offset_right = 101.0
+offset_bottom = 54.0
+
+[node name="SettingsScreen" parent="GUI" unique_id=294944446 instance=ExtResource("13_settings")]
+visible = false
+offset_top = -73.0
+offset_bottom = 113.0
+
+[node name="CreditsScreen" parent="GUI" unique_id=779497595 instance=ExtResource("14_credits")]
+visible = false
+offset_top = -73.0
+offset_bottom = 95.0
+
+[node name="PauseMenu" parent="GUI" unique_id=73283231 instance=ExtResource("15_pause")]
+visible = false
+offset_left = -190.0
+offset_top = -79.0
+offset_right = 74.0
+offset_bottom = 67.0
+
+[node name="UpgradeUI" parent="GUI" unique_id=1970553632 node_paths=PackedStringArray("player") instance=ExtResource("9_101mb")]
+offset_left = -238.0
+offset_top = -96.0
+offset_right = 242.0
+offset_bottom = 194.0
+player = NodePath("../../Player")
 
 [node name="ColorRect" type="ColorRect" parent="GUI" unique_id=739227198]
 offset_left = -311.0
@@ -244,29 +274,6 @@ offset_right = 224.0
 offset_bottom = 174.0
 mouse_filter = 2
 
-[node name="MainMenu" parent="GUI" unique_id=1759698855 instance=ExtResource("11_menu")]
-offset_left = -163.0
-offset_top = -92.0
-offset_right = 101.0
-offset_bottom = 54.0
-
-[node name="SettingsScreen" parent="GUI" unique_id=294944446 instance=ExtResource("13_settings")]
-visible = false
-offset_top = -73.0
-offset_bottom = 113.0
-
-[node name="CreditsScreen" parent="GUI" unique_id=779497595 instance=ExtResource("14_credits")]
-visible = false
-offset_top = -73.0
-offset_bottom = 95.0
-
-[node name="PauseMenu" parent="GUI" unique_id=73283231 instance=ExtResource("15_pause")]
-visible = false
-offset_left = -190.0
-offset_top = -79.0
-offset_right = 74.0
-offset_bottom = 67.0
-
 [node name="BorderConnect" type="Sprite2D" parent="GUI" unique_id=1977651702]
 position = Vector2(3, 38.25)
 scale = Vector2(1.0714285, 0.86820656)
@@ -276,10 +283,3 @@ texture = ExtResource("8_e124b")
 visible = false
 position = Vector2(-256, -88)
 navigation_polygon = SubResource("NavigationPolygon_e124b")
-
-[node name="UpgradeUI" parent="." unique_id=1970553632 node_paths=PackedStringArray("player") instance=ExtResource("9_101mb")]
-offset_left = -40.0
-offset_top = -16.0
-offset_right = -40.0
-offset_bottom = -16.0
-player = NodePath("../Player")

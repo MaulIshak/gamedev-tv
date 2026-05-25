@@ -9,6 +9,7 @@ signal credits_requested
 signal quit_requested
 
 @onready var _buttons: Array[Control] = [
+	$Control,
 	$VBoxContainer/StartGame,
 	$VBoxContainer/Settings,
 	$VBoxContainer/Credits,

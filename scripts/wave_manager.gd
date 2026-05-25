@@ -1,7 +1,7 @@
 extends Node
 
 @export var spawner: Spawner
-@export var upgrade_ui: UpgradeUI
+@export var upgrade_ui: Control
 @export var connection_manager: PlayerConnectionManager
 
 @export_group("Wave Budget")
@@ -42,7 +42,7 @@ func _ready() -> void:
 	if spawner == null:
 		push_warning("wave_manager: spawner is null")
 
-	if upgrade_ui != null:
+	if upgrade_ui != null and upgrade_ui.has_signal("upgrade_selected"):
 		upgrade_ui.upgrade_selected.connect(func(_id: String) -> void:
 			next_wave()
 		)
@@ -126,7 +126,7 @@ func _process(_delta: float) -> void:
 			spawner.clear_turrets()
 			spawner.clear_enemies()
 		_clear_explosions()
-		if upgrade_ui != null:
+		if upgrade_ui != null and upgrade_ui.has_method("show_upgrades"):
 			upgrade_ui.show_upgrades()
 
 
@@ -138,8 +138,9 @@ func _clear_runtime_nodes() -> void:
 		spawner.clear_enemies()
 	if upgrade_ui != null:
 		upgrade_ui.hide()
-		if upgrade_ui.player != null:
-			upgrade_ui.player.enable_input()
+		var upgrade_player = upgrade_ui.get("player")
+		if upgrade_player != null and upgrade_player.has_method("enable_input"):
+			upgrade_player.enable_input()
 	_clear_explosions()
 
 

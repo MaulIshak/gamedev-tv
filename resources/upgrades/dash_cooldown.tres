@@ -1,12 +1,16 @@
-[gd_resource type="Resource" script_class="UpgradeDef" format=3]
+[gd_resource type="Resource" script_class="UpgradeDef" format=3 uid="uid://cm28gaxcp8dcw"]
 
-[ext_resource type="Script" path="res://scripts/upgrade_def.gd" id="1_updef"]
+[ext_resource type="Texture2D" uid="uid://bx6fje331blhy" path="res://assets/sprites/icons.png" id="1_pw3vd"]
+[ext_resource type="Script" uid="uid://c2ehnje3gx33y" path="res://scripts/upgrade_def.gd" id="1_updef"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pt7su"]
+atlas = ExtResource("1_pw3vd")
+region = Rect2(0, 0, 32, 32)
 
 [resource]
 script = ExtResource("1_updef")
 id = "dash_cooldown"
 display_name = "Dash Cooldown"
 description = "Reduce dash cooldown"
-max_level = 3
-base_value = 0.0
 value_per_level = -0.02
+icon_texture = SubResource("AtlasTexture_pt7su")
