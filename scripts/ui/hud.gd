@@ -1,38 +1,55 @@
 extends Node2D
 
 @onready var control: Control = $Control
-var heart_tex: Texture = preload("res://assets/sprites/heart.png")
-var hearts_container: HBoxContainer
+@onready var hearts_container: HBoxContainer = $Control/Hearts
+
+var heart_tex: Texture = preload("res://assets/sprites/heartremake.png")
 var max_hearts: int = 0
 
 func _ready() -> void:
-	hearts_container = control.get_node_or_null("Hearts")
-	if hearts_container == null:
-		hearts_container = HBoxContainer.new()
-		hearts_container.name = "Hearts"
-		control.add_child(hearts_container)
-		# position inside Control
-		hearts_container.anchor_left = 0
-		hearts_container.anchor_top = 0
-		hearts_container.margin_left = 8
-		hearts_container.margin_top = 8
+	# Initially hide the HUD since the game boots to the Main Menu
+	visible = false
 
-	if GlobalEventBus.is_connected("hearts_changed", self, "_on_hearts_changed") == false:
-		GlobalEventBus.connect("hearts_changed", self, "_on_hearts_changed")
+	# Connect signals using modern Godot 4 Callable syntax
+	if not GlobalEventBus.hearts_changed.is_connected(_on_hearts_changed):
+		GlobalEventBus.hearts_changed.connect(_on_hearts_changed)
+	if not GlobalEventBus.play_requested.is_connected(_on_play_requested):
+		GlobalEventBus.play_requested.connect(_on_play_requested)
+	if not GlobalEventBus.main_menu_requested.is_connected(_on_main_menu_requested):
+		GlobalEventBus.main_menu_requested.connect(_on_main_menu_requested)
+	if not GlobalEventBus.restart_requested.is_connected(_on_restart_requested):
+		GlobalEventBus.restart_requested.connect(_on_restart_requested)
 
-	# initialize with default
-	_on_hearts_changed(0, 3)
+func _on_play_requested() -> void:
+	visible = true
 
-func _on_hearts_changed(current: int, max: int) -> void:
-	max_hearts = max
-	# clear existing
+func _on_main_menu_requested() -> void:
+	visible = false
+
+func _on_restart_requested() -> void:
+	visible = true
+
+func _on_hearts_changed(current: int, max_val: int) -> void:
+	max_hearts = max_val
+	# Clear existing heart textures
 	for child in hearts_container.get_children():
 		child.queue_free()
 
 	for i in range(max_hearts):
-		var tex = TextureRect.new()
-		tex.texture = heart_tex
-		tex.rect_min_size = Vector2(20, 20)
-		tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		tex.modulate = Color(1, 1, 1, 1) if i < current else Color(1, 1, 1, 0.25)
+		var atlas_tex := AtlasTexture.new()
+		atlas_tex.atlas = heart_tex
+		
+		# Each heart in heartremake.png is 32x32:
+		# Left tile (0, 0, 32, 32) is the full red heart
+		# Right tile (32, 0, 32, 32) is the empty dark red outline heart
+		if i < current:
+			atlas_tex.region = Rect2(0, 0, 32, 32)
+		else:
+			atlas_tex.region = Rect2(32, 0, 32, 32)
+
+		var tex := TextureRect.new()
+		tex.texture = atlas_tex
+		tex.custom_minimum_size = Vector2(32, 32)
+		tex.stretch_mode = TextureRect.STRETCH_SCALE
+		
 		hearts_container.add_child(tex)

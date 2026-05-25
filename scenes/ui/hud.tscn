@@ -1,40 +1,20 @@
-[gd_scene format=3 uid="uid://n1ituixxtq35"]
+[gd_scene format=3 uid="uid://uftpnwdw4lxo"]
 
-[ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="1_0mwgc"]
-[ext_resource type="Script" uid="uid://hudscript" path="res://scripts/ui/hud.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://b1dal5eop43ij" path="res://scripts/ui/hud.gd" id="1_script"]
 
-[sub_resource type="FontVariation" id="FontVariation_q38wi"]
-base_font = ExtResource("1_0mwgc")
+[node name="Hud" type="Node2D" unique_id=1106156762]
+script = ExtResource("1_script")
 
-[node name="Hud" type="Node2D" unique_id=562169634]
-script = ExtResource("2_script")
-
-[node name="Control" type="Control" parent="." unique_id=1370921626]
+[node name="Control" type="Control" parent="." unique_id=691727310]
 layout_mode = 3
 anchors_preset = 0
-offset_top = -1.0
-offset_right = 259.0
-offset_bottom = 116.0
+offset_right = 480.0
+offset_bottom = 40.0
 
-[node name="Label" type="Label" parent="Control" unique_id=688755939]
+[node name="Hearts" type="HBoxContainer" parent="Control" unique_id=1891293216]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 2.0
-offset_right = 131.0
-offset_bottom = 92.0
-theme_override_fonts/font = SubResource("FontVariation_q38wi")
-theme_override_font_sizes/font_size = 77
-text = "MANY"
-autowrap_mode = 2
-
-[node name="Label2" type="Label" parent="Control" unique_id=1771384470]
-layout_mode = 0
-offset_left = 166.0
-offset_top = 12.0
-offset_right = 286.0
-offset_bottom = 75.5625
-theme_override_constants/line_spacing = -13
-theme_override_fonts/font = SubResource("FontVariation_q38wi")
-theme_override_font_sizes/font_size = 34
-text = "TO 
-MANY"
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_constants/separation = -10
