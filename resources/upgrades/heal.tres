@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UpgradeDef" format=3]
+
+[ext_resource type="Script" path="res://scripts/upgrade_def.gd" id="1_updef"]
+
+[resource]
+script = ExtResource("1_updef")
+id = "heal"
+display_name = "Heal"
+description = "Instantly restore health"
+max_level = 999
+base_value = 0.0
+value_per_level = 1.0
+apply_type = 1

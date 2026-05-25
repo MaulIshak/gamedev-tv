@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://c3eg72vib8lt7" path="res://scenes/enemy.tscn" id="5_ocj2s"]
 [ext_resource type="Script" uid="uid://dmxor68ay1hfg" path="res://scripts/wave_manager.gd" id="7_4bh5q"]
 [ext_resource type="Texture2D" uid="uid://dyc10670w15xw" path="res://assets/sprites/border_connect.png" id="8_e124b"]
+[ext_resource type="PackedScene" uid="uid://bab2rrhdeori6" path="res://scenes/upgrade_ui.tscn" id="9_101mb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l1v76"]
 texture = ExtResource("1_00tan")
@@ -136,9 +137,10 @@ enemy_edge_margin = 32.0
 min_enemy_distance = 32.0
 enemy_max_spawn_attempts = 20
 
-[node name="wave_manager" type="Node" parent="." unique_id=2000202662 node_paths=PackedStringArray("spawner")]
+[node name="wave_manager" type="Node" parent="." unique_id=2000202662 node_paths=PackedStringArray("spawner", "upgrade_ui")]
 script = ExtResource("7_4bh5q")
 spawner = NodePath("../spawner")
+upgrade_ui = NodePath("../UpgradeUI")
 
 [node name="GUI" type="Node2D" parent="." unique_id=449920651]
 position = Vector2(-3, 2)
@@ -179,3 +181,10 @@ texture = ExtResource("8_e124b")
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=301168954]
 position = Vector2(-256, -88)
 navigation_polygon = SubResource("NavigationPolygon_e124b")
+
+[node name="UpgradeUI" parent="." unique_id=1970553632 node_paths=PackedStringArray("player") instance=ExtResource("9_101mb")]
+offset_left = -40.0
+offset_top = -16.0
+offset_right = -40.0
+offset_bottom = -16.0
+player = NodePath("../Player")

@@ -27,14 +27,34 @@ func _get_parent_node() -> Node2D:
 		return connection_parent
 	return get_parent().get_parent()
 
+func _process(_delta: float) -> void:
+	if _state == State.HAS_PLAYER_CABLE and not is_instance_valid(_cable_tower):
+		_destroy_player_cables()
+		_state = State.NO_CABLE
+		_cable_tower = null
+
+	for i in range(_lightning_connections.size() - 1, -1, -1):
+		var conn := _lightning_connections[i]
+		if not is_instance_valid(conn):
+			_lightning_connections.remove_at(i)
+			continue
+		if not is_instance_valid(conn.start_pos) or not is_instance_valid(conn.end_pos):
+			conn.queue_free()
+			_lightning_connections.remove_at(i)
+
 func _on_tower_entered(tower_area: Area2D) -> void:
 	var tower := tower_area.get_parent() as Node2D
-	print(tower)
+
 	match _state:
 		State.NO_CABLE:
 			if not tower.is_connected_tower:
 				_create_player_cables(tower)
 		State.HAS_PLAYER_CABLE:
+			if not is_instance_valid(_cable_tower):
+				_destroy_player_cables()
+				_state = State.NO_CABLE
+				_cable_tower = null
+				return
 			if tower != _cable_tower:
 				_create_lightning_between(_cable_tower, tower)
 
@@ -60,7 +80,11 @@ func _create_lightning_between(from_tower: Node2D, to_tower: Node2D) -> void:
 
 	var existing_conns: Array[Connection] = []
 	var max_time_left: float = 0.0
-	for conn in _lightning_connections:
+	for i in range(_lightning_connections.size() - 1, -1, -1):
+		var conn := _lightning_connections[i]
+		if not is_instance_valid(conn):
+			_lightning_connections.remove_at(i)
+			continue
 		if conn.start_pos == from_tower or conn.end_pos == from_tower or \
 		   conn.start_pos == to_tower or conn.end_pos == to_tower:
 			existing_conns.append(conn)
@@ -79,12 +103,20 @@ func _create_lightning_between(from_tower: Node2D, to_tower: Node2D) -> void:
 	lightning.end_pos = to_tower
 	lightning.start_timer(synced_duration)
 	lightning.expired.connect(_on_connection_expired)
+
+	if lightning.damage_zone != null:
+		lightning.damage_zone.damage += int(UpgradeManager.get_stat_add("lightning_damage"))
+		lightning.damage_zone.slow_amount += UpgradeManager.get_stat_add("slow_power")
+
 	_get_parent_node().add_child(lightning)
 	_lightning_connections.append(lightning)
 
 func _on_connection_expired(from_tower: Node2D, to_tower: Node2D) -> void:
 	for i in range(_lightning_connections.size() - 1, -1, -1):
 		var conn := _lightning_connections[i]
+		if not is_instance_valid(conn):
+			_lightning_connections.remove_at(i)
+			continue
 		if conn.start_pos == from_tower and conn.end_pos == to_tower:
 			_lightning_connections.remove_at(i)
 			break
@@ -100,12 +132,35 @@ func _on_connection_expired(from_tower: Node2D, to_tower: Node2D) -> void:
 		to_tower.is_connected_tower = false
 
 func _tower_has_active_connection(tower: Node2D) -> bool:
-	for conn in _lightning_connections:
+	for i in range(_lightning_connections.size() - 1, -1, -1):
+		var conn := _lightning_connections[i]
+		if not is_instance_valid(conn):
+			_lightning_connections.remove_at(i)
+			continue
 		if conn.start_pos == tower or conn.end_pos == tower:
 			return true
 	return false
 
 func _destroy_player_cables() -> void:
 	for cable in _player_cables:
-		cable.queue_free()
+		if is_instance_valid(cable):
+			cable.queue_free()
 	_player_cables.clear()
+
+func clear_all_connections() -> void:
+	_destroy_player_cables()
+
+	for i in range(_lightning_connections.size() - 1, -1, -1):
+		var conn := _lightning_connections[i]
+		if not is_instance_valid(conn):
+			_lightning_connections.remove_at(i)
+			continue
+		if is_instance_valid(conn.start_pos):
+			conn.start_pos.is_connected_tower = false
+		if is_instance_valid(conn.end_pos):
+			conn.end_pos.is_connected_tower = false
+		conn.queue_free()
+		_lightning_connections.remove_at(i)
+
+	_state = State.NO_CABLE
+	_cable_tower = null

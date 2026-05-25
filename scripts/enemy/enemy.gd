@@ -32,7 +32,7 @@ var _is_slowed: bool = false
 var _slow_timer: float = 0.0
 var _active_slow_amount: float = 1.0
 var _damage_immunity_timer: float = 0.0
-const DAMAGE_IMMUNITY_TIME: float = 0.5
+var _damage_immunity_duration: float = 0.5
 
 func _ready():
 	# Connect signals
@@ -65,6 +65,8 @@ func _ready():
 	attack_timer.wait_time = enemy_stats.attack_cooldown
 	movement_speed = movement_speed * enemy_stats.movement_speed_multiplier
 	_base_movement_speed = movement_speed
+
+	_damage_immunity_duration = 0.5 + UpgradeManager.get_stat_add("enemy_immunity")
 
 
 func _process(delta: float) -> void:
@@ -160,7 +162,7 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 		return
 
 	health -= projectile.damage
-	_damage_immunity_timer = DAMAGE_IMMUNITY_TIME
+	_damage_immunity_timer = _damage_immunity_duration
 	_is_slowed = true
 	_slow_timer = projectile.slow_duration
 	_active_slow_amount = projectile.slow_amount

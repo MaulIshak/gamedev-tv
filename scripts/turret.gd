@@ -61,6 +61,12 @@ func on_connection_expired() -> void:
 
 	var explosion := explosion_scene.instantiate() as Node2D
 	explosion.global_position = global_position
+
+	var damage_area := explosion.get_node_or_null("DamageArea") as Projectile
+	if damage_area != null:
+		damage_area.damage += int(UpgradeManager.get_stat_add("shockwave_damage"))
+		damage_area.slow_amount += UpgradeManager.get_stat_add("slow_power")
+
 	get_tree().current_scene.add_child(explosion)
 
 

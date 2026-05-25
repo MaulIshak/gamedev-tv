@@ -5,6 +5,7 @@ class_name Explosion extends Node2D
 @export var fade_duration: float = 1.0
 
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var damage_area: Projectile = $DamageArea
 @onready var collision_shape: CollisionShape2D = $DamageArea/CollisionShape2D
 
 func _ready() -> void:
@@ -19,6 +20,7 @@ func _ready() -> void:
 	twn.set_ease(Tween.EASE_IN)
 	twn.tween_method(_set_glow_alpha, 1.0, 0.0, fade_duration)
 	twn.finished.connect(queue_free)
+	sprite.material = sprite.material.duplicate()
 
 func _set_progress(value: float, max_radius: float) -> void:
 	if sprite.material:

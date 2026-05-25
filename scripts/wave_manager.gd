@@ -1,6 +1,8 @@
 extends Node
 
 @export var spawner: Spawner
+@export var upgrade_ui: UpgradeUI
+@export var connection_manager: PlayerConnectionManager
 
 @export_group("Wave Budget")
 @export var base_budget: float = 5.0
@@ -14,6 +16,7 @@ extends Node
 
 var _current_wave: int = 0
 var _is_spawning: bool = false
+var _waiting_for_clear: bool = false
 
 var enemy_data: Array = [{
 	"weight": 1.0,
@@ -40,6 +43,11 @@ func _ready() -> void:
 	get_tree().create_timer(5).timeout.connect(func () -> void:
 		next_wave()
 	)
+
+	if upgrade_ui != null:
+		upgrade_ui.upgrade_selected.connect(func(_id: String) -> void:
+			next_wave()
+		)
 
 
 func next_wave() -> void:
@@ -75,6 +83,38 @@ func next_wave() -> void:
 			await get_tree().create_timer(batch_delay).timeout
 
 	_is_spawning = false
+	_waiting_for_clear = true
+
+
+func _process(_delta: float) -> void:
+	if not _waiting_for_clear:
+		return
+	if _are_all_enemies_dead():
+		_waiting_for_clear = false
+		if connection_manager != null:
+			connection_manager.clear_all_connections()
+		if spawner != null:
+			spawner.clear_turrets()
+			spawner.clear_enemies()
+		_clear_explosions()
+		if upgrade_ui != null:
+			upgrade_ui.show_upgrades()
+
+
+func _are_all_enemies_dead() -> bool:
+	for child in spawner.enemy_parent.get_children():
+		if not child.is_queued_for_deletion():
+			return false
+	return true
+
+
+func _clear_explosions() -> void:
+	var scene := get_tree().current_scene
+	if scene == null:
+		return
+	for child in scene.get_children():
+		if child is Explosion:
+			child.queue_free()
 
 
 func _get_available_enemies() -> Array:

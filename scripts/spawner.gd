@@ -121,6 +121,18 @@ func _place_enemy(pos: Vector2, stats: EnemyStats) -> void:
 	enemy_parent.add_child(enemy)
 	_spawned_enemies.append(enemy)
 
+func clear_turrets() -> void:
+	for turret in _spawned_turrets:
+		if is_instance_valid(turret):
+			turret.queue_free()
+	_spawned_turrets.clear()
+
+func clear_enemies() -> void:
+	for enemy in _spawned_enemies:
+		if is_instance_valid(enemy):
+			enemy.queue_free()
+	_spawned_enemies.clear()
+
 # -- Generic placement helpers --------------------------------------
 
 func _get_world_rect(area: ReferenceRect) -> Rect2:
@@ -160,7 +172,10 @@ func _find_valid_position(attempts: int, generate: Callable, validate: Callable)
 
 
 func _is_too_close_to_any(pos: Vector2, nodes: Array[Node2D], min_dist: float) -> bool:
-	for node in nodes:
-		if pos.distance_to(node.global_position) < min_dist:
+	for i in range(nodes.size() - 1, -1, -1):
+		if not is_instance_valid(nodes[i]):
+			nodes.remove_at(i)
+			continue
+		if pos.distance_to(nodes[i].global_position) < min_dist:
 			return true
 	return false

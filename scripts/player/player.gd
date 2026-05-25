@@ -34,10 +34,15 @@ var _immune_blink_time_left: float = 0.0
 var is_immune: bool = false
 @export_group("Player Stats")
 var health: int = 5
+var max_health: int = 5
 
 
 const IDLE = "IdleState"
 const WALK = "WalkState"
+
+var _base_walk_speed: float = 0.0
+var _base_dash_cooldown: float = 0.0
+var _base_immune_duration: float = 0.0
 
 @onready var tower_detector: Area2D = $TowerDetector
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -47,6 +52,14 @@ func _ready() -> void:
     enable_input()
     sprite.visible = true
     sprite.modulate = Color.WHITE
+
+    _base_walk_speed = walk_speed
+    _base_dash_cooldown = dash_cooldown
+    _base_immune_duration = immune_duration
+
+    _apply_upgrade_stats()
+    UpgradeManager.upgraded.connect(_on_upgrade_applied)
+    UpgradeManager.instant_effect_applied.connect(_on_instant_effect)
 
 func _process(_delta: float) -> void:
     if is_immune:
@@ -187,7 +200,20 @@ func take_damage(amount: int) -> void:
         die()
 
 func heal(amount: int) -> void:
-    health += amount
+    health = min(health + amount, max_health)
+
+func _apply_upgrade_stats() -> void:
+    walk_speed = _base_walk_speed + UpgradeManager.get_stat_add("walk_speed")
+    dash_cooldown = _base_dash_cooldown + UpgradeManager.get_stat_add("dash_cooldown")
+    immune_duration = _base_immune_duration
+    max_health = int(5.0 + UpgradeManager.get_stat_add("max_hp"))
+
+func _on_upgrade_applied(_id: String, _new_level: int) -> void:
+    _apply_upgrade_stats()
+
+func _on_instant_effect(id: String, value: float) -> void:
+    if id == "heal":
+        heal(int(value))
 
 func die() -> void:
     print("Mati woi")
