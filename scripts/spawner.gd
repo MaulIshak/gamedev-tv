@@ -80,14 +80,44 @@ func spawn_turret() -> void:
 	if pos == null:
 		pos = _get_random_position_in_rect(rect)
 
-	_place_turret(pos)
+	# _place_turret(pos)
+	var snapped_pos = _snap_global_position_to_tile_center(pos)
+	if snapped_pos == null:
+		return
 
+	_place_turret(snapped_pos)
+
+func _snap_global_position_to_tile_center(global_pos: Vector2) -> Variant:
+	if tile_map == null:
+		return null
+
+	var local_pos: Vector2 = tile_map.to_local(global_pos)
+
+	var cell: Vector2i = tile_map.local_to_map(local_pos)
+
+	var source_id := tile_map.get_cell_source_id(cell)
+	if source_id == -1:
+		return null
+
+	var cell_center_local: Vector2 = tile_map.map_to_local(cell)
+
+	var cell_center_global: Vector2 = tile_map.to_global(cell_center_local)
+
+	return cell_center_global
 
 func _place_turret(pos: Vector2) -> void:
 	var turret := turret_scene.instantiate() as Node2D
+
+	pos.y -= 8;
+
 	turret.global_position = pos
 	turret_parent.add_child(turret)
 	_spawned_turrets.append(turret)
+	
+	await get_tree().create_timer(0.2).timeout
+	
+	if is_instance_valid(turret):
+		turret.show_turret()
 
 # -- Enemy spawning -------------------------------------------------
 
