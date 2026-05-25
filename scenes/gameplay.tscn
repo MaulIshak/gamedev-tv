@@ -9,14 +9,16 @@
 [ext_resource type="Script" uid="uid://dmxor68ay1hfg" path="res://scripts/wave_manager.gd" id="7_4bh5q"]
 [ext_resource type="Texture2D" uid="uid://dyc10670w15xw" path="res://assets/sprites/border_connect.png" id="8_e124b"]
 [ext_resource type="PackedScene" uid="uid://bab2rrhdeori6" path="res://scenes/upgrade_ui.tscn" id="9_101mb"]
-[ext_resource type="Shader" path="res://shaders/CRTShaders.gdshader" id="10_lcd4o"]
+[ext_resource type="Shader" uid="uid://cj8gylg30aid7" path="res://shaders/CRTShaders.gdshader" id="10_lcd4o"]
 [ext_resource type="PackedScene" uid="uid://bg6kc4dg4b881" path="res://scenes/ui/main_menu.tscn" id="11_menu"]
 [ext_resource type="Script" uid="uid://drdev25bjj637" path="res://scripts/ui/gameplay_menu_controller.gd" id="12_controller"]
 [ext_resource type="PackedScene" uid="uid://cfhd1hkmh7rp3" path="res://scenes/ui/settings_screen.tscn" id="13_settings"]
 [ext_resource type="PackedScene" uid="uid://8did25w6ijki" path="res://scenes/ui/credits_screen.tscn" id="14_credits"]
 [ext_resource type="PackedScene" uid="uid://bcnwuo1m4cp4h" path="res://scenes/ui/pause_menu.tscn" id="15_pause"]
-[ext_resource type="PackedScene" path="res://scenes/ui/game_over_menu.tscn" id="16_game_over"]
+[ext_resource type="PackedScene" uid="uid://dcgxhj3wowwqi" path="res://scenes/ui/game_over_menu.tscn" id="16_game_over"]
 [ext_resource type="Script" path="res://scripts/camera_2d.gd" id="17_camera"]
+[ext_resource type="Shader" uid="uid://gg1csxl8vust" path="res://shaders/FontMenuShaders.gdshader" id="18_m6b5a"]
+[ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="19_mesn4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l1v76"]
 texture = ExtResource("1_00tan")
@@ -140,6 +142,26 @@ vertices = PackedVector2Array(446, 246, 58.320313, 246, 65.67969, 18, 446, 18)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(56, 8, 456, 8, 456, 256, 48, 256)])
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_525vb"]
+shader = ExtResource("18_m6b5a")
+shader_parameter/fill_color = Color(0.99, 0.99, 0.99, 1)
+shader_parameter/fill_strength = 1.0
+shader_parameter/alpha_cutoff = 0.39200001862
+shader_parameter/outline_color = Color(0.015, 0.018, 0.022, 1)
+shader_parameter/outline_size = 4.22800020083
+shader_parameter/shadow_color = Color(0, 0, 0, 0.96)
+shader_parameter/shadow_offset = Vector2(1.5, 2.25)
+shader_parameter/shadow_depth = 4.0
+shader_parameter/shadow_depth_offset = Vector2(1, 1.35)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 1.0
+shader_parameter/shadow_alpha_decay = 0.92
+shader_parameter/top_highlight = Color(1, 1, 1, 0.14)
+shader_parameter/highlight_cutoff = 0.46
+
+[sub_resource type="FontVariation" id="FontVariation_25e7j"]
+base_font = ExtResource("19_mesn4")
+
 [node name="Gameplay" type="Node2D" unique_id=2043017776]
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=369524758]
@@ -234,7 +256,7 @@ offset_top = -79.0
 offset_right = 74.0
 offset_bottom = 67.0
 
-[node name="GameOverMenu" parent="GUI" instance=ExtResource("16_game_over")]
+[node name="GameOverMenu" parent="GUI" unique_id=491023566 instance=ExtResource("16_game_over")]
 visible = false
 offset_left = -190.0
 offset_top = -79.0
@@ -242,6 +264,7 @@ offset_right = 74.0
 offset_bottom = 67.0
 
 [node name="UpgradeUI" parent="GUI" unique_id=1970553632 node_paths=PackedStringArray("player") instance=ExtResource("9_101mb")]
+visible = false
 offset_left = -238.0
 offset_top = -96.0
 offset_right = 242.0
@@ -293,3 +316,16 @@ texture = ExtResource("8_e124b")
 visible = false
 position = Vector2(-256, -88)
 navigation_polygon = SubResource("NavigationPolygon_e124b")
+
+[node name="Label2" type="Label" parent="." unique_id=2142846621]
+material = SubResource("ShaderMaterial_525vb")
+offset_left = -298.0
+offset_top = 159.0
+offset_right = -105.0
+offset_bottom = 200.3125
+theme_override_constants/line_spacing = -8
+theme_override_constants/paragraph_spacing = -1
+theme_override_fonts/font = SubResource("FontVariation_25e7j")
+theme_override_font_sizes/font_size = 23
+text = "Left Click to Dash
+Touch Turret to link "
