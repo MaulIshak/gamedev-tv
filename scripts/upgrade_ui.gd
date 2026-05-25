@@ -4,6 +4,8 @@ signal upgrade_selected(upgrade_id: String)
 
 @export var player: Player
 
+const ELECTRIC_SHOCK_SFX: AudioStream = preload("res://assets/audio/sfx/electric_shock.mp3")
+
 @onready var _buttons: Array[Button] = [
 	$HBoxContainer/Left,
 	$HBoxContainer/Mid,
@@ -20,6 +22,9 @@ func _ready() -> void:
 func show_upgrades() -> void:
 	_populate()
 	show()
+	# Ensure lingering electric SFX is cut immediately when showing upgrades
+	if Engine.has_singleton("SfxManager"):
+		SfxManager.stop_sfx_by_stream(ELECTRIC_SHOCK_SFX)
 	if player != null:
 		player.disable_input()
 

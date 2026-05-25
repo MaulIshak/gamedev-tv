@@ -2,13 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cb6cltv3gikwh" path="res://scripts/enemy/enemy.gd" id="1_7p1mj"]
 
-[sub_resource type="Gradient" id="Gradient_8tegq"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_7p1mj"]
-gradient = SubResource("Gradient_8tegq")
-width = 32
-height = 32
+[sub_resource type="SpriteFrames" id="SpriteFrames_7p1mj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_md0e3"]
 
@@ -21,9 +15,9 @@ collision_mask = 8
 script = ExtResource("1_7p1mj")
 movement_speed = 4000.0
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1409098986]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1654397577]
 position = Vector2(-9.536743e-07, -9.536743e-07)
-texture = SubResource("GradientTexture2D_7p1mj")
+sprite_frames = SubResource("SpriteFrames_7p1mj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1431132142]
 shape = SubResource("CircleShape2D_md0e3")

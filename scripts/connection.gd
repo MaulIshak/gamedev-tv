@@ -1,6 +1,7 @@
 class_name Connection extends Line2D
 
 signal expired(from_tower: Node2D, to_tower: Node2D)
+signal visual_finished(from_tower: Node2D, to_tower: Node2D)
 
 var start_pos: Node2D
 var end_pos: Node2D
@@ -9,6 +10,7 @@ var start_offset: Vector2 = Vector2.ZERO
 var end_offset: Vector2 = Vector2.ZERO
 
 var _timer: float = -1.0
+var _visual_finished_emitted: bool = false
 
 
 @onready var damage_zone := get_node_or_null("DamageZone") as Area2D
@@ -33,7 +35,11 @@ func _process(delta: float) -> void:
 		_timer -= delta
 		if _timer <= 0.0:
 			_timer = -1.0
+			# notify expired and visual finished before freeing so managers can react
 			expired.emit(start_pos, end_pos)
+			if not _visual_finished_emitted:
+				emit_signal("visual_finished", start_pos, end_pos)
+				_visual_finished_emitted = true
 			queue_free()
 
 func start_timer(duration: float) -> void:
@@ -44,3 +50,10 @@ func get_time_left() -> float:
 
 func set_timer(duration: float) -> void:
 	_timer = duration
+
+func _exit_tree() -> void:
+	# If node is removed/queued from elsewhere (clear_all_connections or manual queue_free),
+	# ensure we emit visual_finished once so sound managers can stop looping audio.
+	if not _visual_finished_emitted:
+		emit_signal("visual_finished", start_pos, end_pos)
+		_visual_finished_emitted = true

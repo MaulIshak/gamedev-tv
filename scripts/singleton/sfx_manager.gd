@@ -39,6 +39,7 @@ func play_sfx(stream: AudioStream, bus: StringName = &"Master", volume_db: float
 		player.volume_db = volume_db
 
 	player.play()
+	print("[SfxManager] play_sfx: player=", player.get_instance_id(), " stream=", stream.resource_path)
 
 	if fade_in:
 		var tween := create_tween()
@@ -115,6 +116,32 @@ func stop_sfx(player: AudioStreamPlayer) -> void:
 
 	player.stop()
 	_on_player_finished(player)
+
+
+func stop_sfx_by_stream(stream: AudioStream) -> void:
+	if stream == null:
+		return
+
+	var target_path := stream.resource_path
+	for child in get_children():
+		var player := child as AudioStreamPlayer
+		if player == null:
+			continue
+		if not player.playing or player.stream == null:
+			continue
+
+		var matches := false
+		if player.stream == stream:
+			matches = true
+		elif not target_path.is_empty() and player.stream.resource_path == target_path:
+			matches = true
+
+		if matches:
+			print("[SfxManager] stop_sfx_by_stream: stopping player=", player.get_instance_id(), " stream=", player.stream.resource_path)
+			_clear_fade_tween(player)
+			player.stop()
+			# ensure immediate cleanup and return to pool
+			_on_player_finished(player)
 
 func _on_player_finished(player: AudioStreamPlayer) -> void:
 	if not is_instance_valid(player):

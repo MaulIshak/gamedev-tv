@@ -113,6 +113,9 @@ func _create_lightning_between(from_tower: Node2D, to_tower: Node2D) -> void:
 	lightning.end_pos = to_tower
 	lightning.start_timer(synced_duration)
 	lightning.expired.connect(_on_connection_expired)
+	# connect visual_finished so manager can stop looping SFX exactly when visuals end
+	if lightning.has_signal("visual_finished"):
+		lightning.visual_finished.connect(_on_lightning_visual_finished)
 
 	if lightning.damage_zone != null:
 		lightning.damage_zone.damage += int(UpgradeManager.get_stat_add("lightning_damage"))
@@ -140,6 +143,17 @@ func _on_connection_expired(from_tower: Node2D, to_tower: Node2D) -> void:
 		from_tower.is_connected_tower = false
 	if not _tower_has_active_connection(to_tower):
 		to_tower.is_connected_tower = false
+
+	if _lightning_connections.is_empty():
+		_stop_electric_shock_sfx()
+
+
+func _on_lightning_visual_finished(from_tower: Node2D, to_tower: Node2D) -> void:
+	# Remove matching or invalid connections and stop SFX when none remain
+	for i in range(_lightning_connections.size() - 1, -1, -1):
+		var conn := _lightning_connections[i]
+		if not is_instance_valid(conn) or (conn.start_pos == from_tower and conn.end_pos == to_tower):
+			_lightning_connections.remove_at(i)
 
 	if _lightning_connections.is_empty():
 		_stop_electric_shock_sfx()
@@ -188,6 +202,7 @@ func _play_electric_shock_sfx() -> void:
 	if is_instance_valid(_electric_shock_player) and _electric_shock_player.playing:
 		return
 
+	print("[PlayerConnectionManager] play electric shock sfx")
 	_electric_shock_player = SfxManager.play_sfx(ELECTRIC_SHOCK_SFX, &"SFX", 0.0, false, true)
 
 
@@ -196,8 +211,11 @@ func _stop_electric_shock_sfx() -> void:
 		_electric_shock_player = null
 		return
 
+	print("[PlayerConnectionManager] stop electric shock sfx")
+
 	if SfxManager != null:
-		SfxManager.stop_sfx(_electric_shock_player)
+		# Force-stop any players playing the electric shock stream to ensure immediate cut
+		SfxManager.stop_sfx_by_stream(ELECTRIC_SHOCK_SFX)
 	else:
 		_electric_shock_player.stop()
 
