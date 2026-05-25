@@ -11,6 +11,7 @@ enum State {NO_CABLE, HAS_PLAYER_CABLE}
 @export var cable_spacing: float = 4.0
 @export var connection_parent: Node2D
 @export var connection_duration: float = 10.0
+@export var player_cable_z_index: int = -1
 
 var _state := State.NO_CABLE
 var _cable_tower: Node2D = null
@@ -74,6 +75,8 @@ func _create_player_cables(tower: Node2D) -> void:
 		cable.start_pos = tower
 		cable.end_pos = get_parent()
 		cable.end_offset = Vector2(0.0, -16.0)
+		cable.z_as_relative = false
+		cable.z_index = player_cable_z_index
 		var half := float(cable_count - 1) / 2.0
 		cable.offset = Vector2((float(i) - half) * cable_spacing, 0.0)
 		parent.add_child(cable)
