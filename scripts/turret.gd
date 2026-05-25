@@ -2,7 +2,7 @@ class_name Turret
 extends Node2D
 
 const LASER_SFX: AudioStream = preload("res://assets/audio/sfx/laser1.ogg")
-const METALLIC_CLING_SFX: AudioStream = preload("res://assets/audio/sfx/cling.mp3")
+const METALLIC_CLING_SFX: AudioStream = preload("res://assets/audio/sfx/metallic-cling.mp3")
 
 @export var popup_time: float = 0.32
 @export var start_hidden: bool = true
