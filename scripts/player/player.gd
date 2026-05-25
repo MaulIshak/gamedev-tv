@@ -60,6 +60,8 @@ func _ready() -> void:
 	_apply_upgrade_stats()
 	UpgradeManager.upgraded.connect(_on_upgrade_applied)
 	UpgradeManager.instant_effect_applied.connect(_on_instant_effect)
+	# # notify HUD of initial health
+	# GlobalEventBus.set_hearts(health, max_health)
 
 func _process(_delta: float) -> void:
 	if is_immune:
@@ -198,15 +200,19 @@ func take_damage(amount: int) -> void:
 	if health <= 0:
 		health = 0
 		die()
+	# update HUD
+	# GlobalEventBus.set_hearts(health, max_health)
 
 func heal(amount: int) -> void:
 	health = min(health + amount, max_health)
+	# GlobalEventBus.set_hearts(health, max_health)
 
 func _apply_upgrade_stats() -> void:
 	walk_speed = _base_walk_speed + UpgradeManager.get_stat_add("walk_speed")
 	dash_cooldown = _base_dash_cooldown + UpgradeManager.get_stat_add("dash_cooldown")
 	immune_duration = _base_immune_duration
 	max_health = int(5.0 + UpgradeManager.get_stat_add("max_hp"))
+	# GlobalEventBus.set_hearts(health, max_health)
 
 func _on_upgrade_applied(_id: String, _new_level: int) -> void:
 	_apply_upgrade_stats()

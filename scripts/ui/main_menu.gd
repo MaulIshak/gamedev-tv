@@ -20,7 +20,14 @@ func _ready() -> void:
 	$VBoxContainer/StartGame.pressed.connect(func() -> void: start_requested.emit())
 	$VBoxContainer/Settings.pressed.connect(func() -> void: settings_requested.emit())
 	$VBoxContainer/Credits.pressed.connect(func() -> void: credits_requested.emit())
-	$VBoxContainer/Quit.pressed.connect(func() -> void: quit_requested.emit())
+	$VBoxContainer/Quit.pressed.connect(func() -> void:
+		quit_requested.emit()
+	)
+
+	$VBoxContainer/StartGame.pressed.connect(func() -> void:
+		start_requested.emit()
+		GlobalEventBus.emit_play()
+	)
 
 
 func play_intro() -> void:

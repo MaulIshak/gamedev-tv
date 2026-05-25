@@ -78,12 +78,7 @@ theme_override_colors/default_color = Color(0.08, 0.13, 0.13, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_credits")
 theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
-text = "[center][b]MANY TO MANY[/b][/center]
-
-Game Design  : Farra & Codex
-Programming  : Farra & Codex
-Pixel UI     : Jersey10 + Custom Shaders
-Special      : GameDev TV Energy Grid"
+text = "Alamak "
 fit_content = true
 scroll_active = false
 

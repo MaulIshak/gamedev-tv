@@ -17,18 +17,14 @@ const INTRO_DURATION := 0.22
 @onready var gameplay_panel: Control = $Panel/GameplayPanel
 @onready var display_panel: Control = $Panel/DisplayPanel
 @onready var audio_panel: Control = $Panel/AudioPanel
-@onready var access_panel: Control = $Panel/AccessPanel
 @onready var resolution_option: OptionButton = $Panel/DisplayPanel/ResolutionOption
 @onready var fullscreen_check: CheckButton = $Panel/DisplayPanel/FullscreenCheck
 @onready var pixel_filter_option: OptionButton = $Panel/DisplayPanel/PixelFilterOption
 @onready var grid_brightness_slider: HSlider = $Panel/GameplayPanel/GridBrightnessSlider
 @onready var screen_shake_option: OptionButton = $Panel/GameplayPanel/ScreenShakeOption
-@onready var hud_scale_slider: HSlider = $Panel/GameplayPanel/HudScaleSlider
 @onready var master_slider: HSlider = $Panel/AudioPanel/MasterSlider
 @onready var bgm_slider: HSlider = $Panel/AudioPanel/BgmSlider
 @onready var sfx_slider: HSlider = $Panel/AudioPanel/SfxSlider
-@onready var reduce_motion_check: CheckButton = $Panel/AccessPanel/ReduceMotionCheck
-@onready var high_contrast_check: CheckButton = $Panel/AccessPanel/HighContrastCheck
 @onready var status_label: Label = $Panel/StatusLabel
 
 var _resolutions: Array[Vector2i] = [
@@ -82,15 +78,11 @@ func _connect_controls() -> void:
 	gameplay_tab.pressed.connect(_show_tab.bind(gameplay_panel))
 	display_tab.pressed.connect(_show_tab.bind(display_panel))
 	audio_tab.pressed.connect(_show_tab.bind(audio_panel))
-	access_tab.pressed.connect(_show_tab.bind(access_panel))
 	$Panel/BackButton.pressed.connect(func() -> void: back_requested.emit())
 	$Panel/ApplyButton.pressed.connect(_apply_and_save)
 
 	grid_brightness_slider.value_changed.connect(func(value: float) -> void:
 		grid_brightness_changed.emit(value)
-	)
-	hud_scale_slider.value_changed.connect(func(value: float) -> void:
-		hud_scale_changed.emit(value)
 	)
 	master_slider.value_changed.connect(_set_bus_volume.bind("Master"))
 	bgm_slider.value_changed.connect(_set_bus_volume.bind("BGM"))
@@ -101,20 +93,18 @@ func _show_tab(panel: Control) -> void:
 	gameplay_panel.visible = panel == gameplay_panel
 	display_panel.visible = panel == display_panel
 	audio_panel.visible = panel == audio_panel
-	access_panel.visible = panel == access_panel
 
 	gameplay_tab.active = gameplay_panel.visible
 	display_tab.active = display_panel.visible
 	audio_tab.active = audio_panel.visible
-	access_tab.active = access_panel.visible
 
 
 func _apply_and_save() -> void:
 	_apply_display_settings()
 	_apply_audio_settings()
-	_apply_access_settings()
 	_save_settings()
 	status_label.text = "CONFIG SAVED"
+	GlobalEventBus.emit_settings_applied()
 
 
 func _apply_display_settings() -> void:
@@ -139,15 +129,6 @@ func _apply_audio_settings() -> void:
 	_set_bus_volume(bgm_slider.value, "BGM")
 	_set_bus_volume(sfx_slider.value, "SFX")
 
-
-func _apply_access_settings() -> void:
-	Engine.time_scale = 1.0
-	if reduce_motion_check.button_pressed:
-		screen_shake_option.selected = 0
-
-	title_label.modulate = Color(1.0, 1.0, 1.0, 1.0) if high_contrast_check.button_pressed else Color.WHITE
-
-
 func _set_bus_volume(value: float, bus_name: String) -> void:
 	var bus_idx := AudioServer.get_bus_index(bus_name)
 	if bus_idx == -1:
@@ -163,12 +144,9 @@ func _save_settings() -> void:
 	config.set_value("display", "pixel_filter", pixel_filter_option.selected)
 	config.set_value("gameplay", "grid_brightness", grid_brightness_slider.value)
 	config.set_value("gameplay", "screen_shake", screen_shake_option.selected)
-	config.set_value("gameplay", "hud_scale", hud_scale_slider.value)
 	config.set_value("audio", "master", master_slider.value)
 	config.set_value("audio", "bgm", bgm_slider.value)
 	config.set_value("audio", "sfx", sfx_slider.value)
-	config.set_value("access", "reduce_motion", reduce_motion_check.button_pressed)
-	config.set_value("access", "high_contrast", high_contrast_check.button_pressed)
 	config.save(CONFIG_PATH)
 
 
@@ -183,13 +161,9 @@ func _load_settings() -> void:
 	pixel_filter_option.selected = int(config.get_value("display", "pixel_filter", 0))
 	grid_brightness_slider.value = float(config.get_value("gameplay", "grid_brightness", 72.0))
 	screen_shake_option.selected = int(config.get_value("gameplay", "screen_shake", 1))
-	hud_scale_slider.value = float(config.get_value("gameplay", "hud_scale", 100.0))
 	master_slider.value = float(config.get_value("audio", "master", 100.0))
 	bgm_slider.value = float(config.get_value("audio", "bgm", 80.0))
 	sfx_slider.value = float(config.get_value("audio", "sfx", 90.0))
-	reduce_motion_check.button_pressed = bool(config.get_value("access", "reduce_motion", false))
-	high_contrast_check.button_pressed = bool(config.get_value("access", "high_contrast", false))
 	_apply_display_settings()
 	_apply_audio_settings()
 	grid_brightness_changed.emit(grid_brightness_slider.value)
-	hud_scale_changed.emit(hud_scale_slider.value)
