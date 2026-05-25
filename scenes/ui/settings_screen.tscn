@@ -65,7 +65,7 @@ material = SubResource("ShaderMaterial_panel")
 layout_mode = 0
 offset_top = 34.0
 offset_right = 340.0
-offset_bottom = 186.0
+offset_bottom = 214.0
 mouse_filter = 2
 
 [node name="Tabs" type="HBoxContainer" parent="Panel" unique_id=1310036887]
@@ -89,11 +89,8 @@ text = "DISPLAY"
 layout_mode = 2
 text = "AUDIO"
 
-[node name="AccessTab" parent="Panel/Tabs" unique_id=1352615168 instance=ExtResource("2_button")]
-layout_mode = 2
-text = "ACCESS"
-
 [node name="GameplayPanel" type="Control" parent="Panel" unique_id=257417411]
+visible = false
 anchors_preset = 0
 offset_left = 16.0
 offset_top = 46.0
@@ -137,26 +134,6 @@ offset_right = 308.0
 offset_bottom = 46.0
 theme_override_fonts/font = SubResource("FontVariation_settings")
 theme_override_font_sizes/font_size = 14
-
-[node name="HudScaleLabel" type="Label" parent="Panel/GameplayPanel" unique_id=173759107]
-layout_mode = 0
-offset_top = 52.0
-offset_right = 142.0
-offset_bottom = 71.0
-theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
-theme_override_fonts/font = SubResource("FontVariation_settings")
-theme_override_font_sizes/font_size = 14
-text = "HUD SCALE"
-
-[node name="HudScaleSlider" type="HSlider" parent="Panel/GameplayPanel" unique_id=533526603]
-layout_mode = 0
-offset_left = 154.0
-offset_top = 50.0
-offset_right = 308.0
-offset_bottom = 70.0
-min_value = 75.0
-max_value = 150.0
-value = 100.0
 
 [node name="DisplayPanel" type="Control" parent="Panel" unique_id=446720849]
 visible = false
@@ -283,53 +260,7 @@ offset_right = 308.0
 offset_bottom = 70.0
 value = 90.0
 
-[node name="AccessPanel" type="Control" parent="Panel" unique_id=1162558697]
-visible = false
-anchors_preset = 0
-offset_left = 16.0
-offset_top = 46.0
-offset_right = 324.0
-offset_bottom = 112.0
-
-[node name="ReduceMotionLabel" type="Label" parent="Panel/AccessPanel" unique_id=1637221250]
-layout_mode = 0
-offset_top = 2.0
-offset_right = 142.0
-offset_bottom = 21.0
-theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
-theme_override_fonts/font = SubResource("FontVariation_settings")
-theme_override_font_sizes/font_size = 14
-text = "REDUCE MOTION"
-
-[node name="ReduceMotionCheck" type="CheckButton" parent="Panel/AccessPanel" unique_id=628226810]
-layout_mode = 0
-offset_left = 154.0
-offset_top = -5.0
-offset_right = 308.0
-offset_bottom = 25.0
-theme_override_fonts/font = SubResource("FontVariation_settings")
-theme_override_font_sizes/font_size = 14
-
-[node name="HighContrastLabel" type="Label" parent="Panel/AccessPanel" unique_id=1851927564]
-layout_mode = 0
-offset_top = 29.0
-offset_right = 142.0
-offset_bottom = 48.0
-theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
-theme_override_fonts/font = SubResource("FontVariation_settings")
-theme_override_font_sizes/font_size = 14
-text = "HIGH CONTRAST"
-
-[node name="HighContrastCheck" type="CheckButton" parent="Panel/AccessPanel" unique_id=915738644]
-layout_mode = 0
-offset_left = 154.0
-offset_top = 22.0
-offset_right = 308.0
-offset_bottom = 52.0
-theme_override_fonts/font = SubResource("FontVariation_settings")
-theme_override_font_sizes/font_size = 14
-
-[node name="StatusLabel" type="Label" parent="Panel"]
+[node name="StatusLabel" type="Label" parent="Panel" unique_id=227212889]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 146.0
@@ -342,17 +273,17 @@ text = "MODULE CONFIG"
 
 [node name="BackButton" parent="Panel" unique_id=1501585731 instance=ExtResource("2_button")]
 layout_mode = 0
-offset_left = 188.0
-offset_top = 145.0
-offset_right = 262.0
-offset_bottom = 170.0
+offset_left = 190.0
+offset_top = 173.0
+offset_right = 264.0
+offset_bottom = 198.0
 text = "BACK"
 
 [node name="ApplyButton" parent="Panel" unique_id=1663683526 instance=ExtResource("2_button")]
 layout_mode = 0
 offset_left = 263.0
-offset_top = 145.0
+offset_top = 173.0
 offset_right = 337.0
-offset_bottom = 170.0
+offset_bottom = 198.0
 text = "APPLY"
 active = true

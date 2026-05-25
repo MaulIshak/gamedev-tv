@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://n1ituixxtq35"]
 
 [ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="1_0mwgc"]
+[ext_resource type="Script" uid="uid://hudscript" path="res://scripts/ui/hud.gd" id="2_script"]
 
 [sub_resource type="FontVariation" id="FontVariation_q38wi"]
 base_font = ExtResource("1_0mwgc")
 
 [node name="Hud" type="Node2D" unique_id=562169634]
+script = ExtResource("2_script")
 
 [node name="Control" type="Control" parent="." unique_id=1370921626]
 layout_mode = 3

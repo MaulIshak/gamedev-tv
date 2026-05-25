@@ -50,11 +50,13 @@ func _start_game() -> void:
 func _open_pause_menu() -> void:
 	get_tree().paused = true
 	_show_only(pause_menu)
+	GlobalEventBus.emit_pause()
 
 
 func _resume_game() -> void:
 	get_tree().paused = false
 	_show_only(null)
+	GlobalEventBus.emit_resume()
 
 
 func _return_to_main_menu() -> void:
@@ -83,11 +85,8 @@ func _quit_game() -> void:
 
 func _restart_level() -> void:
 	get_tree().paused = false
-	if Engine.has_singleton("PackedScene"):
-		# Prefer reload_current_scene; fallback to change_scene_to_file if needed
-		get_tree().reload_current_scene()
-	else:
-		get_tree().reload_current_scene()
+	GlobalEventBus.emit_restart()
+	get_tree().reload_current_scene()
 
 
 func _show_only(screen: Control) -> void:
