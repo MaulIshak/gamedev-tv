@@ -15,6 +15,7 @@ const HIT_DAMAGE_SFX: AudioStream = preload("res://assets/audio/sfx/hit_damage.w
 @export var dash_cooldown: float = 0.20
 @export var dash_trail_interval: float = 0.02
 @export var dash_trail_lifetime: float = 0.12
+@export var dash_bar_smoothing_speed: float = 8.0
 
 @export_group("Visual Effects")
 @export var damage_flash_duration: float = 0.10
@@ -52,16 +53,24 @@ const WALK = "WalkState"
 var _base_walk_speed: float = 0.0
 var _base_dash_cooldown: float = 0.0
 var _base_immune_duration: float = 0.0
+var _dash_bar_display_value: float = 1.0
 
 @onready var tower_detector: Area2D = $TowerDetector
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var footstep_sfx: AudioStreamPlayer2D = $FootstepSFX
 var _damage_flash_tween: Tween
 
+@onready var dash_bar: ProgressBar = $Control/ProgressBar
+
 func _ready() -> void:
 	enable_input()
 	sprite.visible = true
 	sprite.modulate = Color.WHITE
+	if dash_bar != null:
+		dash_bar.min_value = 0.0
+		dash_bar.max_value = 1.0
+		_dash_bar_display_value = get_dash_cooldown_progress()
+		dash_bar.value = _dash_bar_display_value
 
 	_base_walk_speed = walk_speed
 	_base_dash_cooldown = dash_cooldown
@@ -70,6 +79,7 @@ func _ready() -> void:
 	_apply_upgrade_stats()
 	UpgradeManager.upgraded.connect(_on_upgrade_applied)
 	UpgradeManager.instant_effect_applied.connect(_on_instant_effect)
+	_update_dash_bar(0.0)
 	# # notify HUD of initial health
 	# GlobalEventBus.set_hearts(health, max_health)
 
@@ -94,6 +104,7 @@ func _physics_process(_delta: float) -> void:
 	if is_input_disabled:
 		velocity = Vector2.ZERO
 		move_and_slide()
+		_update_dash_bar(_delta)
 		return
 
 	input_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
@@ -122,6 +133,28 @@ func _physics_process(_delta: float) -> void:
 	_update_footstep_sfx(_delta)
 
 	move_and_slide()
+	_update_dash_bar(_delta)
+
+
+func _update_dash_bar(delta: float) -> void:
+	if dash_bar == null:
+		return
+
+	var dash_progress_target := get_dash_cooldown_progress()
+	if is_dashing:
+		dash_progress_target = 0.0
+
+	if delta <= 0.0:
+		_dash_bar_display_value = dash_progress_target
+	else:
+		_dash_bar_display_value = move_toward(
+			_dash_bar_display_value,
+			dash_progress_target,
+			dash_bar_smoothing_speed * delta
+		)
+
+	dash_bar.value = _dash_bar_display_value
+	dash_bar.modulate = Color(0.55, 1.0, 0.55, 1.0) if _dash_bar_display_value >= 0.999 else Color(1.0, 0.82, 0.35, 1.0)
 
 func disable_input():
 	is_input_disabled = true

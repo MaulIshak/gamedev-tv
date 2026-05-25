@@ -174,6 +174,9 @@ radius = 8.062258
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tuyoq"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3v2ag"]
+bg_color = Color(0.30588236, 0.7058824, 0.7882353, 1)
+
 [node name="Player" type="CharacterBody2D" unique_id=2047568749]
 y_sort_enabled = true
 collision_layer = 2
@@ -193,7 +196,7 @@ offset = Vector2(0, -8)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1554100876]
 sprite_frames = SubResource("SpriteFrames_qlg0r")
 animation = &"walk"
-frame_progress = 0.4577828
+frame_progress = 0.45774838
 offset = Vector2(0, -22)
 metadata/_edit_lock_ = true
 
@@ -230,3 +233,22 @@ connection_duration = 5.0
 
 [node name="FootstepSFX" type="AudioStreamPlayer2D" parent="." unique_id=2144037591]
 stream = ExtResource("10_footstep")
+
+[node name="Control" type="Control" parent="." unique_id=196842870]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -7.0
+offset_top = -7.0
+offset_right = 33.0
+offset_bottom = 33.0
+
+[node name="ProgressBar" type="ProgressBar" parent="Control" unique_id=821529449]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 0
+offset_left = -5.999999
+offset_top = 10.0
+offset_right = 142.57141
+offset_bottom = 32.85714
+scale = Vector2(0.175, 0.175)
+theme_override_styles/fill = SubResource("StyleBoxFlat_3v2ag")
+show_percentage = false

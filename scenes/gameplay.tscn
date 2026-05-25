@@ -160,6 +160,7 @@ scale = Vector2(0.8, 0.8)
 [node name="turrets" type="Node2D" parent="." unique_id=1809935533]
 
 [node name="turret_spawn" type="Node2D" parent="turrets" unique_id=1156210711]
+z_index = -1
 y_sort_enabled = true
 
 [node name="turret_spawn_area" type="ReferenceRect" parent="turrets" unique_id=1014047594]
