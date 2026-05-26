@@ -7,6 +7,17 @@ signal upgrade_selected(upgrade_id: String)
 
 const ELECTRIC_SHOCK_SFX: AudioStream = preload("res://assets/audio/sfx/electric_shock.mp3")
 
+const EXPORT_UPGRADES: Array[Resource] = [
+	preload("res://resources/upgrades/dash_cooldown.tres"),
+	preload("res://resources/upgrades/enemy_immunity.tres"),
+	preload("res://resources/upgrades/heal.tres"),
+	preload("res://resources/upgrades/lightning_damage.tres"),
+	preload("res://resources/upgrades/max_hp.tres"),
+	preload("res://resources/upgrades/shockwave_damage.tres"),
+	preload("res://resources/upgrades/slow_power.tres"),
+	preload("res://resources/upgrades/walk_speed.tres")
+]
+
 const ENTER_OFFSET := Vector2(0.0, 92.0)
 const EXIT_OFFSET := Vector2(0.0, 92.0)
 

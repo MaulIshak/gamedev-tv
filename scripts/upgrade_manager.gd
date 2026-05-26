@@ -3,7 +3,22 @@ extends Node
 signal upgraded(id: String, new_level: int)
 signal instant_effect_applied(id: String, value: float)
 
+const UPGRADE_IDS: Array[String] = [
+	"dash_cooldown",
+	"enemy_immunity",
+	"heal",
+	"lightning_damage",
+	"max_hp",
+	"shockwave_damage",
+	"slow_power",
+	"walk_speed"
+]
+
 var _levels: Dictionary = {}
+
+func _ready() -> void:
+	# Seed the random number generator so builds are truly random upon launch
+	randomize()
 
 
 func reset() -> void:
@@ -56,20 +71,13 @@ func get_random_upgrades(count: int = 3) -> Array[UpgradeDef]:
 	return picked
 
 func _get_def(id: String) -> UpgradeDef:
-	return load("res://resources/upgrades/" + id + ".tres") as UpgradeDef
+	var path := "res://resources/upgrades/" + id + ".tres"
+	return load(path) as UpgradeDef
 
 func _load_all_defs() -> Array[UpgradeDef]:
-	var dir := DirAccess.open("res://resources/upgrades/")
-	if dir == null:
-		return []
 	var defs: Array[UpgradeDef] = []
-	dir.list_dir_begin()
-	var file_name := dir.get_next()
-	while file_name != "":
-		if not dir.current_is_dir() and file_name.ends_with(".tres"):
-			var def := load("res://resources/upgrades/" + file_name) as UpgradeDef
-			if def != null and not def.id.is_empty():
-				defs.append(def)
-		file_name = dir.get_next()
-	dir.list_dir_end()
+	for id in UPGRADE_IDS:
+		var def := _get_def(id)
+		if def != null and not def.id.is_empty():
+			defs.append(def)
 	return defs

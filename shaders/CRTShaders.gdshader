@@ -106,12 +106,16 @@ vec3 apply_saturation(vec3 color, float amount) {
 
 void fragment() {
 	vec4 vertex_color = COLOR;
-	vec3 base_color = texture(screen_texture, SCREEN_UV).rgb * tint_color.rgb * vertex_color.rgb;
 	float base_alpha = vertex_color.a * opacity;
 
 	if (!crt_enabled) {
+		vec3 base_color = texture(screen_texture, SCREEN_UV).rgb * tint_color.rgb * vertex_color.rgb;
 		COLOR = vec4(base_color, base_alpha);
 	} else {
+		// Capture center screen sample exactly once
+		vec3 center_sample = texture(screen_texture, SCREEN_UV).rgb;
+		vec3 base_color = center_sample * tint_color.rgb * vertex_color.rgb;
+
 		float jitter = 0.0;
 		if (animate_jitter && horizontal_jitter > 0.0) {
 			float jitter_line = floor(UV.y * virtual_resolution_y);
@@ -139,11 +143,11 @@ void fragment() {
 			vec2 split = normalize(rgb_direction + vec2(0.0001, 0.0)) * rgb_split * (0.35 + edge_amount);
 			vec2 screen_offset = split;
 			vec3 red_sample = texture(screen_texture, SCREEN_UV + screen_offset).rgb;
-			vec3 green_sample = texture(screen_texture, SCREEN_UV).rgb;
+			vec3 green_sample = center_sample; // Reuse pre-fetched center sample!
 			vec3 blue_sample = texture(screen_texture, SCREEN_UV - screen_offset).rgb;
 			color = vec3(red_sample.r, green_sample.g, blue_sample.b) * tint_color.rgb * vertex_color.rgb;
 		} else {
-			color = texture(screen_texture, SCREEN_UV).rgb * tint_color.rgb * vertex_color.rgb;
+			color = base_color; // Reuse center sample!
 		}
 
 		if (scanline_strength > 0.0) {
