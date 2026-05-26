@@ -38,6 +38,7 @@ var _damage_immunity_timer: float = 0.0
 var _damage_immunity_duration: float = 0.5
 var _damage_flash_tween: Tween
 var _spawn_tween: Tween
+var score_value: int = 10
 
 func _ready():
     # Connect signals
@@ -77,7 +78,7 @@ func _apply_enemy_stats() -> void:
     # Setup stats from the assigned resource, falling back to the resource defaults.
     health = stats.health
     damage = stats.damage
-
+    score_value = stats.score_value
     if stats.sprite_frames != null:
         sprite.sprite_frames = stats.sprite_frames
 
@@ -198,6 +199,7 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
     if health <= 0:
         _spawn_death_particles()
         queue_free()
+        ScoreManager.add_score(score_value)
 
 
 func _play_damage_feedback() -> void:

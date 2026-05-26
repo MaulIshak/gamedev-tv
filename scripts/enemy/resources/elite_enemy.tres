@@ -46,4 +46,5 @@ damage = 2
 movement_speed_multiplier = 0.4
 sprite_frames = SubResource("SpriteFrames_2acvk")
 sprite_scale = Vector2(0.8, 0.8)
+score_value = 30
 metadata/_custom_type_script = "uid://bqor8j4mj21im"
