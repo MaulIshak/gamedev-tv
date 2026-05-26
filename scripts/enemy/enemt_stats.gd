@@ -7,3 +7,4 @@ class_name EnemyStats extends Resource
 @export var sprite_frames: SpriteFrames
 @export var sprite_scale: Vector2 = Vector2.ONE
 @export var hitbox_radius: float = 13.0
+@export var score_value: int = 10

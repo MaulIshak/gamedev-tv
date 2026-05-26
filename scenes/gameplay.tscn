@@ -15,7 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://cfhd1hkmh7rp3" path="res://scenes/ui/settings_screen.tscn" id="13_settings"]
 [ext_resource type="PackedScene" uid="uid://8did25w6ijki" path="res://scenes/ui/credits_screen.tscn" id="14_credits"]
 [ext_resource type="PackedScene" uid="uid://bcnwuo1m4cp4h" path="res://scenes/ui/pause_menu.tscn" id="15_pause"]
-[ext_resource type="PackedScene" path="res://scenes/ui/game_over_menu.tscn" id="16_game_over"]
+[ext_resource type="PackedScene" uid="uid://dcgxhj3wowwqi" path="res://scenes/ui/game_over_menu.tscn" id="16_game_over"]
 [ext_resource type="Script" uid="uid://dv2rxs4xb82em" path="res://scripts/camera_2d.gd" id="17_camera"]
 [ext_resource type="Shader" path="res://shaders/FontMenuShaders.gdshader" id="18_m6b5a"]
 [ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="19_mesn4"]
@@ -327,7 +327,7 @@ theme_override_constants/line_spacing = -8
 theme_override_constants/paragraph_spacing = -1
 theme_override_fonts/font = SubResource("FontVariation_25e7j")
 theme_override_font_sizes/font_size = 12
-text = "Left Click to Dash
+text = "Right Click/Shift to Dash
 
 
 Touch Turret to link "

@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="UpgradeDef" format=3 uid="uid://d0rfwsttqk2gm"]
+[gd_resource type="Resource" script_class="UpgradeDef" format=3 uid="uid://74hvqupdsmdc"]
 
 [ext_resource type="Texture2D" uid="uid://bx6fje331blhy" path="res://assets/sprites/icons.png" id="1_8hirp"]
 [ext_resource type="Script" uid="uid://c2ehnje3gx33y" path="res://scripts/upgrade_def.gd" id="1_updef"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t0p0x"]
 atlas = ExtResource("1_8hirp")
-region = Rect2(0, 0, 128, 64)
+region = Rect2(102, 39, 21, 18)
 
 [resource]
 script = ExtResource("1_updef")

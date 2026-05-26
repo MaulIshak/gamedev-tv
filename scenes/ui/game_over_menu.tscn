@@ -2,13 +2,13 @@
 
 [ext_resource type="PackedScene" uid="uid://bnyv6wjivlgbo" path="res://scenes/ui/menu_button.tscn" id="1_button"]
 [ext_resource type="FontFile" uid="uid://c47k78746onqy" path="res://assets/fonts/Jersey10-Regular.ttf" id="2_font"]
-[ext_resource type="Shader" uid="uid://gg1csxl8vust" path="res://shaders/FontMenuShaders.gdshader" id="3_shader"]
+[ext_resource type="Shader" path="res://shaders/FontMenuShaders.gdshader" id="3_shader"]
 [ext_resource type="Script" uid="uid://cy0coix10wqn2" path="res://scripts/ui/game_over_menu.gd" id="4_script"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_game_over_title"]
 shader = ExtResource("3_shader")
 shader_parameter/fill_color = Color(0.59229046, 0.09574666, 1.347661e-06, 1)
-shader_parameter/fill_strength = 1.5170000720574999
+shader_parameter/fill_strength = 1.5170000720575
 shader_parameter/alpha_cutoff = 0.3850000182875
 shader_parameter/outline_color = Color(0.006, 0.022, 0.026, 1)
 shader_parameter/outline_size = 2.6
@@ -25,7 +25,24 @@ shader_parameter/highlight_cutoff = 0.0
 [sub_resource type="FontVariation" id="FontVariation_game_over"]
 base_font = ExtResource("2_font")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rvyv1"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i4hgn"]
+shader = ExtResource("3_shader")
+shader_parameter/fill_color = Color(1, 1, 1, 1)
+shader_parameter/fill_strength = 1.5170000720575
+shader_parameter/alpha_cutoff = 0.3850000182875
+shader_parameter/outline_color = Color(0.006, 0.022, 0.026, 1)
+shader_parameter/outline_size = 2.6
+shader_parameter/shadow_color = Color(0, 0.075, 0.065, 0.96)
+shader_parameter/shadow_offset = Vector2(0.7, 0.9)
+shader_parameter/shadow_depth = 5.10800024263
+shader_parameter/shadow_depth_offset = Vector2(1, 1.45)
+shader_parameter/shadow_step = 1.0
+shader_parameter/shadow_spread = 0.4170000198075
+shader_parameter/shadow_alpha_decay = 1.0
+shader_parameter/top_highlight = Color(1, 0.76, 0.72, 0.18)
+shader_parameter/highlight_cutoff = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5d0qp"]
 resource_local_to_scene = true
 shader = ExtResource("3_shader")
 shader_parameter/fill_color = Color(0.9, 0.92, 0.94, 1)
@@ -43,7 +60,7 @@ shader_parameter/shadow_alpha_decay = 0.92
 shader_parameter/top_highlight = Color(1, 1, 1, 0.1)
 shader_parameter/highlight_cutoff = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_bajbn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rvyv1"]
 resource_local_to_scene = true
 shader = ExtResource("3_shader")
 shader_parameter/fill_color = Color(1, 0.86, 0.08, 1)
@@ -61,7 +78,7 @@ shader_parameter/shadow_alpha_decay = 0.9
 shader_parameter/top_highlight = Color(1, 1, 1, 0.14)
 shader_parameter/highlight_cutoff = 0.46
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_i4hgn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bajbn"]
 resource_local_to_scene = true
 shader = ExtResource("3_shader")
 shader_parameter/fill_color = Color(0.9, 0.92, 0.94, 1)
@@ -79,7 +96,7 @@ shader_parameter/shadow_alpha_decay = 0.92
 shader_parameter/top_highlight = Color(1, 1, 1, 0.1)
 shader_parameter/highlight_cutoff = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5d0qp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dvuf8"]
 resource_local_to_scene = true
 shader = ExtResource("3_shader")
 shader_parameter/fill_color = Color(1, 0.86, 0.08, 1)
@@ -116,6 +133,17 @@ theme_override_fonts/font = SubResource("FontVariation_game_over")
 theme_override_font_sizes/font_size = 70
 text = "GAME OVER"
 
+[node name="ScoreLabel" type="Label" parent="." unique_id=955260732]
+material = SubResource("ShaderMaterial_i4hgn")
+layout_mode = 0
+offset_left = 251.0
+offset_top = 135.0
+offset_right = 506.0
+offset_bottom = 211.5625
+theme_override_fonts/font = SubResource("FontVariation_game_over")
+theme_override_font_sizes/font_size = 24
+text = "Score: 9999999"
+
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1974338356]
 layout_mode = 0
 offset_left = 34.0
@@ -130,11 +158,11 @@ alignment = 1
 layout_mode = 2
 button_text = "Restart Game"
 selected = true
-default_material = SubResource("ShaderMaterial_rvyv1")
-selected_material = SubResource("ShaderMaterial_bajbn")
+default_material = SubResource("ShaderMaterial_5d0qp")
+selected_material = SubResource("ShaderMaterial_rvyv1")
 
 [node name="MainMenu" parent="VBoxContainer" unique_id=686699890 instance=ExtResource("1_button")]
 layout_mode = 2
 button_text = "Main Menu"
-default_material = SubResource("ShaderMaterial_i4hgn")
-selected_material = SubResource("ShaderMaterial_5d0qp")
+default_material = SubResource("ShaderMaterial_bajbn")
+selected_material = SubResource("ShaderMaterial_dvuf8")
