@@ -16,9 +16,18 @@ const UPGRADE_IDS: Array[String] = [
 
 var _levels: Dictionary = {}
 
-func _ready() -> void:
-	# Seed the random number generator so builds are truly random upon launch
-	randomize()
+# DirAccess fails on res:// in exported builds, so all upgrade
+# resource paths must be listed here explicitly.
+const ALL_UPGRADE_PATHS: Array[String] = [
+	"res://resources/upgrades/max_hp.tres",
+	"res://resources/upgrades/heal.tres",
+	"res://resources/upgrades/lightning_damage.tres",
+	"res://resources/upgrades/shockwave_damage.tres",
+	"res://resources/upgrades/slow_power.tres",
+	"res://resources/upgrades/enemy_immunity.tres",
+	"res://resources/upgrades/dash_cooldown.tres",
+	"res://resources/upgrades/walk_speed.tres",
+]
 
 
 func reset() -> void:
@@ -76,8 +85,8 @@ func _get_def(id: String) -> UpgradeDef:
 
 func _load_all_defs() -> Array[UpgradeDef]:
 	var defs: Array[UpgradeDef] = []
-	for id in UPGRADE_IDS:
-		var def := _get_def(id)
+	for path in ALL_UPGRADE_PATHS:
+		var def := load(path) as UpgradeDef
 		if def != null and not def.id.is_empty():
 			defs.append(def)
 	return defs
