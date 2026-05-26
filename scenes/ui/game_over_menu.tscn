@@ -142,7 +142,7 @@ offset_right = 506.0
 offset_bottom = 211.5625
 theme_override_fonts/font = SubResource("FontVariation_game_over")
 theme_override_font_sizes/font_size = 24
-text = "Score: 9999999"
+text = "Score: 0"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1974338356]
 layout_mode = 0
