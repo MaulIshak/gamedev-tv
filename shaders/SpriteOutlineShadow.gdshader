@@ -66,7 +66,7 @@ void fragment() {
 		float layer = float(i);
 		if (layer <= shadow_depth) {
 			vec2 shadow_uv = UV - base_shadow_offset - depth_direction * layer;
-			float shadow_sample = max_alpha_8(shadow_uv, shadow_px);
+			float shadow_sample = sample_alpha(shadow_uv);
 			shadow_alpha = max(shadow_alpha, step(alpha_cutoff, shadow_sample) * layer_alpha);
 			layer_alpha *= shadow_alpha_decay;
 		}

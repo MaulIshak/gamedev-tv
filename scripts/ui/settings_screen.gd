@@ -4,6 +4,7 @@ extends Control
 signal back_requested
 signal grid_brightness_changed(value: float)
 signal hud_scale_changed(value: float)
+signal crt_filter_changed(enabled: bool)
 
 const CONFIG_PATH := "user://settings.cfg"
 const INTRO_OFFSET := Vector2(0.0, -46.0)
@@ -21,6 +22,7 @@ const INTRO_DURATION := 0.22
 @onready var pixel_filter_option: OptionButton = $Panel/DisplayPanel/PixelFilterOption
 @onready var grid_brightness_slider: HSlider = $Panel/GameplayPanel/GridBrightnessSlider
 @onready var screen_shake_option: OptionButton = $Panel/GameplayPanel/ScreenShakeOption
+@onready var crt_filter_option: OptionButton = $Panel/GameplayPanel/CrtFilterOption
 @onready var master_slider: HSlider = $Panel/AudioPanel/MasterSlider
 @onready var bgm_slider: HSlider = $Panel/AudioPanel/BgmSlider
 @onready var sfx_slider: HSlider = $Panel/AudioPanel/SfxSlider
@@ -42,6 +44,10 @@ func _ready() -> void:
 	_populate_options()
 	_connect_controls()
 	_load_settings()
+	
+	if OS.has_feature("web"):
+		display_tab.visible = false
+		
 	_show_tab(gameplay_panel)
 
 
@@ -72,6 +78,10 @@ func _populate_options() -> void:
 	screen_shake_option.add_item("LOW")
 	screen_shake_option.add_item("FULL")
 
+	crt_filter_option.clear()
+	crt_filter_option.add_item("OFF")
+	crt_filter_option.add_item("ON")
+
 
 func _connect_controls() -> void:
 	gameplay_tab.pressed.connect(_show_tab.bind(gameplay_panel))
@@ -82,6 +92,9 @@ func _connect_controls() -> void:
 
 	grid_brightness_slider.value_changed.connect(func(value: float) -> void:
 		grid_brightness_changed.emit(value)
+	)
+	crt_filter_option.item_selected.connect(func(index: int) -> void:
+		crt_filter_changed.emit(index == 1)
 	)
 	master_slider.value_changed.connect(_set_bus_volume.bind("Master"))
 	bgm_slider.value_changed.connect(_set_bus_volume.bind("BGM"))
@@ -143,6 +156,7 @@ func _save_settings() -> void:
 	config.set_value("display", "pixel_filter", pixel_filter_option.selected)
 	config.set_value("gameplay", "grid_brightness", grid_brightness_slider.value)
 	config.set_value("gameplay", "screen_shake", screen_shake_option.selected)
+	config.set_value("gameplay", "crt_filter", crt_filter_option.selected)
 	config.set_value("audio", "master", master_slider.value)
 	config.set_value("audio", "bgm", bgm_slider.value)
 	config.set_value("audio", "sfx", sfx_slider.value)
@@ -160,6 +174,8 @@ func _load_settings() -> void:
 	pixel_filter_option.selected = int(config.get_value("display", "pixel_filter", 0))
 	grid_brightness_slider.value = float(config.get_value("gameplay", "grid_brightness", 72.0))
 	screen_shake_option.selected = int(config.get_value("gameplay", "screen_shake", 1))
+	crt_filter_option.selected = int(config.get_value("gameplay", "crt_filter", 1))
+	crt_filter_changed.emit(crt_filter_option.selected == 1)
 	master_slider.value = float(config.get_value("audio", "master", 100.0))
 	bgm_slider.value = float(config.get_value("audio", "bgm", 80.0))
 	sfx_slider.value = float(config.get_value("audio", "sfx", 90.0))

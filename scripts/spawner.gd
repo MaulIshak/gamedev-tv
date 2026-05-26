@@ -111,11 +111,11 @@ func _place_turret(pos: Vector2) -> void:
 
 # -- Enemy spawning -------------------------------------------------
 
-func spawn_enemy(stats: EnemyStats) -> void:
+func spawn_enemy(stats: EnemyStats) -> Node2D:
 	if _spawned_enemies.size() >= enemy_max_count:
-		return
+		return null
 	if enemy_spawn_area == null or enemy_scene == null or enemy_parent == null or enemy_movement_target == null or stats == null:
-		return
+		return null
 
 	var rect := _get_world_rect(enemy_spawn_area)
 
@@ -130,16 +130,17 @@ func spawn_enemy(stats: EnemyStats) -> void:
 	if pos == null:
 		pos = _get_random_position_near_edge(rect, enemy_edge_margin)
 
-	_place_enemy(pos, stats)
+	return _place_enemy(pos, stats)
 
 
-func _place_enemy(pos: Vector2, stats: EnemyStats) -> void:
+func _place_enemy(pos: Vector2, stats: EnemyStats) -> Node2D:
 	var enemy := enemy_scene.instantiate()
 	enemy.global_position = pos
 	enemy.movement_target = enemy_movement_target
 	enemy.enemy_stats = stats
 	enemy_parent.add_child(enemy)
 	_spawned_enemies.append(enemy)
+	return enemy
 
 func clear_turrets() -> void:
 	for turret in _spawned_turrets:

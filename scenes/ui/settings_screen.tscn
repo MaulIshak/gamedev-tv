@@ -77,20 +77,22 @@ offset_bottom = 32.0
 theme_override_constants/separation = 5
 
 [node name="GameplayTab" parent="Panel/Tabs" unique_id=1879998398 instance=ExtResource("2_button")]
+process_mode = 3
 layout_mode = 2
 text = "GAMEPLAY"
 active = true
 
 [node name="DisplayTab" parent="Panel/Tabs" unique_id=2067072496 instance=ExtResource("2_button")]
+process_mode = 3
 layout_mode = 2
 text = "DISPLAY"
 
 [node name="AudioTab" parent="Panel/Tabs" unique_id=1171345745 instance=ExtResource("2_button")]
+process_mode = 3
 layout_mode = 2
 text = "AUDIO"
 
 [node name="GameplayPanel" type="Control" parent="Panel" unique_id=257417411]
-visible = false
 anchors_preset = 0
 offset_left = 16.0
 offset_top = 46.0
@@ -132,6 +134,25 @@ offset_left = 154.0
 offset_top = 24.0
 offset_right = 308.0
 offset_bottom = 46.0
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+
+[node name="CrtFilterLabel" type="Label" parent="Panel/GameplayPanel" unique_id=987654321]
+layout_mode = 0
+offset_top = 52.0
+offset_right = 142.0
+offset_bottom = 71.0
+theme_override_colors/font_color = Color(0.08, 0.13, 0.13, 1)
+theme_override_fonts/font = SubResource("FontVariation_settings")
+theme_override_font_sizes/font_size = 14
+text = "CRT FILTER"
+
+[node name="CrtFilterOption" type="OptionButton" parent="Panel/GameplayPanel" unique_id=987654322]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 48.0
+offset_right = 308.0
+offset_bottom = 70.0
 theme_override_fonts/font = SubResource("FontVariation_settings")
 theme_override_font_sizes/font_size = 14
 
@@ -272,6 +293,7 @@ theme_override_font_sizes/font_size = 13
 text = "MODULE CONFIG"
 
 [node name="BackButton" parent="Panel" unique_id=1501585731 instance=ExtResource("2_button")]
+process_mode = 3
 layout_mode = 0
 offset_left = 190.0
 offset_top = 173.0
@@ -280,6 +302,7 @@ offset_bottom = 198.0
 text = "BACK"
 
 [node name="ApplyButton" parent="Panel" unique_id=1663683526 instance=ExtResource("2_button")]
+process_mode = 3
 layout_mode = 0
 offset_left = 263.0
 offset_top = 173.0

@@ -29,14 +29,26 @@ void fragment() {
 	vec2 content_max = rect_size - max(depth_offset, vec2(0.0)) - vec2(outline_size);
 	vec4 result = vec4(0.0);
 
-	for (int i = 8; i >= 1; i--) {
-		float layer = float(i);
-		if (layer <= shadow_depth) {
-			vec2 layer_offset = shadow_offset + shadow_depth_offset * (layer - 1.0);
-			float layer_alpha = shadow_color.a * pow(shadow_alpha_decay, layer - 1.0);
-			if (in_box(pixel - layer_offset, content_min, content_max)) {
-				result = mix(result, vec4(shadow_color.rgb, layer_alpha), layer_alpha);
-			}
+	// Static layered shadow drawing (loop-free and pow-free!)
+	if (shadow_depth >= 3.0) {
+		vec2 offset = shadow_offset + shadow_depth_offset * 2.0;
+		float alpha = shadow_color.a * shadow_alpha_decay * shadow_alpha_decay;
+		if (in_box(pixel - offset, content_min, content_max)) {
+			result = vec4(shadow_color.rgb, alpha);
+		}
+	}
+	if (shadow_depth >= 2.0) {
+		vec2 offset = shadow_offset + shadow_depth_offset;
+		float alpha = shadow_color.a * shadow_alpha_decay;
+		if (in_box(pixel - offset, content_min, content_max)) {
+			result = mix(result, vec4(shadow_color.rgb, alpha), alpha);
+		}
+	}
+	if (shadow_depth >= 1.0) {
+		vec2 offset = shadow_offset;
+		float alpha = shadow_color.a;
+		if (in_box(pixel - offset, content_min, content_max)) {
+			result = mix(result, vec4(shadow_color.rgb, alpha), alpha);
 		}
 	}
 

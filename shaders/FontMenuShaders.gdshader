@@ -73,22 +73,6 @@ void fragment() {
 		if (layer <= shadow_depth) {
 			vec2 shadow_uv = UV - base_shadow_offset - depth_direction * layer;
 			float shadow_sample = step(alpha_cutoff, texture(TEXTURE, clamp(shadow_uv, vec2(0.0), vec2(1.0))).a) * uv_bounds(shadow_uv);
-			sample_uv = shadow_uv + vec2(shadow_px.x, 0.0);
-			shadow_sample = max(shadow_sample, step(alpha_cutoff, texture(TEXTURE, clamp(sample_uv, vec2(0.0), vec2(1.0))).a) * uv_bounds(sample_uv));
-			sample_uv = shadow_uv + vec2(-shadow_px.x, 0.0);
-			shadow_sample = max(shadow_sample, step(alpha_cutoff, texture(TEXTURE, clamp(sample_uv, vec2(0.0), vec2(1.0))).a) * uv_bounds(sample_uv));
-			sample_uv = shadow_uv + vec2(0.0, shadow_px.y);
-			shadow_sample = max(shadow_sample, step(alpha_cutoff, texture(TEXTURE, clamp(sample_uv, vec2(0.0), vec2(1.0))).a) * uv_bounds(sample_uv));
-			sample_uv = shadow_uv + vec2(0.0, -shadow_px.y);
-			shadow_sample = max(shadow_sample, step(alpha_cutoff, texture(TEXTURE, clamp(sample_uv, vec2(0.0), vec2(1.0))).a) * uv_bounds(sample_uv));
-			sample_uv = shadow_uv + vec2(shadow_px.x, shadow_px.y);
-			shadow_sample = max(shadow_sample, step(alpha_cutoff, texture(TEXTURE, clamp(sample_uv, vec2(0.0), vec2(1.0))).a) * uv_bounds(sample_uv));
-			sample_uv = shadow_uv + vec2(-shadow_px.x, shadow_px.y);
-			shadow_sample = max(shadow_sample, step(alpha_cutoff, texture(TEXTURE, clamp(sample_uv, vec2(0.0), vec2(1.0))).a) * uv_bounds(sample_uv));
-			sample_uv = shadow_uv + vec2(shadow_px.x, -shadow_px.y);
-			shadow_sample = max(shadow_sample, step(alpha_cutoff, texture(TEXTURE, clamp(sample_uv, vec2(0.0), vec2(1.0))).a) * uv_bounds(sample_uv));
-			sample_uv = shadow_uv + vec2(-shadow_px.x, -shadow_px.y);
-			shadow_sample = max(shadow_sample, step(alpha_cutoff, texture(TEXTURE, clamp(sample_uv, vec2(0.0), vec2(1.0))).a) * uv_bounds(sample_uv));
 			shadow_alpha = max(shadow_alpha, shadow_sample * layer_alpha);
 			layer_alpha *= shadow_alpha_decay;
 		}

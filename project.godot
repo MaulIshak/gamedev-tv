@@ -21,6 +21,8 @@ UpgradeManager="*res://scripts/upgrade_manager.gd"
 BgmManager="*uid://dqfmqg3p7dxg"
 GlobalEventBus="*res://scripts/singleton/global_event_bus.gd"
 SfxManager="*uid://c8jbh1p1p4jnx"
+TutorialManager="*res://scripts/singleton/tutorial_manager.gd"
+ScoreManager="*res://scripts/singleton/score_manager.gd"
 
 [display]
 
@@ -29,7 +31,7 @@ window/size/viewport_height=270
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
-window/stretch/scale_mode="integer"
+window/stretch/scale_mode="fractional"
 
 [input]
 

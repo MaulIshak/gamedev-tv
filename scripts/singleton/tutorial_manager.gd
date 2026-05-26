@@ -1,4 +1,3 @@
-class_name TutorialManager
 extends Node
 
 signal tutorial_started

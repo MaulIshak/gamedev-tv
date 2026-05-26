@@ -8,7 +8,7 @@ signal restart_requested
 
 @onready var _buttons: Array[Control] = [
 	$Title,
-    $ScoreLabel,
+	$ScoreLabel,
 	$VBoxContainer/MainMenu,
 	$VBoxContainer/Restart,
 ]

@@ -113,61 +113,78 @@ void fragment() {
 		COLOR = vec4(base_color, base_alpha);
 	} else {
 		float jitter = 0.0;
-		if (animate_jitter) {
+		if (animate_jitter && horizontal_jitter > 0.0) {
 			float jitter_line = floor(UV.y * virtual_resolution_y);
 			float jitter_noise = hash12(vec2(jitter_line, floor(TIME * jitter_speed)));
 			jitter = (jitter_noise - 0.5) * horizontal_jitter;
 		}
 
 		float wobble = 0.0;
-		if (animate_wobble) {
+		if (animate_wobble && vertical_wobble > 0.0) {
 			wobble = sin((UV.y * wobble_frequency) + (TIME * wobble_speed)) * vertical_wobble;
 		}
 
-		vec2 uv = curve_uv(UV + vec2(jitter + wobble, 0.0));
+		vec2 uv = UV;
+		if (curvature > 0.0) {
+			uv = curve_uv(UV + vec2(jitter + wobble, 0.0));
+		} else {
+			uv = UV + vec2(jitter + wobble, 0.0);
+		}
 		float mask = bounds_mask(uv);
 
-		float edge_distance = length((UV - 0.5) * 2.0);
-		float edge_amount = clamp(edge_distance * rgb_edge_boost, 0.0, 1.0);
-		vec2 split = normalize(rgb_direction + vec2(0.0001, 0.0)) * rgb_split * (0.35 + edge_amount);
-
-		vec2 screen_offset = split;
-		vec3 red_sample = texture(screen_texture, SCREEN_UV + screen_offset).rgb;
-		vec3 green_sample = texture(screen_texture, SCREEN_UV).rgb;
-		vec3 blue_sample = texture(screen_texture, SCREEN_UV - screen_offset).rgb;
-		vec3 color = vec3(red_sample.r, green_sample.g, blue_sample.b) * tint_color.rgb * vertex_color.rgb;
-
-		float scan_position = UV.y * virtual_resolution_y;
-		if (animate_scanlines) {
-			scan_position += TIME * scanline_speed;
+		vec3 color;
+		if (rgb_split > 0.0) {
+			float edge_distance = length((UV - 0.5) * 2.0);
+			float edge_amount = clamp(edge_distance * rgb_edge_boost, 0.0, 1.0);
+			vec2 split = normalize(rgb_direction + vec2(0.0001, 0.0)) * rgb_split * (0.35 + edge_amount);
+			vec2 screen_offset = split;
+			vec3 red_sample = texture(screen_texture, SCREEN_UV + screen_offset).rgb;
+			vec3 green_sample = texture(screen_texture, SCREEN_UV).rgb;
+			vec3 blue_sample = texture(screen_texture, SCREEN_UV - screen_offset).rgb;
+			color = vec3(red_sample.r, green_sample.g, blue_sample.b) * tint_color.rgb * vertex_color.rgb;
+		} else {
+			color = texture(screen_texture, SCREEN_UV).rgb * tint_color.rgb * vertex_color.rgb;
 		}
-		float scan_wave = abs(fract(scan_position) - 0.5) * 2.0;
-		float scanline = smoothstep(scanline_thickness, 1.0, scan_wave);
-		color *= 1.0 - (scanline * scanline_strength);
 
-		float phosphor_cell = mod(floor(UV.x * virtual_resolution_x / max(mask_scale, 0.0001)), 3.0);
-		vec3 phosphor = red_phosphor;
-		if (phosphor_cell >= 1.0 && phosphor_cell < 2.0) {
-			phosphor = green_phosphor;
-		} else if (phosphor_cell >= 2.0) {
-			phosphor = blue_phosphor;
+		if (scanline_strength > 0.0) {
+			float scan_position = UV.y * virtual_resolution_y;
+			if (animate_scanlines) {
+				scan_position += TIME * scanline_speed;
+			}
+			float scan_wave = abs(fract(scan_position) - 0.5) * 2.0;
+			float scanline = smoothstep(scanline_thickness, 1.0, scan_wave);
+			color *= 1.0 - (scanline * scanline_strength);
 		}
-		color = mix(color, color * phosphor, mask_strength);
 
-		vec2 grain_time = vec2(0.0);
-		if (animate_grain) {
-			grain_time = vec2(floor(TIME * grain_speed));
+		if (mask_strength > 0.0) {
+			float phosphor_cell = mod(floor(UV.x * virtual_resolution_x / max(mask_scale, 0.0001)), 3.0);
+			vec3 phosphor = red_phosphor;
+			if (phosphor_cell >= 1.0 && phosphor_cell < 2.0) {
+				phosphor = green_phosphor;
+			} else if (phosphor_cell >= 2.0) {
+				phosphor = blue_phosphor;
+			}
+			color = mix(color, color * phosphor, mask_strength);
 		}
-		float grain = hash12(floor(UV * grain_scale) + grain_time);
-		color += (grain - 0.5) * grain_strength;
 
-		float flicker = 0.5;
-		if (animate_flicker) {
-			flicker = sin(TIME * flicker_speed) * 0.5 + 0.5;
+		if (grain_strength > 0.0) {
+			vec2 grain_time = vec2(0.0);
+			if (animate_grain) {
+				grain_time = vec2(floor(TIME * grain_speed));
+			}
+			float grain = hash12(floor(UV * grain_scale) + grain_time);
+			color += (grain - 0.5) * grain_strength;
 		}
-		color *= 1.0 + ((flicker - 0.5) * flicker_strength);
 
-		if (animate_rolling_bar) {
+		if (flicker_strength > 0.0) {
+			float flicker = 0.5;
+			if (animate_flicker) {
+				flicker = sin(TIME * flicker_speed) * 0.5 + 0.5;
+			}
+			color *= 1.0 + ((flicker - 0.5) * flicker_strength);
+		}
+
+		if (animate_rolling_bar && rolling_bar_strength != 0.0) {
 			float rolling_pos = fract(TIME * rolling_bar_speed);
 			float rolling_dist = abs(UV.y - rolling_pos);
 			rolling_dist = min(rolling_dist, 1.0 - rolling_dist);
@@ -175,19 +192,32 @@ void fragment() {
 			color *= 1.0 + rolling * rolling_bar_strength;
 		}
 
-		float vignette_distance = length((UV - 0.5) * vec2(1.15, 1.0));
-		float vignette = smoothstep(vignette_size, vignette_size + vignette_softness, vignette_distance);
-		color *= 1.0 - vignette * vignette_strength;
+		if (vignette_strength > 0.0) {
+			float vignette_distance = length((UV - 0.5) * vec2(1.15, 1.0));
+			float vignette = smoothstep(vignette_size, vignette_size + vignette_softness, vignette_distance);
+			color *= 1.0 - vignette * vignette_strength;
+		}
 
-		float edge = min(min(UV.x, 1.0 - UV.x), min(UV.y, 1.0 - UV.y));
-		float edge_glow = 1.0 - smoothstep(edge_glow_width, edge_glow_width * 2.0 + 0.0001, edge);
-		color += edge_glow_color.rgb * edge_glow * edge_glow_strength;
+		if (edge_glow_strength > 0.0) {
+			float edge = min(min(UV.x, 1.0 - UV.x), min(UV.y, 1.0 - UV.y));
+			float edge_glow = 1.0 - smoothstep(edge_glow_width, edge_glow_width * 2.0 + 0.0001, edge);
+			color += edge_glow_color.rgb * edge_glow * edge_glow_strength;
+		}
+
 		color = mix(color, overlay_color.rgb, overlay_color.a);
 
-		color = (color - 0.5) * contrast + 0.5;
-		color = apply_saturation(color, saturation);
-		color += brightness;
-		color = pow(max(color, vec3(0.0)), vec3(1.0 / max(gamma, 0.0001)));
+		if (contrast != 1.0) {
+			color = (color - 0.5) * contrast + 0.5;
+		}
+		if (saturation != 1.0) {
+			color = apply_saturation(color, saturation);
+		}
+		if (brightness != 0.0) {
+			color += brightness;
+		}
+		if (gamma != 1.0) {
+			color = pow(max(color, vec3(0.0)), vec3(1.0 / max(gamma, 0.0001)));
+		}
 
 		vec3 final_rgb = mix(base_color, color, effect_mix);
 		float final_alpha = base_alpha * mask;

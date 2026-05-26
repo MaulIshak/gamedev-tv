@@ -38,6 +38,8 @@ func _ready() -> void:
 	_show_only(main_menu)
 
 
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause_menu"):
 		if _state == GameState.PAUSED:
@@ -62,6 +64,7 @@ func _connect_menus() -> void:
 	settings_screen.back_requested.connect(_return_from_subscreen)
 	settings_screen.grid_brightness_changed.connect(_set_grid_brightness)
 	settings_screen.hud_scale_changed.connect(_set_hud_scale)
+	settings_screen.crt_filter_changed.connect(_set_crt_filter)
 	credits_screen.back_requested.connect(_return_from_subscreen)
 
 
@@ -163,13 +166,19 @@ func _quit_game() -> void:
 func _show_only(screen: Control) -> void:
 	for node in [main_menu, settings_screen, credits_screen, pause_menu, game_over_menu]:
 		node.visible = node == screen
+	
+	# Hide the player HUD whenever a menu screen is active to prevent overlapping
+	var hud = get_node_or_null("../HUD/Hud")
+	if hud != null:
+		hud.visible = (screen == null)
+
 	if screen != null and screen.has_method("play_intro"):
 		screen.play_intro()
 
 
 func _set_grid_brightness(value: float) -> void:
 	var strength := clampf(value / 100.0, 0.1, 1.5)
-	if crt_screen.material is ShaderMaterial:
+	if is_instance_valid(crt_screen) and crt_screen.material is ShaderMaterial:
 		var shader_material := crt_screen.material as ShaderMaterial
 		shader_material.set_shader_parameter("overlay_color", Color(0.45, 0.95, 0.92, 0.04 + strength * 0.08))
 		shader_material.set_shader_parameter("scanline_strength", 0.12 + strength * 0.24)
@@ -213,3 +222,9 @@ func _enter_paused() -> void:
 	_state = GameState.PAUSED
 	get_tree().paused = true
 	GlobalEventBus.emit_pause()
+
+
+func _set_crt_filter(enabled: bool) -> void:
+	if is_instance_valid(crt_screen) and crt_screen.material is ShaderMaterial:
+		var shader_material := crt_screen.material as ShaderMaterial
+		shader_material.set_shader_parameter("crt_enabled", enabled)
